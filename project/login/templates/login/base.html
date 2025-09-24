@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" class="desktop">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UniNav{% endblock %}</title>
+    <!-- Load static files -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'login/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rd-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">UniNav</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'shop' %}"><i class="fa fa-shopping-cart"></i> Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart' %}"><i class="fa fa-cart-plus"></i> Cart</a>
+                    </li>
+                    {% if request.session.user_id %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard' %}"><i class="fa fa-user"></i> Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}"><i class="fa fa-user-plus"></i> Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% if messages %}
+            <div class="mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fa fa-info-circle"></i> {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-3 mt-4">
+        <div class="container text-center">
+            <p class="copyright-year">© {% now "Y" %} UniNav. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{% static 'login/js/core.min.js' %}"></script>
+    <script src="{% static 'login/js/script.js' %}"></script>
+    <!-- Debug URLs -->
+    <script>
+        console.log("Bootstrap: {% static 'login/css/bootstrap.css' %}");
+        console.log("Fonts: {% static 'login/css/fonts.css' %}");
+        console.log("Style: {% static 'login/css/style.css' %}");
+        console.log("Core: {% static 'login/js/core.min.js' %}");
+        console.log("Script: {% static 'login/js/script.js' %}");
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{% extends 'login/base.html' %}
+{% block title %}Payment Success{% endblock %}
+{% block content %}
+    <h2>Payment Success</h2>
+    <p>Your payment request has been submitted and is awaiting teacher approval.</p>
+    <p><strong>Order ID:</strong> {{ order.transaction_id }}</p>
+    <p><strong>Total Amount:</strong> ৳{{ order.total_amount|floatformat:2 }}</p>
+    <p><strong>Return Policy:</strong> You may request a refund within 7 days if you cancel your order.</p>
+    <form method="post" action="{% url 'return_request' %}">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <label for="reason">Reason for Return</label>
+        <textarea id="reason" name="reason" rows="4" required></textarea>
+        <button type="submit" class="btn">Request Return</button>
+    </form>
+    <p>
+        <a href="{% url 'dashboard' %}">Back to Dashboard</a> |
+        <a href="{% url 'shop' %}">Continue Shopping</a>
+    </p>
+
+    <!-- Inline CSS -->
+    <style>
+        h2, p {
+            text-align: center;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            padding: 10px;
+            background: #0d6efd;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0b5ed7;
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 8px 16px;
+            background: #0d6efd;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        a:hover {
+            background: #0b5ed7;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'login/base.html' %}
+{% block title %}Shop{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <h2 class="text-center my-4"><i class="fa fa-shopping-bag"></i> Shop</h2>
+        <div class="owl-carousel owl-theme">
+            {% for product in products %}
+                <div class="item">
+                    <div class="card h-100">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        {% else %}
+                            noimage available
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                            <p class="card-text"><strong>৳{{ product.price|floatformat:2 }}</strong></p>
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary"><i class="fa fa-cart-plus"></i> Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            items: 3,
+            loop: true,
+            margin: 10,
+            nav: true,
+            navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+            responsive: {
+                0: { items: 1 },
+                600: { items: 2 },
+                1000: { items: 3 }
+            }
+        });
+    });
+</script>
+{% endblock %}

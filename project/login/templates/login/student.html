@@ -1,0 +1,60 @@
+{% extends 'login/base.html' %}
+{% load cart_py %}
+{% block title %}Student Dashboard - UniNav{% endblock %}
+{% block content %}
+    <header>
+        <div class="logo">
+            <h1>UniNav</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Home</a></li>
+                <li><a href="{% url 'shop' %}">Shop</a></li>
+                <li><a href="{% url 'cart' %}">Cart</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="banner">
+        <h2>Welcome back, {{ user.name }}!</h2>
+    </section>
+
+    <section class="search">
+        <input type="text" placeholder="Search classrooms, faculty, services...">
+        <button>Search</button>
+    </section>
+
+    <section class="quick-access">
+        <h3>Quick Access</h3>
+        <div class="tile"><a href="{% url 'shop' %}">Shop</a></div>
+        <div class="tile"><a href="{% url 'cart' %}">Cart</a></div>
+    </section>
+
+    <section class="events">
+        <h3>Upcoming Events</h3>
+        <ul>
+            <li>Exam Schedule – Fall 2025</li>
+            <li>UIU Debate Club Event</li>
+            <li>Library Orientation Session</li>
+            <li>Cafeteria Menu Update</li>
+        </ul>
+    </section>
+
+    <section class="map-preview">
+        <h3>Quick Map View</h3>
+        <div id="mini-map">
+            <p>[Mini Map will appear here]</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 UniNav. All rights reserved.</p>
+        <p>
+            <a href="#">Contact Support</a> | 
+            <a href="#">About UniNav</a> | 
+            <a href="#">Help</a>
+        </p>
+    </footer>
+    
+{% endblock %}

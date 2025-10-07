@@ -1,0 +1,96 @@
+{% extends 'login/base.html' %}
+{% block title %}UniNav Dashboard{% endblock %}
+{% block content %}
+    <div class="container-fluid p-0">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">UniNav</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'shop' %}">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'chat' %}">Messages</a>
+                    </li>
+                    {% if user_type == 'teacher' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'add_product' %}">Add Product</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <!-- User Info Card -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Welcome, {{ user.name }}</h5>
+                            <p class="card-text">
+                                <strong>Type:</strong> {{ user_type|capfirst }}<br>
+                                <strong>Email:</strong> {{ user.email }}<br>
+                                {% if user_type == 'student' %}
+                                    <strong>Student ID:</strong> {{ user.student_id }}<br>
+                                {% else %}
+                                    <strong>Teacher ID:</strong> {{ user.teacher_id }}<br>
+                                    <strong>Department:</strong> {{ user.department }}<br>
+                                {% endif %}
+                                <strong>Phone:</strong> {{ user.phone_number }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and Font Awesome CDNs -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+        }
+        .card-title {
+            color: #007bff;
+        }
+        .btn-primary {
+            border-radius: 5px;
+        }
+        @media (max-width: 768px) {
+            .navbar-nav {
+                text-align: center;
+            }
+            .card-body {
+                padding: 1rem;
+            }
+        }
+    </style>
+{% endblock %}

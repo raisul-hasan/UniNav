@@ -1,0 +1,48 @@
+{% extends 'login/base.html' %}
+{% load cart_py %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="text-center my-4">Your Cart</h2>
+        {% if cart_items %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>৳{{ item.product.price|floatformat:2 }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>৳{{ item.product.price|multiply:item.quantity|floatformat:2 }}</td>
+                            <td>
+                                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                        <td>৳{{ total_price|floatformat:2 }}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="{% url 'payment' %}" class="btn btn-primary">Proceed to Payment</a>
+        {% else %}
+            <p class="text-center">Your cart is empty.</p>
+        {% endif %}
+        <p class="text-center mt-3">
+            <a href="{% url 'shop' %}">Continue Shopping</a> | 
+            <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

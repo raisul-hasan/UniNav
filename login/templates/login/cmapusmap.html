@@ -1,0 +1,145 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Campus Maps{% endblock %}
+
+{% block content %}
+
+<div class="page-max">
+  <!-- ===== Header Section ===== -->
+  <section class="py-4 mb-4 position-relative rounded-lg text-white map-hero overflow-hidden">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+      <div class="mb-3 mb-md-0">
+        <h1 class="h3 font-weight-bold mb-2">University Campus Maps</h1>
+        <p class="mb-0 text-white-50">Navigate each floor interactively. Zoom, pan, and explore.</p>
+      </div>
+      <div>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-sm mr-2">
+          <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+        </a>
+        <a href="{% url 'chat' %}" class="btn btn-light btn-sm text-primary">
+          <i class="fas fa-comments mr-1"></i> Ask for Help
+        </a>
+      </div>
+    </div>
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+  </section>
+
+  <!-- ===== Floor Selector ===== -->
+  <section class="mb-3">
+    <div class="floor-selector d-flex flex-wrap gap-2 mb-3">
+      {% for n in "12345" %}
+        <button class="btn btn-soft-primary floor-btn mr-2 mb-2" data-floor="{{ n }}">
+          Floor {{ n }}
+        </button>
+      {% endfor %}
+      <button class="btn btn-soft-secondary mb-2" id="reset">
+        <i class="fas fa-sync-alt mr-1"></i> Reset
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== Map Area ===== -->
+  <section>
+    <div id="map" class="map-container rounded shadow-sm"></div>
+    <div class="map-controls mt-3">
+      <button class="btn btn-outline-primary mr-1" id="zoom-in" title="Zoom In"><i class="fas fa-plus"></i></button>
+      <button class="btn btn-outline-primary mr-1" id="zoom-out" title="Zoom Out"><i class="fas fa-minus"></i></button>
+    </div>
+  </section>
+
+  <!-- ===== Tips / Info ===== -->
+  <section class="mt-4">
+    <div class="alert alert-light border-0 shadow-sm d-flex align-items-center">
+      <i class="fas fa-info-circle text-primary mr-2"></i>
+      <div>
+        <strong>Tip:</strong> Click a floor button to load its layout. You can zoom and pan around easily.
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== Styles ===== -->
+<style>
+  .page-max { max-width: 1200px; margin: 0 auto; }
+  .map-hero {
+    background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%);
+    border-radius: 18px;
+    padding: 2rem 2.5rem;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.35;
+    pointer-events: none;
+    animation: float 12s ease-in-out infinite;
+  }
+  .blob.b1 { width: 200px; height: 200px; right: -50px; bottom: -50px; background: #a78bfa; animation-delay: .5s; }
+  .blob.b2 { width: 240px; height: 240px; left: -60px; top: -60px; background: #60a5fa; }
+  @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)} }
+
+  /* Map container */
+  .map-container {
+    height: 520px;
+    width: 100%;
+    border: 1px solid #e9ecef;
+    background: #f8f9fb;
+  }
+
+  /* Buttons */
+  .btn-soft-primary {
+    background: #eef2ff;
+    color: #3b82f6;
+    border: 1px solid #dbeafe;
+    transition: all .2s ease;
+  }
+  .btn-soft-primary:hover {
+    background: #e0e7ff;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+  }
+
+  .btn-soft-secondary {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+  }
+  .btn-soft-secondary:hover {
+    background: #e5e7eb;
+  }
+
+  .map-controls .btn {
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-weight: bold;
+    padding: 0;
+    transition: transform .2s;
+  }
+  .map-controls .btn:hover {
+    transform: translateY(-2px);
+  }
+</style>
+
+<!-- ===== Leaflet ===== -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- 🧠 Floor Plan Paths -->
+<script>
+  window.floorPlans = {
+    1: "{% static 'login/image/1st-floor.png' %}",
+    2: "{% static 'login/image/2nd-floor.png' %}",
+    3: "{% static 'login/image/3rd-floor.png' %}",
+    4: "{% static 'login/image/4th-floor.png' %}",
+    5: "{% static 'login/image/5th-floor.png' %}",
+    6: "{% static 'login/image/6th-floor.png' %}",
+    7: "{% static 'login/image/7th-floor.png' %}"
+  };
+</script>
+
+<!-- External JS -->
+<script src="{% static 'login/js/campusmap.js' %}" defer></script>
+
+{% endblock %}

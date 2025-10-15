@@ -1,0 +1,344 @@
+{% extends 'login/base.html' %}
+{% block title %}UniNav Messaging{% endblock %}
+{% block content %}
+    <div class="container-fluid p-0">
+        <div class="row no-gutters" style="height: 100vh;">
+            <!-- Sidebar: Users and Groups -->
+            <div class="col-md-3 col-lg-2 bg-light border-right" style="overflow-y: auto;">
+                <div class="p-3">
+                    <h4 class="text-primary mb-3">UniNav Messaging</h4>
+                    <h6 class="text-muted">Users</h6>
+                    <div class="list-group mb-3">
+                        {% for user in users %}
+                            <a href="?id={{ user.id }}&type=user" class="list-group-item list-group-item-action {% if selected_type == 'user' and selected.id == user.id %}active{% endif %}">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-2" style="width: 32px; height: 32px;">
+                                        {{ user.name|first|upper }}
+                                    </div>
+                                    {{ user.name }}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <h6 class="text-muted">Groups</h6>
+                    <div class="list-group mb-3">
+                        {% for group in groups %}
+                            <a href="?id={{ group.id }}&type=group" class="list-group-item list-group-item-action {% if selected_type == 'group' and selected.id == group.id %}active{% endif %}">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mr-2" style="width: 32px; height: 32px;">
+                                        {{ group.name|first|upper }}
+                                    </div>
+                                    {{ group.name }}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'create_group' %}" class="btn btn-outline-primary btn-block">Create Group</a>
+                </div>
+            </div>
+            <!-- Chat Area -->
+            <div class="col-md-9 col-lg-10 d-flex flex-column">
+                {% if selected %}
+                    <div class="border-bottom p-3 bg-white d-flex align-items-center">
+                        <h5 class="mb-0">
+                            {% if selected_type == 'group' %}
+                                <i class="fas fa-users mr-2"></i>Group: {{ selected.name }}
+                            {% else %}
+                                <i class="fas fa-user mr-2"></i>{{ selected.name }}
+                            {% endif %}
+                        </h5>
+                    </div>
+                    <div id="chat-messages" class="flex-grow-1 p-3" style="overflow-y: auto; background: #f8f9fa;">
+                        {% for message in messages %}
+                            <div id="message-{{ message.id }}" class="message {% if message.sender.id == user_id or message.teacher_sender.id == user_id %}message-sent{% else %}message-received{% endif %} mb-3">
+                                <div class="card {% if message.sender.id == user_id or message.teacher_sender.id == user_id %}bg-primary text-white{% else %}bg-light{% endif %}">
+                                    <div class="card-body p-2">
+                                        <strong>
+                                            {% if message.sender %}
+                                                {{ message.sender.name }}
+                                            {% else %}
+                                                {{ message.teacher_sender.name }}
+                                            {% endif %}
+                                        </strong>
+                                        <p class="mb-1">{{ message.content }}</p>
+                                        {% if message.file %}
+                                            <a href="{{ message.file.url }}" download class="btn btn-sm btn-outline-secondary">Download File</a>
+                                        {% endif %}
+                                        {% if message.voice %}
+                                            <audio controls src="{{ message.voice.url }}" class="mt-2"></audio>
+                                        {% endif %}
+                                        {% if message.latitude and message.longitude %}
+                                            <div id="map-{{ message.id }}" style="height: 150px; margin-top: 10px;"></div>
+                                           
+                                        {% endif %}
+                                        <small class="text-muted">{{ message.timestamp|date:"M d, Y, h:i A" }}</small>
+                                        <div class="reactions mt-1">
+                                            {% for reaction in message.reactions.all %}
+                                                <span class="reaction badge badge-light mr-1" data-message-id="{{ message.id }}" data-emoji="{{ reaction.emoji }}" data-sender-id="{% if reaction.user %}{{ reaction.user.id }}{% else %}{{ reaction.teacher.id }}{% endif %}">
+                                                    {{ reaction.emoji }} {{ reaction.user.name|default:reaction.teacher.name }}
+                                                </span>
+                                            {% endfor %}
+                                            <div class="reaction-options mt-1">
+                                                <button class="reaction-btn btn btn-sm btn-outline-primary" data-message-id="{{ message.id }}" data-emoji="👍">👍</button>
+                                                <button class="reaction-btn btn btn-sm btn-outline-primary" data-message-id="{{ message.id }}" data-emoji="❤️">❤️</button>
+                                                <button class="reaction-btn btn btn-sm btn-outline-primary" data-message-id="{{ message.id }}" data-emoji="😊">😊</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="p-3 bg-white border-top">
+                        <form id="chat-form" enctype="multipart/form-data" class="d-flex">
+                            {% csrf_token %}
+                            {% if selected_type == 'group' %}
+                                <input type="hidden" name="group_id" value="{{ selected.id }}">
+                            {% else %}
+                                <input type="hidden" name="recipient_id" value="{{ selected.id }}">
+                            {% endif %}
+                            <textarea name="content" class="form-control mr-2" rows="2" placeholder="Type your message..."></textarea>
+                            <div class="d-flex flex-column">
+                                <input type="file" name="file" id="file-input" class="form-control mb-2" style="font-size: 0.9rem;">
+                                <input type="file" name="voice" id="voice-input" accept="audio/*" class="form-control mb-2" style="font-size: 0.9rem;">
+                                <input type="hidden" name="latitude" id="latitude">
+                                <input type="hidden" name="longitude" id="longitude">
+                                <div class="btn-group">
+                                    <button type="button" onclick="shareLocation()" class="btn btn-outline-secondary btn-sm">📍 Location</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">Send</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="d-flex justify-content-center align-items-center flex-grow-1 bg-light">
+                        <p class="text-muted">Select a user or group to start chatting.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and Font Awesome CDNs -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Custom CSS -->
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .message {
+            max-width: 70%;
+            margin-bottom: 15px;
+        }
+        .message-sent {
+            margin-left: auto;
+        }
+        .message-received {
+            margin-right: auto;
+        }
+        .card-body {
+            border-radius: 10px;
+        }
+        .reaction {
+            cursor: pointer;
+            padding: 2px 8px;
+            font-size: 0.9rem;
+        }
+        .reaction:hover {
+            background-color: #e9ecef;
+        }
+        .reaction-btn {
+            padding: 2px 8px;
+            margin-right: 5px;
+        }
+        #chat-messages {
+            scroll-behavior: smooth;
+        }
+        .list-group-item {
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+        .list-group-item.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        @media (max-width: 768px) {
+            .message {
+                max-width: 85%;
+            }
+            .col-md-3 {
+                height: 30vh;
+                overflow-y: auto;
+            }
+            .col-md-9 {
+                height: 70vh;
+            }
+        }
+    </style>
+
+    <!-- JavaScript for WebSocket and Interactions -->
+    <script>
+        function shareLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                    alert('Location shared!');
+                }, function(error) {
+                    alert('Error getting location: ' + error.message);
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        const userId = "{{ user_id|safe }}";
+        const userType = "{{ user_type }}";
+        const chatType = "{{ selected_type|default:'none' }}";
+        const id = "{{ selected.id|default_if_none:0 }}";
+
+        let socket = null;
+
+        if (id && chatType !== 'none' && id !== 0) {
+            socket = new WebSocket(
+                'ws://' + window.location.host + '/ws/chat/' + chatType + '/' + id + '/'
+            );
+
+            socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                const messages = document.getElementById('chat-messages');
+
+                if (data.action === 'message') {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.id = `message-${data.message_id}`;
+                    messageDiv.className = `message ${data.sender_id == userId ? 'message-sent' : 'message-received'} mb-3`;
+                    let html = `
+                        <div class="card ${data.sender_id == userId ? 'bg-primary text-white' : 'bg-light'}">
+                            <div class="card-body p-2">
+                                <strong>User ${data.sender_id} (${data.sender_type}):</strong>
+                                <p class="mb-1">${data.content}</p>
+                    `;
+                    if (data.file_url) html += `<a href="${data.file_url}" download class="btn btn-sm btn-outline-secondary">Download File</a>`;
+                    if (data.voice_url) html += `<audio controls src="${data.voice_url}" class="mt-2"></audio>`;
+                    if (data.latitude && data.longitude) {
+                        html += `<div id="map-${data.message_id}" style="height: 150px; margin-top: 10px;"></div>`;
+                    }
+                    html += `
+                        <small class="text-muted">${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}</small>
+                        <div class="reactions mt-1">
+                            <div class="reaction-options">
+                                <button class="reaction-btn btn btn-sm btn-outline-primary" data-message-id="${data.message_id}" data-emoji="👍">👍</button>
+                                <button class="reaction-btn btn btn-sm btn-outline-primary" data-message-id="${data.message_id}" data-emoji="❤️">❤️</button>
+                                <button class="reaction-btn btn btn-sm btn-outline-primary" data-message-id="${data.message_id}" data-emoji="😊">😊</button>
+                            </div>
+                        </div>
+                    </div></div>`;
+                    messageDiv.innerHTML = html;
+                    messages.appendChild(messageDiv);
+                    if (data.latitude && data.longitude) {
+                        var map = L.map(`map-${data.message_id}`).setView([data.latitude, data.longitude], 13);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        }).addTo(map);
+                        L.marker([data.latitude, data.longitude]).addTo(map).bindPopup('Shared Location').openPopup();
+                    }
+                    messages.scrollTop = messages.scrollHeight;
+                } else if (data.action === 'reaction') {
+                    const messageDiv = document.getElementById(`message-${data.message_id}`);
+                    const reactionsDiv = messageDiv.querySelector('.reactions');
+                    const existingReaction = reactionsDiv.querySelector(`span[data-emoji="${data.emoji}"][data-sender-id="${data.sender_id}"]`);
+                    
+                    if (existingReaction && !data.created) {
+                        existingReaction.remove();
+                    } else if (data.created) {
+                        const reactionSpan = document.createElement('span');
+                        reactionSpan.className = 'reaction badge badge-light mr-1';
+                        reactionSpan.dataset.emoji = data.emoji;
+                        reactionSpan.dataset.senderId = data.sender_id;
+                        reactionSpan.textContent = `${data.emoji} User ${data.sender_id}`;
+                        reactionsDiv.insertBefore(reactionSpan, reactionsDiv.querySelector('.reaction-options'));
+                    }
+                    messages.scrollTop = messages.scrollHeight;
+                }
+            };
+
+            socket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
+
+            document.getElementById('chat-form').onsubmit = async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const content = formData.get('content');
+                let fileUrl = null;
+                let voiceUrl = null;
+                const latitude = formData.get('latitude');
+                const longitude = formData.get('longitude');
+
+                if (formData.get('file') || formData.get('voice')) {
+                    try {
+                        const response = await fetch("{% url 'send_message' %}", {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                            }
+                        });
+                        const result = await response.json();
+                        if (result.file) fileUrl = result.file;
+                        if (result.voice) voiceUrl = result.voice;
+                    } catch (error) {
+                        console.error('File upload failed:', error);
+                    }
+                }
+
+                socket.send(JSON.stringify({
+                    'action': 'message',
+                    'content': content,
+                    'sender_id': userId,
+                    'sender_type': userType,
+                    'file_url': fileUrl,
+                    'voice_url': voiceUrl,
+                    'latitude': latitude,
+                    'longitude': longitude
+                }));
+
+                this.reset();
+                document.getElementById('latitude').value = '';
+                document.getElementById('longitude').value = '';
+                return false;
+            };
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('reaction-btn')) {
+                    const messageId = e.target.dataset.messageId;
+                    const emoji = e.target.dataset.emoji;
+                    socket.send(JSON.stringify({
+                        'action': 'reaction',
+                        'message_id': messageId,
+                        'emoji': emoji,
+                        'sender_id': userId,
+                        'sender_type': userType
+                    }));
+                }
+            });
+        } else {
+            console.log('No valid chat selected, WebSocket not initiated.');
+        }
+    </script>
+{% endblock %}

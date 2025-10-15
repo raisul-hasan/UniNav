@@ -1,0 +1,264 @@
+{% extends "login/base.html" %}
+{% load static %}
+
+{% block title %}UniNav Shop{% endblock %}
+
+{% block content %}
+<section
+  class="py-4"
+  style="
+    background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%);
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+  "
+>
+  <div
+    class="container d-flex flex-column flex-md-row align-items-md-center justify-content-md-between text-white"
+  >
+    <div class="mb-3 mb-md-0">
+      <h1 class="h3 mb-1">UniNav Shop</h1>
+      <p class="mb-0" style="opacity: 0.9">
+        Browse and buy campus essentials with ease.
+      </p>
+    </div>
+
+    <!-- Cart dropdown (shows empty state unless your view provides cart_items/total_price) -->
+    <div class="dropdown">
+      <button
+        id="cartDropdownBtn"
+        class="btn btn-gradient text-white px-3 py-2 dropdown-toggle"
+        data-toggle="dropdown"
+        data-bs-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="fas fa-shopping-cart mr-2"></i>
+        Cart
+        <span class="badge badge-light bg-light ml-2" style="color: #5d4db9">
+          {% if cart_items %}{{ cart_items|length }}{% else %}0{% endif %}
+        </span>
+      </button>
+
+      <div
+        class="dropdown-menu dropdown-menu-right p-0"
+        aria-labelledby="cartDropdownBtn"
+        style="min-width: 360px; border-radius: 14px; overflow: hidden"
+      >
+        <div class="px-3 py-2" style="background: #f8f9fa">
+          <strong>Your Items</strong>
+        </div>
+
+        <div style="max-height: 360px; overflow-y: auto">
+          {% if cart_items %}
+            {% for item in cart_items %}
+              <div
+                class="mini-item"
+                style="
+                  display: flex;
+                  align-items: center;
+                  padding: 0.65rem 0.9rem;
+                  border-bottom: 1px solid #eee;
+                "
+              >
+                <img
+                  class="mini-thumb"
+                  style="
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 10px;
+                    object-fit: cover;
+                    margin-right: 0.75rem;
+                  "
+                  src="{% if item.product.image %}{{ item.product.image.url }}{% else %}https://picsum.photos/100/100{% endif %}"
+                  alt="{{ item.product.name }}"
+                />
+                <div class="mini-meta" style="flex: 1; min-width: 0">
+                  <p
+                    class="mini-title mb-1"
+                    style="
+                      font-size: 0.95rem;
+                      color: #2a2a2a;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    "
+                  >
+                    {{ item.product.name }}
+                    <span
+                      class="qty-pill"
+                      style="
+                        font-size: 0.75rem;
+                        padding: 0.1rem 0.45rem;
+                        border-radius: 999px;
+                        background: #efe9ff;
+                        color: #5d4db9;
+                        margin-left: 0.4rem;
+                      "
+                    >{{ item.quantity }}x</span>
+                  </p>
+                  <div
+                    class="mini-price"
+                    style="font-size: 0.85rem; color: #7a7a7a"
+                  >
+                    ৳{{ item.product.price|floatformat:2 }}
+                  </div>
+                </div>
+                <a
+                  href="{% url 'remove_from_cart' item.id %}"
+                  class="btn btn-sm btn-outline-danger"
+                  title="Remove"
+                  style="white-space: nowrap"
+                >Remove</a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="p-3 text-muted small">Your cart is empty.</div>
+          {% endif %}
+        </div>
+
+        {% if total_price %}
+        <div
+          class="d-flex justify-content-between align-items-center px-3 py-2"
+          style="background: #f8f9fa"
+        >
+          <small class="text-muted mb-0">Subtotal:</small>
+          <strong>৳{{ total_price|floatformat:2 }}</strong>
+        </div>
+        {% endif %}
+        <div
+          class="d-flex justify-content-between align-items-center px-3 py-3"
+          style="background: #ffffff"
+        >
+          <a href="{% url 'cart' %}" class="btn btn-sm btn-outline-secondary">View Cart</a>
+          <a href="{% url 'payment' %}" class="btn btn-sm btn-gradient text-white">Checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5" style="font-family: 'Poppins', sans-serif">
+  <div
+    class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between mb-4"
+  >
+    <h2 class="h5 mb-2 mb-md-0" style="color: #2a2a2a">Products</h2>
+    <div class="text-muted small">
+      Tip: Click “Add to Cart” to collect items.
+    </div>
+  </div>
+
+  <div class="row">
+    {% for product in products %}
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+        <div
+          class="card h-100 border-0 shadow-sm product-card"
+          style="border-radius: 14px"
+        >
+          {% if product.image %}
+            <img
+              src="{{ product.image.url }}"
+              alt="{{ product.name }}"
+              class="card-img-top"
+              style="
+                height: 180px;
+                object-fit: cover;
+                border-top-left-radius: 14px;
+                border-top-right-radius: 14px;
+              "
+            />
+          {% else %}
+            <img
+              src="https://picsum.photos/400/300"
+              alt="{{ product.name }}"
+              class="card-img-top"
+              style="
+                height: 180px;
+                object-fit: cover;
+                border-top-left-radius: 14px;
+                border-top-right-radius: 14px;
+              "
+            />
+          {% endif %}
+
+          <div class="card-body d-flex flex-column p-3">
+            <h5
+              class="mb-1"
+              style="font-size: 1rem; line-height: 1.25; color: #2a2a2a"
+            >
+              {{ product.name }}
+            </h5>
+            <div class="mb-2" style="color: #7a6ad8; font-weight: 600">
+              ৳{{ product.price|floatformat:2 }}
+            </div>
+
+            {% if product.description %}
+              <p class="text-muted mb-3" style="font-size: 0.9rem">
+                {{ product.description|truncatechars:70 }}
+              </p>
+            {% else %}
+              <p class="text-muted mb-3" style="font-size: 0.9rem; opacity: 0.85">
+                No description provided.
+              </p>
+            {% endif %}
+
+            <a
+              href="{% url 'add_to_cart' product.id %}"
+              class="btn btn-gradient text-white btn-sm mt-auto py-2"
+            >Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-light border d-flex align-items-center" role="alert">
+          <i class="fas fa-info-circle mr-2" style="color: #7a6ad8"></i>
+          <div class="small text-muted mb-0">
+            No products available at the moment.
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .btn-gradient {
+    background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%);
+    border: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #5d4db9 0%, #7a6ad8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(122, 106, 216, 0.4);
+  }
+  .product-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<!-- Minimal dropdown fallback if Bootstrap JS isn't active -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var btn = document.getElementById("cartDropdownBtn");
+    var menu = btn ? btn.nextElementSibling : null;
+    if (!btn || !menu) return;
+
+    btn.addEventListener("click", function () {
+      menu.classList.toggle("show");
+    });
+
+    document.addEventListener("click", function (e) {
+      if (menu.classList.contains("show") && !menu.contains(e.target) && e.target !== btn) {
+        menu.classList.remove("show");
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,359 @@
+{% extends 'login/base.html' %}
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10 col-xl-9">
+
+    <!-- Stepper -->
+    <div class="d-flex align-items-center justify-content-center mb-4">
+      <div class="d-flex align-items-center">
+        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:36px;height:36px;">1</div>
+        <span class="mx-2 text-muted">Cart</span>
+      </div>
+      <div class="mx-2" style="height:2px;width:48px;background:rgba(0,0,0,.1)"></div>
+      <div class="d-flex align-items-center">
+        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:36px;height:36px;">2</div>
+        <span class="mx-2 font-weight-bold">Payment</span>
+      </div>
+      <div class="mx-2" style="height:2px;width:48px;background:rgba(0,0,0,.1)"></div>
+      <div class="d-flex align-items-center">
+        <div class="rounded-circle bg-light text-muted d-flex align-items-center justify-content-center" style="width:36px;height:36px;">3</div>
+        <span class="mx-2 text-muted">Done</span>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden">
+      <div class="row no-gutters">
+        <!-- Left: Payment Details -->
+        <div class="col-lg-7">
+          <div class="p-4 p-md-5">
+
+            <div class="d-flex align-items-center mb-3">
+              <h3 class="h5 mb-0 mr-2">Checkout</h3>
+              <span class="badge badge-soft-primary badge-pill px-2 py-1" style="background:#eef2ff;color:#3b82f6;border:1px solid #dbeafe;">Secure</span>
+            </div>
+
+            <!-- Method selector as cards -->
+            <div class="mb-3">
+              <label class="form-label d-block mb-2">Choose a payment method</label>
+              <div class="d-flex flex-wrap method-grid">
+                <!-- Wallet cards -->
+                <label class="method-card">
+                  <input type="radio" name="method_visual" value="bKash" class="method-input" checked>
+                  <div class="method-body">
+                    <div class="method-logo">
+                      <!-- bKash SVG -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#E2136E" d="M21.5 5.2c-1.8 1.9-5.4 4-8.2 4.7C10.5 10.6 7 11 5 12.4c-.9.6-1.6 1.4-2 2.4c-.7 1.7-.2 3.1.8 4.2c.7.8 1.7 1.4 2.8 1.7c2.7.8 6 .1 8.6-1.1c3.4-1.6 5.8-4.2 6.7-7.2c.5-1.7.4-3.4-.1-4.6c-.3-.7-.7-1.2-1.3-1.6Z"/></svg>
+                    </div>
+                    <div class="method-title">bKash</div>
+                    <div class="method-sub">Mobile wallet</div>
+                  </div>
+                </label>
+
+                <label class="method-card">
+                  <input type="radio" name="method_visual" value="Nagad" class="method-input">
+                  <div class="method-body">
+                    <div class="method-logo">
+                      <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#F05123"/></svg>
+                    </div>
+                    <div class="method-title">Nagad</div>
+                    <div class="method-sub">Mobile wallet</div>
+                  </div>
+                </label>
+
+                <label class="method-card">
+                  <input type="radio" name="method_visual" value="Rocket" class="method-input">
+                  <div class="method-body">
+                    <div class="method-logo">
+                      <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#7A2DE2" d="M12 2c3 0 7 3 9 5c-2 2-6 5-9 5S5 9 3 7c2-2 6-5 9-5Z"/><circle cx="12" cy="9" r="2" fill="#fff"/></svg>
+                    </div>
+                    <div class="method-title">Rocket</div>
+                    <div class="method-sub">Mobile wallet</div>
+                  </div>
+                </label>
+
+                <label class="method-card">
+                  <input type="radio" name="method_visual" value="Upay" class="method-input">
+                  <div class="method-body">
+                    <div class="method-logo">
+                      <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="#0EA5E9"/></svg>
+                    </div>
+                    <div class="method-title">Upay</div>
+                    <div class="method-sub">Mobile wallet</div>
+                  </div>
+                </label>
+
+                <!-- Card -->
+                <label class="method-card">
+                  <input type="radio" name="method_visual" value="Credit Card" class="method-input">
+                  <div class="method-body">
+                    <div class="method-logo">
+                      <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#0D6EFD"/><rect x="3" y="8" width="18" height="2" fill="#fff"/></svg>
+                    </div>
+                    <div class="method-title">Credit/Debit Card</div>
+                    <div class="method-sub">Visa, Mastercard</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Real form posting to your backend -->
+            <form method="post" action="{% url 'process_payment' %}" id="paymentForm" novalidate>
+              {% csrf_token %}
+              <!-- Hidden field bound to selected card radio -->
+              <input type="hidden" id="payment_method" name="payment_method" value="bKash">
+              <input type="hidden" name="total_amount" value="{{ total_amount|floatformat:2 }}">
+
+              <!-- Wallet fields -->
+              <div id="walletFields">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="wallet_phone">Wallet Phone Number</label>
+                    <input type="tel" inputmode="numeric" pattern="[0-9]{11}" maxlength="11" class="form-control" id="wallet_phone" name="wallet_phone" placeholder="01XXXXXXXXX" required>
+                    <small class="form-text text-muted">11 digits (e.g., 01XXXXXXXXX)</small>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="trx_id">Transaction ID <span class="text-muted">(optional)</span></label>
+                    <input type="text" class="form-control" id="trx_id" name="trx_id" placeholder="e.g., 7DF3K9A2">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="save_wallet" name="save_wallet">
+                    <label class="custom-control-label" for="save_wallet">Save this wallet for faster checkout</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card fields -->
+              <div id="cardFields" class="d-none">
+                <div class="form-group">
+                  <label for="card_name">Name on Card</label>
+                  <input type="text" class="form-control" id="card_name" name="card_name" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                  <label for="card_number">Card Number</label>
+                  <input type="text" inputmode="numeric" class="form-control" id="card_number" name="card_number" placeholder="•••• •••• •••• ••••" minlength="16" maxlength="19">
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-6">
+                    <label for="card_expiry">Expiry (MM/YY)</label>
+                    <input type="text" class="form-control" id="card_expiry" name="card_expiry" placeholder="MM/YY" maxlength="5">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="card_cvv">CVV</label>
+                    <input type="password" inputmode="numeric" class="form-control" id="card_cvv" name="card_cvv" placeholder="3 digits" maxlength="4">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="save_card" name="save_card">
+                    <label class="custom-control-label" for="save_card">Save card securely</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Billing info -->
+              <div class="mt-3">
+                <h6 class="text-uppercase text-muted mb-2" style="letter-spacing:.06em;">Billing details</h6>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="billing_name">Full Name</label>
+                    <input type="text" class="form-control" id="billing_name" name="billing_name" placeholder="Your name" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="billing_email">Email</label>
+                    <input type="email" class="form-control" id="billing_email" name="billing_email" placeholder="you@example.com" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-8">
+                    <label for="billing_address">Address</label>
+                    <input type="text" class="form-control" id="billing_address" name="billing_address" placeholder="Street address" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="billing_city">City</label>
+                    <input type="text" class="form-control" id="billing_city" name="billing_city" placeholder="Dhaka" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="billing_postal">Postal Code</label>
+                    <input type="text" class="form-control" id="billing_postal" name="billing_postal" placeholder="1205" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="billing_phone">Contact Number</label>
+                    <input type="tel" class="form-control" id="billing_phone" name="billing_phone" placeholder="+8801XXXXXXXXX" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Terms -->
+              <div class="form-group mt-2">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="agree" required>
+                  <label class="custom-control-label" for="agree">
+                    I agree to the Terms & Refund Policy (7-day refund).
+                  </label>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="d-flex align-items-center mt-3">
+                <a href="{% url 'cart' %}" class="btn btn-outline-secondary">Back to Cart</a>
+                <button type="submit" class="btn btn-primary ml-auto d-inline-flex align-items-center" id="payBtn">
+                  <span class="mr-2" aria-hidden="true">
+                    <!-- lock icon -->
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M17 8V7a5 5 0 1 0-10 0v1H5v14h14V8h-2Zm-8 0V7a3 3 0 1 1 6 0v1H9Zm8 12H7V10h10v10Z"/></svg>
+                  </span>
+                  Pay ৳{{ total_amount|floatformat:2 }}
+                </button>
+              </div>
+
+              <!-- Safety note -->
+              <div class="d-flex align-items-center mt-3 text-muted small">
+                <svg width="18" height="18" viewBox="0 0 24 24" class="mr-1"><path fill="currentColor" d="M12 2l9 4v6c0 5-3.8 9.7-9 10C6.8 21.7 3 17 3 12V6l9-4Zm0 4.2L5 9v3c0 3.8 2.7 7.5 7 8c4.3-.5 7-4.2 7-8V9l-7-2.8ZM11 11h2v5h-2v-5Zm0-3h2v2h-2V8Z"/></svg>
+                Your payment details are encrypted and processed securely.
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="col-lg-5 bg-light">
+          <div class="p-4 p-md-5 h-100 d-flex flex-column">
+            <h5 class="mb-3">Order Summary</h5>
+
+            <div class="d-flex justify-content-between align-items-center py-2">
+              <span class="text-muted">Subtotal</span>
+              <strong>৳{{ total_amount|floatformat:2 }}</strong>
+            </div>
+
+            <!-- Example fee/tax lines (non-binding; adjust/remove if not used) -->
+            <div class="d-flex justify-content-between align-items-center py-2">
+              <span class="text-muted">Processing Fee</span>
+              <span>৳0.00</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center py-2 border-top">
+              <span class="font-weight-bold">Total</span>
+              <span class="font-weight-bold">৳{{ total_amount|floatformat:2 }}</span>
+            </div>
+
+            <!-- Coupon (optional; harmless if backend ignores) -->
+            <form class="mt-3" onsubmit="event.preventDefault(); document.getElementById('couponApplied').classList.remove('d-none');">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Coupon code" aria-label="Coupon">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="submit">Apply</button>
+                </div>
+              </div>
+              <div id="couponApplied" class="text-success small mt-2 d-none">Coupon applied (demo).</div>
+            </form>
+
+            <div class="mt-auto">
+              <div class="mt-4 small text-muted">
+                Need help? <a href="{% url 'shop' %}">Continue shopping</a> or <a href="{% url 'cart' %}">review your cart</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /row -->
+    </div>
+  </div>
+</div>
+
+<!-- Scoped styles to modernize the look while staying Bootstrap-friendly -->
+<style>
+  .badge-soft-primary { border-radius: 999px; font-weight: 500; }
+  .method-grid { gap: .75rem; }
+  .method-card {
+    position: relative; margin: 0; cursor: pointer; flex: 1 1 150px; min-width: 150px; max-width: 220px;
+  }
+  .method-input { position: absolute; opacity: 0; pointer-events: none; }
+  .method-body {
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    border: 1px solid #e9ecef; border-radius: 12px; padding: .9rem; background: #fff;
+    transition: box-shadow .2s, border-color .2s, transform .08s ease-in-out;
+  }
+  .method-card:hover .method-body { border-color: #cfe2ff; box-shadow: 0 8px 24px rgba(13,110,253,.08); transform: translateY(-1px); }
+  .method-input:checked + .method-body { border-color: #0d6efd; box-shadow: 0 6px 18px rgba(13,110,253,.12); }
+  .method-logo { width: 40px; height: 40px; display: grid; place-items: center; margin-bottom: .25rem; }
+  .method-title { font-weight: 600; }
+  .method-sub { font-size: .8rem; color: #6c757d; }
+
+  /* Switch & checkbox visual polish (Bootstrap 4) */
+  .custom-control-label::before, .custom-control-label::after { top: .2rem; }
+</style>
+
+<!-- Minimal JS to sync selected method + toggle fields + small UX polish -->
+<script>
+  (function() {
+    var visualRadios = document.querySelectorAll('.method-input');
+    var hiddenMethod = document.getElementById('payment_method');
+    var walletFields = document.getElementById('walletFields');
+    var cardFields = document.getElementById('cardFields');
+    var payBtn = document.getElementById('payBtn');
+    var form = document.getElementById('paymentForm');
+
+    function updateMethodUI(method) {
+      hiddenMethod.value = method;
+      if (method === 'Credit Card') {
+        walletFields.classList.add('d-none');
+        cardFields.classList.remove('d-none');
+        // make card fields required, wallet optional
+        toggleRequired('#cardFields input', true);
+        toggleRequired('#walletFields input', false);
+      } else {
+        walletFields.classList.remove('d-none');
+        cardFields.classList.add('d-none');
+        toggleRequired('#walletFields input', true);
+        toggleRequired('#cardFields input', false);
+        // card-only fields should not be required when hidden
+        ['card_name','card_number','card_expiry','card_cvv'].forEach(function(id){
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+      }
+    }
+
+    function toggleRequired(selector, req) {
+      document.querySelectorAll(selector).forEach(function(el){
+        if (req) el.setAttribute('required','required');
+        else el.removeAttribute('required');
+      });
+    }
+
+    visualRadios.forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        updateMethodUI(this.value);
+      });
+    });
+
+    // Initial state
+    updateMethodUI(document.querySelector('.method-input:checked').value);
+
+    // Submit UX: show a quick spinner state
+    form.addEventListener('submit', function(){
+      var original = payBtn.innerHTML;
+      payBtn.disabled = true;
+      payBtn.innerHTML = '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Processing...';
+      // Let backend handle redirect; this just disables double clicks.
+      setTimeout(function(){ payBtn.innerHTML = original; payBtn.disabled = false; }, 8000);
+    });
+
+    // Basic formatting helpers (lightweight; optional)
+    var cardNum = document.getElementById('card_number');
+    if (cardNum) cardNum.addEventListener('input', function(e){
+      var v = e.target.value.replace(/\D/g,'').slice(0,19);
+      e.target.value = v.replace(/(.{4})/g,'$1 ').trim();
+    });
+    var exp = document.getElementById('card_expiry');
+    if (exp) exp.addEventListener('input', function(e){
+      var v = e.target.value.replace(/\D/g,'').slice(0,4);
+      if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+      e.target.value = v;
+    });
+  })();
+</script>
+{% endblock %}

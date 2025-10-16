@@ -1,0 +1,144 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Campus Maps{% endblock %}
+
+{% block content %}
+<h2>University Floor Maps</h2>
+
+<div class="floor-selector mb-3">
+  <button class="btn btn-primary floor-btn" data-floor="1">1st Floor</button>
+  <button class="btn btn-primary floor-btn" data-floor="2">2nd Floor</button>
+  <button class="btn btn-primary floor-btn" data-floor="3">3rd Floor</button>
+  <button class="btn btn-primary floor-btn" data-floor="4">4th Floor</button>
+  <button class="btn btn-primary floor-btn" data-floor="5">5th Floor</button>
+</div>
+
+<!-- NEW: Mode Toggle -->
+<div class="mode-selector mb-3">
+  <button class="btn btn-secondary mode-btn active" data-mode="default">Default</button>
+  <button class="btn btn-secondary mode-btn" data-mode="lost_and_found">Lost & Found</button>
+</div>
+
+
+<div id="map" style="height: 500px; width: 100%; border: 1px solid #ccc;"></div>
+
+<div class="map-controls mt-3">
+  <button class="btn btn-secondary" id="zoom-in">+</button>
+  <button class="btn btn-secondary" id="zoom-out">−</button>
+  <button class="btn btn-secondary" id="reset">Reset</button>
+  <button class="btn btn-secondary" id="my-location">My Location</button>
+</div>
+
+
+  <button class="btn btn-secondary" id="pick-location" data-toggle="modal" data-target="#lostFoundModal">Pin Lost/Found</button>
+</div>
+
+<!-- NEW: Modal for Lost/Found Submission -->
+<div class="modal fade" id="lostFoundModal" tabindex="-1" role="dialog" aria-labelledby="lostFoundModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lostFoundModalLabel">Report Lost or Found Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="item_type">Type</label>
+            <select class="form-control" id="item_type" name="item_type" required>
+              <option value="lost">Lost</option>
+              <option value="found">Found</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" name="category" required>
+              <option value="electronics">Electronics</option>
+              <option value="clothing">Clothing</option>
+              <option value="books">Books</option>
+              <option value="personal">Personal Items</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="floor">Floor</label>
+            <select class="form-control" id="floor" name="floor" required>
+              <option value="1">1st Floor</option>
+              <option value="2">2nd Floor</option>
+              <option value="3">3rd Floor</option>
+              <option value="4">4th Floor</option>
+              <option value="5">5th Floor</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pin Location</label>
+            <p>Click the map to pin the location. Coordinates will appear here:</p>
+            <input type="hidden" id="latitude" name="latitude" required>
+            <input type="hidden" id="longitude" name="longitude" required>
+            <p id="pin-coordinates" class="text-muted">No location selected</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<!-- Define static URLs and markers data -->
+<script>
+  window.floorPlans = {
+    1: "{% static 'login/image/1st-floor.png' %}",
+    2: "{% static 'login/image/2nd-floor.png' %}",
+    3: "{% static 'login/image/3rd-floor.png' %}",
+    4: "{% static 'login/image/4th-floor.png' %}",
+    5: "{% static 'login/image/5th-floor.png' %}",
+    6: "{% static 'login/image/6th-floor.png' %}",
+    7: "{% static 'login/image/7th-floor.png' %}"
+  };
+  // Load markers data from JSON script tag
+  window.markersData = JSON.parse(document.getElementById('markers-data').textContent);
+  // Pass user data for chat integration
+  window.userId = "{{ request.session.user_id }}";
+  window.userType = "{{ request.session.user_type }}";
+</script>
+
+<!-- External JS -->
+<script src="{% static 'login/js/campusmap.js' %}" defer></script>
+
+<!-- Inline CSS -->
+<style>
+  .floor-btn.active {
+    background: #5d4db9;
+    color: #fff;
+  }
+  .leaflet-popup-content {
+    font-size: 14px;
+    max-width: 200px;
+  }
+  .leaflet-popup-content a {
+    color: #7a6ad8;
+    text-decoration: none;
+  }
+  .leaflet-popup-content a:hover {
+    text-decoration: underline;
+  }
+  .map-controls button {
+    margin-right: 5px;
+  }
+</style>
+{% endblock %}

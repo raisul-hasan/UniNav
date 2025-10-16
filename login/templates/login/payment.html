@@ -1,0 +1,51 @@
+{% extends 'login/base.html' %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+    <h2>Payment</h2>
+    <p>Total Amount: ৳{{ total_amount|floatformat:2 }}</p>
+    <form method="post" action="{% url 'process_payment' %}">
+        {% csrf_token %}
+        <label>Payment Method</label>
+        <select name="payment_method" required>
+            <option value="bKash">bKash</option>
+            <option value="Nagad">Nagad</option>
+            <option value="Rocket">Rocket</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Upay">Upay</option>
+        </select>
+        <input type="hidden" name="total_amount" value="{{ total_amount|floatformat:2 }}">
+        <button type="submit" class="btn">Pay Now</button>
+    </form>
+    <p>Secure payment using Bangladesh-based gateways. Return policy: Refund within 7 days.</p>
+
+    <!-- Inline CSS -->
+    <style>
+        h2 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            background: #0d6efd;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0b5ed7;
+        }
+    </style>
+{% endblock %}

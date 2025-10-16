@@ -1,0 +1,376 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}UniNav Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+  <!-- ===== HERO (external image) ===== -->
+  <section class="py-5 px-4 px-md-5 mb-4"
+           style="background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%); border-radius: 24px;">
+    <div class="row align-items-center text-white">
+      <div class="col-lg-7">
+        <h1 class="display-5 font-weight-bold mb-3">Welcome to UniNav</h1>
+        <p class="lead mb-4">Your smart campus companion — maps, chat, and a project shop in one place.</p>
+        <div class="d-flex flex-wrap">
+          <a href="{% url 'campus_map' %}" class="btn btn-light mr-3 mb-2">Open Campus Maps</a>
+          <a href="{% url 'shop' %}" class="btn btn-outline-light mb-2">Browse Shop</a>
+        </div>
+      </div>
+      <div class="col-lg-5 mt-4 mt-lg-0 text-lg-right text-center">
+        <!-- EXTERNAL hero image (replace anytime) -->
+        <img class="img-fluid rounded shadow-sm"
+             src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=60"
+             alt="UniNav Hero">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HIGHLIGHTS CAROUSEL (owl-carousel) with external images ===== -->
+  <section class="mb-5">
+    <div class="feature-carousel owl-carousel owl-theme">
+      <div class="item">
+        <div class="card border-0 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=60"
+               alt="Interactive Maps">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Interactive Campus Maps</h5>
+            <p class="text-muted mb-3">Find rooms fast with zoom & reset controls.</p>
+            <a href="{% url 'campus_map' %}" class="btn btn-primary btn-sm">Open Maps</a>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="card border-0 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=1200&q=60"
+               alt="Real-time Chat">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Real-time Chat</h5>
+            <p class="text-muted mb-3">Groups, files, voice, reactions, and location.</p>
+            <a href="{% url 'chat' %}" class="btn btn-primary btn-sm">Open Chat</a>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="card border-0 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=60"
+               alt="Student Shop">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Student Shop</h5>
+            <p class="text-muted mb-3">Grab project essentials. Easy checkout.</p>
+            <a href="{% url 'shop' %}" class="btn btn-primary btn-sm">Go to Shop</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUICK FEATURE CARDS (external images) ===== -->
+  <section class="mb-4">
+    <div class="row">
+      <!-- Maps -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1499914485622-a88fac536970?auto=format&fit=crop&w=800&q=60"
+               alt="Maps">
+          <div class="card-body">
+            <h5 class="card-title">Campus Maps</h5>
+            <p class="card-text text-muted">Floor-wise maps with simple controls.</p>
+            <a href="{% url 'campus_map' %}" class="btn btn-primary btn-sm">Open Maps</a>
+          </div>
+        </div>
+      </div>
+      <!-- Shop -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1560393464-5c69a73c5770?auto=format&fit=crop&w=800&q=60"
+               alt="Shop">
+          <div class="card-body">
+            <h5 class="card-title">Shop</h5>
+            <p class="card-text text-muted">Buy project essentials and lab materials.</p>
+            <a href="{% url 'shop' %}" class="btn btn-primary btn-sm">Go to Shop</a>
+          </div>
+        </div>
+      </div>
+      <!-- Cart -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1618354691370-13c91e7d4b1d?auto=format&fit=crop&w=800&q=60"
+               alt="Cart">
+          <div class="card-body">
+            <h5 class="card-title">Your Cart</h5>
+            <p class="card-text text-muted">Review items and proceed to payment.</p>
+            <a href="{% url 'cart' %}" class="btn btn-primary btn-sm">View Cart</a>
+          </div>
+        </div>
+      </div>
+      <!-- Chat -->
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=60"
+               alt="Chat">
+          <div class="card-body">
+            <h5 class="card-title">Chat</h5>
+            <p class="card-text text-muted">Message peers & groups. Share files & location.</p>
+            <a href="{% url 'chat' %}" class="btn btn-primary btn-sm">Open Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== USER INFO + ABOUT (with isotope-ready grid and external images) ===== -->
+  <section class="mb-5">
+    <div class="row">
+      <!-- User Info Card -->
+      <div class="col-lg-5 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <!-- External avatar placeholder -->
+              <img src="https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?auto=format&fit=crop&w=120&q=60"
+                   alt="Avatar" class="rounded-circle mr-3"
+                   style="width:52px;height:52px;object-fit:cover;">
+              <h5 class="card-title text-primary mb-0">Welcome, {{ user.name|default:"User" }}</h5>
+            </div>
+            <p class="card-text mb-2"><strong>Type:</strong> {{ user_type|capfirst }}</p>
+            <p class="card-text mb-2"><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+            {% if user_type == 'student' %}
+              <p class="card-text mb-2"><strong>Student ID:</strong> {{ user.student_id|default:"—" }}</p>
+            {% else %}
+              <p class="card-text mb-2"><strong>Teacher ID:</strong> {{ user.teacher_id|default:"—" }}</p>
+              <p class="card-text mb-2"><strong>Department:</strong> {{ user.department|default:"—" }}</p>
+            {% endif %}
+            <p class="card-text"><strong>Phone:</strong> {{ user.phone_number|default:"—" }}</p>
+
+            <div class="mt-3">
+              <a href="{% url 'chat' %}" class="btn btn-outline-primary btn-sm mr-2">Start a Chat</a>
+              <a href="{% url 'shop' %}" class="btn btn-primary btn-sm">Browse Shop</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About / How it works with isotope grid -->
+      <div class="col-lg-7 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title mb-3">What is UniNav?</h5>
+            <p class="text-muted mb-3">
+              UniNav unifies navigation, communication, and shopping for students and teachers.
+              Explore buildings with interactive maps, chat in real-time, and buy project materials from the shop.
+            </p>
+
+            <!-- Filter buttons -->
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Filter">
+              <button class="btn btn-outline-secondary active" data-filter="*">All</button>
+              <button class="btn btn-outline-secondary" data-filter=".maps">Maps</button>
+              <button class="btn btn-outline-secondary" data-filter=".chat">Chat</button>
+              <button class="btn btn-outline-secondary" data-filter=".shop">Shop</button>
+            </div>
+
+            <!-- Isotope grid -->
+            <div class="row no-gutters feature-grid">
+              <div class="col-6 p-2 element-item maps">
+                <div class="border rounded p-2 h-100">
+                  <img src="https://images.unsplash.com/photo-1519452575417-564c1401ecc0?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Maps grid">
+                  <small class="text-muted d-block">Maps: floor plans & navigation</small>
+                </div>
+              </div>
+              <div class="col-6 p-2 element-item chat">
+                <div class="border rounded p-2 h-100">
+                  <img src="https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Chat grid">
+                  <small class="text-muted d-block">Chat: groups, files, voice</small>
+                </div>
+              </div>
+              <div class="col-6 p-2 element-item shop">
+                <div class="border rounded p-2 h-100">
+                  <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Shop grid">
+                  <small class="text-muted d-block">Shop: materials & checkout</small>
+                </div>
+              </div>
+              <div class="col-6 p-2 element-item chat">
+                <div class="border rounded p-2 h-100">
+                  <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Reactions grid">
+                  <small class="text-muted d-block">Reactions & collaboration</small>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FUN COUNTERS ===== -->
+  <section class="mb-5">
+    <div class="p-4 p-md-5 bg-light rounded">
+      <div class="row text-center">
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <div class="h2 mb-1 counter" data-target="1200">0</div>
+          <small class="text-muted">Active Users</small>
+        </div>
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <div class="h2 mb-1 counter" data-target="340">0</div>
+          <small class="text-muted">Products</small>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="h2 mb-1 counter" data-target="9800">0</div>
+          <small class="text-muted">Messages</small>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="h2 mb-1 counter" data-target="24">0</div>
+          <small class="text-muted">Buildings</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEACHER TOOLS (external card images) ===== -->
+  {% if user_type == 'teacher' %}
+  <section class="mb-5">
+    <h5 class="mb-3">Teacher Tools</h5>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=60"
+               class="card-img-top" alt="Add Product">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="mb-1">Add Product</h6>
+              <p class="text-muted mb-0">Create new items for the shop.</p>
+            </div>
+            <a href="{% url 'add_product' %}" class="btn btn-primary btn-sm">Open</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1000&q=60"
+               class="card-img-top" alt="Approve Orders">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="mb-1">Approve Orders</h6>
+              <p class="text-muted mb-0">Review and approve pending orders.</p>
+            </div>
+            <a href="{% url 'approve_orders' %}" class="btn btn-primary btn-sm">Open</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===== CTA STRIP ===== -->
+  <section class="mb-4">
+    <div class="p-4 p-md-5 bg-light rounded text-center"
+         style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1400&q=60'); background-size:cover; background-position:center;">
+      <div class="py-4" style="backdrop-filter:brightness(0.9);">
+        <h4 class="mb-2 text-white">Ready to explore?</h4>
+        <p class="mb-4 text-white-50">Jump into maps, start a chat, or pick up materials from the shop.</p>
+        <a href="{% url 'campus_map' %}" class="btn btn-primary mr-2 mb-2">Maps</a>
+        <a href="{% url 'chat' %}" class="btn btn-outline-light mr-2 mb-2">Chat</a>
+        <a href="{% url 'shop' %}" class="btn btn-outline-light mb-2">Shop</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== Local Styles (light touch) ===== -->
+<style>
+  .card { border: none; border-radius: 12px; }
+  .card-title { color: #7a6ad8; }
+  .btn-primary { background-color:#7a6ad8; border-color:#7a6ad8; }
+  .btn-primary:hover { filter:brightness(0.95); }
+  .feature-carousel .card-img-top { height: 280px; object-fit: cover; }
+  .card-img-top { height: 180px; object-fit: cover; }
+</style>
+
+<!-- ===== JS: Use your provided static files ===== -->
+<script src="{% static 'login/js/isotope.min.js' %}"></script>
+<script src="{% static 'login/js/owl-carousel.js' %}"></script>
+<script src="{% static 'login/js/counter.js' %}"></script>
+<script src="{% static 'login/js/custom.js' %}"></script>
+
+<script>
+  // Owl Carousel init for the highlights
+  (function () {
+    if (window.jQuery && typeof jQuery.fn.owlCarousel === 'function') {
+      jQuery('.feature-carousel').owlCarousel({
+        items: 1,
+        margin: 16,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3500,
+        autoplayHoverPause: true,
+        dots: true,
+        nav: false
+      });
+    }
+  })();
+
+  // Isotope filter for the about grid
+  (function () {
+    var grid = document.querySelector('.feature-grid');
+    if (grid && typeof Isotope === 'function') {
+      var iso = new Isotope(grid, {
+        itemSelector: '.element-item',
+        layoutMode: 'fitRows'
+      });
+      document.querySelectorAll('[data-filter]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          iso.arrange({ filter: this.getAttribute('data-filter') });
+        });
+      });
+    }
+  })();
+
+  // Counters (fallback if your counter.js doesn't auto-run)
+  (function () {
+    var counters = document.querySelectorAll('.counter');
+    if (!counters.length) return;
+
+    function run(el) {
+      var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+      var current = 0;
+      var step = Math.max(1, Math.floor(target / 80));
+      function tick() {
+        current += step;
+        if (current >= target) current = target;
+        el.textContent = current.toLocaleString();
+        if (current < target) requestAnimationFrame(tick);
+      }
+      tick();
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            run(e.target);
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      counters.forEach(function (c) { io.observe(c); });
+    } else {
+      counters.forEach(run);
+    }
+  })();
+</script>
+{% endblock %}

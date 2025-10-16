@@ -6,7 +6,7 @@ let map = L.map('map', {
 }).setView([0, 0], 0);
 
 // Image bounds (adjust to your PNG dimensions, e.g., 1000x1000px)
-const imageBounds = [[-50, -50], [50, 50]]; // [southWest, northEast]
+const imageBounds = [[-50, -50], [2500, 2500]]; // [southWest, northEast]
 let currentOverlay = null;
 let currentMarkers = L.layerGroup(); // Permanent pins
 let tempMarkers = L.layerGroup(); // Temporary/user pins

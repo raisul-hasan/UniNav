@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Reaction, Group, Location, LostAndFound
+from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Reaction, Group, Location, LostAndFound, LocationConnection
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
@@ -63,11 +63,17 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'floor', 'latitude', 'longitude', 'description')
-    list_filter = ('floor',)
+    list_display = ('name', 'floor', 'latitude', 'longitude', 'description', 'is_transition', 'transition_type')
+    list_filter = ('floor', 'is_transition')
     search_fields = ('name', 'description')
 
-admin.register(LostAndFound)
+@admin.register(LocationConnection)
+class LocationConnectionAdmin(admin.ModelAdmin):
+    list_display = ('from_location', 'to_location', 'weight', 'transition_type')
+    list_filter = ('transition_type',)
+    search_fields = ('from_location__name', 'to_location__name')
+
+@admin.register(LostAndFound)
 class LostAndFoundAdmin(admin.ModelAdmin):
     list_display = ('item_type', 'category', 'description', 'user', 'teacher', 'location', 'status', 'created_at')
     list_filter = ('item_type', 'category', 'status')

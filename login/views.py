@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Q
-from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Group, Reaction, Location,LostAndFound
+from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Group, Reaction, Location,LostAndFound,LocationConnection
 from .utils import generate_otp, send_otp_email
 import random
 from decimal import Decimal
@@ -10,6 +10,15 @@ from django.utils import timezone
 from django.http import JsonResponse
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+
+import os
+import json
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.timezone import now
+
+import google.generativeai as genai
 
 def register(request):
     if request.method == "POST":
@@ -618,23 +627,42 @@ def campus_map(request):
     if not request.session.get('user_id'):
         return redirect("login")
     
-    # Fetch locations and group by floor
-    locations = Location.objects.values('floor', 'name', 'latitude', 'longitude', 'description')
+    user_id = request.session['user_id']
+    user_type = request.session['user_type']
+    
+    locations = Location.objects.all()
     markers_by_floor = {}
-    for loc in locations:
-        floor = loc['floor']
-        if floor not in markers_by_floor:
-            markers_by_floor[floor] = []
-        markers_by_floor[floor].append({
-            'lat': loc['latitude'],
-            'lng': loc['longitude'],
-            'title': loc['name'],
-            'desc': loc['description']
-        })
+    connections_by_floor = {}
+    
+    for floor in range(1, 6):  # Assuming floors 1-5
+        floor_locations = locations.filter(floor=floor)
+        markers_by_floor[floor] = [
+            {
+                'id': loc.id,
+                'name': loc.name,
+                'latitude': loc.latitude,
+                'longitude': loc.longitude,
+                'description': loc.description,
+                'is_transition': loc.is_transition,
+                'transition_type': loc.transition_type
+            } for loc in floor_locations
+        ]
+        connections_by_floor[floor] = [
+            {
+                'from_id': conn.from_location.id,
+                'to_id': conn.to_location.id,
+                'weight': conn.weight,
+                'transition_type': conn.transition_type
+            } for conn in LocationConnection.objects.filter(from_location__floor=floor)
+        ]
     
     return render(request, "login/campusmap.html", {
-        'markers_by_floor': markers_by_floor
+        'markers_by_floor': markers_by_floor,
+        'connections_by_floor': connections_by_floor,
+        'user_id': user_id,
+        'user_type': user_type
     })
+
 
 def lost_and_found(request):
     if not request.session.get('user_id'):
@@ -785,3 +813,108 @@ def lost_and_found_map(request):
         'item_types': LostAndFound.ITEM_TYPES,
         'categories': LostAndFound.CATEGORIES
     })
+
+
+
+
+
+# Choose a fast, general model; you can swap to "gemini-1.5-pro" if you like
+GEMINI_MODEL_NAME = "gemini-1.5-flash-latest"
+
+def _ensure_history(session):
+    """Ensure a chat history exists in the session."""
+    if "chat_history" not in session:
+        # Gemini expects 'contents' as a list of {role, parts:[{text:...}]}
+        session["chat_history"] = []
+    return session["chat_history"]
+
+def chatbot_page(request):
+    """Simple page with a chat UI."""
+    return render(request, "login/chatbot.html")  # or wherever your template lives
+
+@csrf_exempt
+def gemini_chat_api(request):
+    """
+    POST { "message": "your text" }
+    -> { "reply": "model text", "usage": {...}, "timestamp": "..." }
+    Keeps a short rolling history in session.
+    """
+    if request.method != "POST":
+        return JsonResponse({"error": "POST only"}, status=405)
+
+    if not GOOGLE_API_KEY:
+        return JsonResponse({"error": "Missing GOOGLE_API_KEY server env"}, status=500)
+
+    try:
+        payload = json.loads(request.body.decode("utf-8"))
+        user_msg = (payload.get("message") or "").strip()
+        if not user_msg:
+            return JsonResponse({"error": "Empty message"}, status=400)
+
+        # Get & update session history
+        history = _ensure_history(request.session)
+
+        # Append user message to history
+        history.append({"role": "user", "parts": [{"text": user_msg}]})
+
+        # Build the model and send the conversation (history + new msg)
+        model = genai.GenerativeModel(GEMINI_MODEL_NAME)
+
+        # You can do "chat" for a stateful object, but here we inline the history for simplicity:
+        response = model.generate_content(
+            contents=history,
+            generation_config={
+                "temperature": 0.4,
+                "top_p": 0.9,
+                "top_k": 40,
+                "max_output_tokens": 1024,
+            },
+            safety_settings=[
+                # (optional) keep defaults or add your own safety tuning
+            ],
+        )
+
+        # Extract the text
+        reply_text = ""
+        if response and response.candidates:
+            parts = response.candidates[0].content.parts
+            reply_text = "".join(getattr(p, "text", "") for p in parts if getattr(p, "text", None))
+
+        if not reply_text:
+            reply_text = "Sorry, I couldn't generate a response."
+
+        # Append assistant reply to history
+        history.append({"role": "model", "parts": [{"text": reply_text}]})
+
+        # Keep only the last N turns to keep request payload small
+        MAX_TURNS = 12  # user+assistant pairs ≈ 24 messages
+        if len(history) > MAX_TURNS * 2:
+            request.session["chat_history"] = history[-MAX_TURNS * 2 :]
+        else:
+            request.session["chat_history"] = history
+
+        request.session.modified = True
+
+        # (Optional) include very light usage info if present
+        usage = {}
+        try:
+            if hasattr(response, "usage_metadata") and response.usage_metadata:
+                um = response.usage_metadata
+                usage = {
+                    "prompt_token_count": getattr(um, "prompt_token_count", None),
+                    "candidates_token_count": getattr(um, "candidates_token_count", None),
+                    "total_token_count": getattr(um, "total_token_count", None),
+                }
+        except Exception:
+            pass
+
+        return JsonResponse(
+            {"reply": reply_text, "usage": usage, "timestamp": now().isoformat()},
+            status=200,
+        )
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+        # Log as needed
+        return JsonResponse({"error": str(e)}, status=500)

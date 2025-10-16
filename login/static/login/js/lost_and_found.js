@@ -7,7 +7,7 @@ let map = L.map('map', {
 }).setView([0, 0], 0);
 
 // Image bounds (matches campusmap.js; assumes 1000x1000px images)
-const imageBounds = [[-50, -50], [50, 50]]; // [southWest, northEast]
+const imageBounds = [[-50, -50], [2500, 2500]]; // [southWest, northEast]
 let currentOverlay = null;
 let currentMarkers = L.layerGroup(); // For lost/found item pins
 let tempMarkers = L.layerGroup(); // For temporary user pins

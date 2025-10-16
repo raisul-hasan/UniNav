@@ -29,4 +29,6 @@ urlpatterns = [
     path("lost-and-found/", views.lost_and_found, name="lost_and_found"),
     path("add-lost-and-found/", views.add_lost_and_found, name="add_lost_and_found"),
     path("lost-and-found-map/", views.lost_and_found_map, name="lost_and_found_map"),
+     path("api/chatbot/", views.gemini_chat_api, name="gemini_chat_api"),
+    path("chatbot/", views.chatbot_page, name="chatbot_page"), 
 ]

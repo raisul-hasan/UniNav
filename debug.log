@@ -3770,3 +3770,423 @@ Watching for file changes with StatReloader
 "GET /campus-map/ HTTP/1.1" 200 8038
 "GET /static/login/js/campusmap.js HTTP/1.1" 200 5516
 "GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7727
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 17219
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 4818
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 5520
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"GET /lost-and-found/ HTTP/1.1" 200 4151
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+"GET /lost-and-found/ HTTP/1.1" 200 4151
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+"GET /dashboard/ HTTP/1.1" 200 16787
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /lost-and-found-map/ HTTP/1.1" 200 10656
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /lost-and-found/?format=json&floor=1&item_type=&category= HTTP/1.1" 200 2
+"GET /dashboard/ HTTP/1.1" 200 16787
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7868
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 9517
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 17219
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+Internal Server Error: /campus-map/
+Traceback (most recent call last):
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py", line 647, in campus_map
+    } for conn in LocationConnection.objects.filter(from_location__floor=floor)
+                  ^^^^^^^^^^^^^^^^^^
+NameError: name 'LocationConnection' is not defined
+"GET /campus-map/ HTTP/1.1" 500 70465
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /campus-map/ HTTP/1.1" 200 5412
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 7388
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 5412
+"GET /static/login/image/4th-floor.png HTTP/1.1" 200 6121747
+"GET /static/login/image/5th-floor.png HTTP/1.1" 200 5714256
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7727
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 17219
+"GET /campus-map/ HTTP/1.1" 200 5412
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 8436
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7727
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 17219
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 5412
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /campus-map/ HTTP/1.1" 200 5412
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 9100
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 5541
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /campus-map/ HTTP/1.1" 200 5417
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 5417
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /campus-map/ HTTP/1.1" 200 5412
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 5412
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 10492
+"GET /campus-map/ HTTP/1.1" 200 5412
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /campus-map/ HTTP/1.1" 200 8038
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 8038
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 5519
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 8038
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /campus-map/ HTTP/1.1" 200 8038
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 5520
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7727
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 17219
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /campus-map/ HTTP/1.1" 200 7271
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 16474
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9628
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py", line 105, in login_request
+    return render(request, "login/login.html")
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'chatbot' not found. 'chatbot' is not a valid view function or pattern name.
+"GET /login/ HTTP/1.1" 500 140280
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10045
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py", line 105, in login_request
+    return render(request, "login/login.html")
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'chatbot' not found. 'chatbot' is not a valid view function or pattern name.
+"GET /login/ HTTP/1.1" 500 140429
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py", line 105, in login_request
+    return render(request, "login/login.html")
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\mhoss\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'chatbot' not found. 'chatbot' is not a valid view function or pattern name.
+"GET /login/ HTTP/1.1" 500 140429
+"GET /login/ HTTP/1.1" 200 7948
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/script.js HTTP/1.1" 200 9985
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 17299
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\mhoss\OneDrive\Desktop\main\project\project\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 199
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 199
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7807
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 199
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7807
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 290
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7807
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+Using proactor: IocpProactor
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7807
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 206
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10159
+Method Not Allowed: /api/chatbot/
+"GET /api/chatbot/ HTTP/1.1" 405 22
+Method Not Allowed: /api/chatbot/
+"GET /api/chatbot/ HTTP/1.1" 405 22
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7807
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+C:\Users\mhoss\OneDrive\Desktop\main\project\project\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /chatbot/ HTTP/1.1" 200 6009
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+Internal Server Error: /api/chatbot/
+"POST /api/chatbot/ HTTP/1.1" 500 46
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 10159
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\mhoss\OneDrive\Desktop\main\project\project\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\mhoss\OneDrive\Desktop\main\project\project\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\mhoss\OneDrive\Desktop\main\project\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7948
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /chatbot/ HTTP/1.1" 200 6413
+"GET /chatbot/ HTTP/1.1" 200 6413
+"GET /chatbot/ HTTP/1.1" 200 6413
+"GET /chatbot/ HTTP/1.1" 200 6413
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7948
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/script.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10048
+"GET /chatbot/ HTTP/1.1" 200 6413
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 7948
+"GET /chatbot/ HTTP/1.1" 200 6413

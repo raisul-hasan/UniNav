@@ -128,9 +128,25 @@ class Location(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='locations/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    # New fields for routing
+    connections = models.ManyToManyField('self', symmetrical=False, through='LocationConnection', related_name='connected_locations')
+    is_transition = models.BooleanField(default=False)  # e.g., stairs, elevator
+    transition_type = models.CharField(max_length=20, choices=(('corridor', 'Corridor'), ('stairs', 'Stairs'), ('elevator', 'Elevator')), null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} (Floor {self.floor})"
+
+class LocationConnection(models.Model):
+    from_location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='outgoing_connections')
+    to_location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='incoming_connections')
+    weight = models.FloatField(default=1.0)  # Distance or cost (e.g., time, steps)
+    transition_type = models.CharField(max_length=20, choices=(('corridor', 'Corridor'), ('stairs', 'Stairs'), ('elevator', 'Elevator')), default='corridor')
+
+    class Meta:
+        unique_together = ('from_location', 'to_location')
+
+    def __str__(self):
+        return f"{self.from_location} -> {self.to_location} ({self.transition_type})"
 
 class LostAndFound(models.Model):
     ITEM_TYPES = (

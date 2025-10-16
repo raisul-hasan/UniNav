@@ -1,249 +1,225 @@
-// Initialize map with simple coordinate system for image-based maps
-let map = L.map('map', {
-    crs: L.CRS.Simple,
-    minZoom: -1,
-    maxZoom: 2
-}).setView([0, 0], 0);
-
-// Image bounds (adjust to your PNG dimensions, e.g., 1000x1000px)
-const imageBounds = [[-50, -50], [50, 50]]; // [southWest, northEast]
-let currentOverlay = null;
-let currentMarkers = L.layerGroup(); // Permanent or lost/found pins
-let tempMarkers = L.layerGroup(); // Temporary/user pins
-let currentFloor = 1;
-let currentMode = 'default'; // default or lost_and_found
-let pickingLocation = false;
-
-// Load floor and pins
-function loadFloor(floorNum, searchQuery = '', itemId = null) {
-    // Clear previous layers
-    if (currentOverlay) map.removeLayer(currentOverlay);
-    currentMarkers.clearLayers();
-    tempMarkers.clearLayers();
-    map.removeLayer(currentMarkers);
-    map.removeLayer(tempMarkers);
-
-    // Add floor image
-    const imageUrl = window.floorPlans[floorNum];
-    if (imageUrl) {
-        currentOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
-        map.fitBounds(imageBounds);
-    }
-
-    // Add pins based on mode
-    let floorMarkers = [];
-    if (currentMode === 'default') {
-        floorMarkers = window.markersData[floorNum] || [];
-    } else if (currentMode === 'lost_and_found') {
-        // Fetch lost/found items via AJAX
-        fetch(`/lost-and-found/?format=json&floor=${floorNum}`)
-            .then(response => response.json())
-            .then(data => {
-                floorMarkers = data.map(item => ({
-                    lat: item.location.latitude,
-                    lng: item.location.longitude,
-                    title: `${item.item_type.capitalize()} - ${item.description.substring(0, 50)}`,
-                    desc: `Category: ${item.category_display}<br>Reported by: ${item.user_name || item.teacher_name}`
-                }));
-                renderMarkers(floorMarkers, searchQuery, itemId);
-            });
-        return; // Async fetch, render later
-    }
-    renderMarkers(floorMarkers, searchQuery, itemId);
-}
-
-function renderMarkers(floorMarkers, searchQuery, itemId) {
-    let firstMatch = null;
-    floorMarkers.forEach((markerData, index) => {
-        const matchesSearch = !searchQuery || markerData.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const isHighlighted = matchesSearch || (itemId && index === 0); // Highlight specific item
-        const marker = L.marker([markerData.lat, markerData.lng], {
-            icon: L.divIcon({
-                className: currentMode === 'lost_and_found' ? 'lost-found-pin' : (isHighlighted ? 'custom-pin highlight-pin' : 'custom-pin'),
-                html: `<i class="fas fa-map-pin" style="color: ${currentMode === 'lost_and_found' ? '#ff4444' : (isHighlighted ? '#ffcc00' : '#7a6ad8')}; font-size: ${isHighlighted ? '28px' : '26px'};"></i>`,
-                iconSize: [isHighlighted ? 28 : 26, isHighlighted ? 28 : 26],
-                iconAnchor: [isHighlighted ? 14 : 13, isHighlighted ? 28 : 26]
-            })
-        })
-        .bindPopup(`
-            <b>${markerData.title}</b><br>
-            ${markerData.desc}<br>
-            <a href="#" onclick="shareLocation(${markerData.lat}, ${markerData.lng}, '${markerData.title}')">Share in Chat</a>
-        `)
-        .addTo(currentMarkers);
-        if (isHighlighted && !firstMatch) {
-            firstMatch = marker;
-        }
-    });
-    currentMarkers.addTo(map);
-    currentFloor = parseInt(currentFloor);
-
-    if (firstMatch && (searchQuery || itemId)) {
-        map.panTo(firstMatch.getLatLng());
-        firstMatch.openPopup();
-    }
-}
-
-// Share location in chat
-function shareLocation(lat, lng, title) {
-    if (!window.chatType || !window.chatId) {
-        alert('Please select a chat to share the location.');
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if required elements exist
+    const startSelect = document.getElementById('start-location');
+    const endSelect = document.getElementById('end-location');
+    const findPathBtn = document.getElementById('find-path');
+    if (!startSelect || !endSelect || !findPathBtn) {
+        console.error('Required elements (start-location, end-location, find-path) not found');
         return;
     }
-    const socket = new WebSocket(`ws://${window.location.host}/ws/chat/${window.chatType}/${window.chatId}/`);
-    socket.onopen = function() {
-        socket.send(JSON.stringify({
-            'action': 'message',
-            'content': `Shared location: ${title || 'Custom Pin'}`,
-            'sender_id': window.userId,
-            'sender_type': window.userType,
-            'latitude': lat,
-            'longitude': lng
-        }));
-        socket.close();
-    };
-}
 
-// Click to add temporary pin or pick location for lost/found
-map.on('click', function(e) {
-    if (pickingLocation) {
-        tempMarkers.clearLayers();
-        const marker = L.marker([e.latlng.lat, e.latlng.lng], {
-            icon: L.divIcon({
-                className: 'temp-pin',
-                html: '<i class="fas fa-map-marker-alt" style="color: #ff4444; font-size: 24px;"></i>',
-                iconSize: [24, 24],
-                iconAnchor: [12, 24]
-            })
-        })
-        .bindPopup(`
-            Selected Location<br>
-            Coordinates: ${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}
-        `)
-        .addTo(tempMarkers)
-        .openPopup();
-        tempMarkers.addTo(map);
-        document.getElementById('latitude').value = e.latlng.lat.toFixed(4);
-        document.getElementById('longitude').value = e.latlng.lng.toFixed(4);
-        document.getElementById('pin-coordinates').textContent = `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;
-        document.getElementById('floor').value = currentFloor;
-    } else {
-        tempMarkers.clearLayers();
-        const marker = L.marker([e.latlng.lat, e.latlng.lng], {
-            icon: L.divIcon({
-                className: 'temp-pin',
-                html: '<i class="fas fa-map-marker-alt" style="color: #ff4444; font-size: 24px;"></i>',
-                iconSize: [24, 24],
-                iconAnchor: [12, 24]
-            })
-        })
-        .bindPopup(`
-            Custom Pin<br>
-            Coordinates: ${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}<br>
-            <a href="#" onclick="shareLocation(${e.latlng.lat}, ${e.latlng.lng}, 'Custom Pin')">Share in Chat</a>
-        `)
-        .addTo(tempMarkers)
-        .openPopup();
-        tempMarkers.addTo(map);
+    // Check if floorPlans is defined
+    if (!window.floorPlans) {
+        console.error('window.floorPlans is undefined');
+        return;
     }
-});
 
-// Floor buttons
-document.querySelectorAll('.floor-btn').forEach(btn => {
-    btn.onclick = function() {
-        document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const searchQuery = document.getElementById('location-search').value;
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemId = urlParams.get('item_id');
-        loadFloor(parseInt(btn.dataset.floor), searchQuery, itemId);
-    };
-});
+    // Initialize map
+    const map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: -1,
+        maxZoom: 2
+    });
 
-// Mode buttons
-document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.onclick = function() {
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentMode = btn.dataset.mode;
-        const searchQuery = document.getElementById('location-search').value;
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemId = urlParams.get('item_id');
-        loadFloor(currentFloor, searchQuery, itemId);
-    };
-});
+    // Map bounds (assuming 1000x1000px floor plans)
+    const bounds = [[0, 0], [1000, 1000]];
+    let currentFloor = 1;
+    let currentOverlay;
+    let markersLayer = L.layerGroup().addTo(map);
+    let pathLayer = L.layerGroup().addTo(map);
 
-// Zoom controls
-document.getElementById('zoom-in').onclick = () => map.zoomIn();
-document.getElementById('zoom-out').onclick = () => map.zoomOut();
-document.getElementById('reset').onclick = () => map.fitBounds(imageBounds);
+    // Load floor
+    function loadFloor(floor) {
+        if (!window.floorPlans[floor]) {
+            console.error(`Floor plan for floor ${floor} not found`);
+            return;
+        }
+        if (currentOverlay) {
+            map.removeLayer(currentOverlay);
+        }
+        currentOverlay = L.imageOverlay(window.floorPlans[floor], bounds).addTo(map);
+        map.fitBounds(bounds);
+        
+        // Update markers
+        markersLayer.clearLayers();
+        if (window.markersData[floor]) {
+            window.markersData[floor].forEach(marker => {
+                const m = L.marker([marker.latitude, marker.longitude], {
+                    title: marker.name,
+                    data: marker
+                }).bindPopup(`
+                    <b>${marker.name}</b><br>
+                    ${marker.description}<br>
+                    ${marker.is_transition ? `Type: ${marker.transition_type}` : ''}
+                    <br>
+                    <button class="set-start" data-id="${marker.id}">Set as Start</button>
+                    <button class="set-end" data-id="${marker.id}">Set as End</button>
+                `);
+                markersLayer.addLayer(m);
+            });
+        }
 
-// My Location
-document.getElementById('my-location').onclick = function() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const realLat = position.coords.latitude;
-            const realLng = position.coords.longitude;
-            const mappedLat = (realLat - 40.0) * 100;
-            const mappedLng = (realLng + 105.3) * 100;
-            
-            tempMarkers.clearLayers();
-            const marker = L.marker([mappedLat, mappedLng], {
-                icon: L.divIcon({
-                    className: 'my-location-pin',
-                    html: '<i class="fas fa-user-circle" style="color: #00cc00; font-size: 24px;"></i>',
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 24]
-                })
-            })
-            .bindPopup(`
-                You are here!<br>
-                Coordinates: ${mappedLat.toFixed(4)}, ${mappedLng.toFixed(4)}<br>
-                <a href="#" onclick="shareLocation(${mappedLat}, ${mappedLng}, 'My Location')">Share in Chat</a>
-            `)
-            .addTo(tempMarkers)
-            .openPopup();
-            tempMarkers.addTo(map);
-            map.panTo([mappedLat, mappedLng]);
-        }, function(error) {
-            alert('Geolocation failed: ' + error.message);
+        // Update active floor button
+        document.querySelectorAll('.floor-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.floor == floor);
         });
-    } else {
-        alert('Geolocation is not supported by your browser.');
     }
-};
 
-// Pin picker for lost/found
-document.getElementById('pick-location').addEventListener('click', function() {
-    pickingLocation = true;
-    tempMarkers.clearLayers();
-    document.getElementById('latitude').value = '';
-    document.getElementById('longitude').value = '';
-    document.getElementById('pin-coordinates').textContent = 'Click map to select location';
-});
-document.getElementById('lostFoundModal').addEventListener('hidden.bs.modal', function() {
-    pickingLocation = false;
-    tempMarkers.clearLayers();
-});
-
-// Load initial state from URL
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode') || 'default';
-    const itemId = urlParams.get('item_id');
-    currentMode = mode;
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        if (btn.dataset.mode === mode) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
+    // A* Algorithm
+    function findPath(startId, endId) {
+        if (!startId || !endId) {
+            console.error('Start or end ID missing');
+            return null;
         }
-    });
-    const floor = parseInt(urlParams.get('floor')) || 1;
+        const openSet = [];
+        const closedSet = new Set();
+        const cameFrom = {};
+        const gScore = {};
+        const fScore = {};
+
+        const allLocations = Object.values(window.markersData).flat();
+        const start = allLocations.find(loc => loc.id == startId);
+        const end = allLocations.find(loc => loc.id == endId);
+        if (!start || !end) {
+            console.error('Start or end location not found');
+            return null;
+        }
+
+        gScore[startId] = 0;
+        fScore[startId] = heuristic(start, end);
+        openSet.push([fScore[startId], startId]);
+
+        while (openSet.length > 0) {
+            openSet.sort((a, b) => a[0] - b[0]);
+            const [currentFScore, currentId] = openSet.shift();
+            if (currentId == endId) {
+                return reconstructPath(cameFrom, currentId);
+            }
+
+            closedSet.add(currentId);
+            const current = allLocations.find(loc => loc.id == currentId);
+            const connections = Object.values(window.connections_by_floor).flat()
+                .filter(conn => conn.from_id == currentId);
+
+            for (const conn of connections) {
+                const neighborId = conn.to_id;
+                if (closedSet.has(neighborId)) continue;
+
+                const neighbor = allLocations.find(loc => loc.id == neighborId);
+                const tentativeGScore = gScore[currentId] + conn.weight * (conn.transition_type === 'stairs' ? 2 : conn.transition_type === 'elevator' ? 1.5 : 1);
+
+                if (!openSet.some(([_, id]) => id == neighborId) || tentativeGScore < gScore[neighborId]) {
+                    cameFrom[neighborId] = { id: currentId, transition: conn.transition_type };
+                    gScore[neighborId] = tentativeGScore;
+                    fScore[neighborId] = gScore[neighborId] + heuristic(neighbor, end);
+                    if (!openSet.some(([_, id]) => id == neighborId)) {
+                        openSet.push([fScore[neighborId], neighborId]);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    function heuristic(a, b) {
+        const dx = Math.abs(a.latitude - b.latitude);
+        const dy = Math.abs(a.longitude - b.longitude);
+        const dz = Math.abs(a.floor - b.floor) * 10;
+        return dx + dy + dz;
+    }
+
+    function reconstructPath(cameFrom, currentId) {
+        const path = [{ id: currentId }];
+        while (cameFrom[currentId]) {
+            currentId = cameFrom[currentId].id;
+            path.unshift({ id: currentId, transition: cameFrom[currentId].transition });
+        }
+        return path;
+    }
+
+    function drawPath(path) {
+        pathLayer.clearLayers();
+        if (!path) {
+            alert('No path found!');
+            return;
+        }
+
+        const allLocations = Object.values(window.markersData).flat();
+        const coords = path.map(p => {
+            const loc = allLocations.find(l => l.id == p.id);
+            return [loc.latitude, loc.longitude];
+        });
+
+        L.polyline(coords, { color: 'blue', weight: 5 }).addTo(pathLayer);
+        path.forEach((p, i) => {
+            if (p.transition) {
+                const loc = allLocations.find(l => l.id == p.id);
+                L.marker([loc.latitude, loc.longitude], {
+                    icon: L.divIcon({
+                        className: 'transition-icon',
+                        html: `<span>${p.transition.charAt(0).toUpperCase()}</span>`
+                    })
+                }).addTo(pathLayer);
+            }
+        });
+    }
+
+    // Floor switching
     document.querySelectorAll('.floor-btn').forEach(btn => {
-        if (parseInt(btn.dataset.floor) === floor) {
-            btn.classList.add('active');
+        btn.addEventListener('click', () => {
+            const floor = parseInt(btn.dataset.floor);
+            if (!window.floorPlans[floor]) {
+                console.error(`No floor plan for floor ${floor}`);
+                return;
+            }
+            currentFloor = floor;
+            loadFloor(currentFloor);
+        });
+    });
+
+    // Map controls
+    document.getElementById('zoom-in').addEventListener('click', () => map.zoomIn());
+    document.getElementById('zoom-out').addEventListener('click', () => map.zoomOut());
+    document.getElementById('reset').addEventListener('click', () => map.fitBounds(bounds));
+    document.getElementById('my-location').addEventListener('click', () => {
+        navigator.geolocation.getCurrentPosition(pos => {
+            const lat = (pos.coords.latitude % 1000);
+            const lng = (pos.coords.longitude % 1000);
+            map.setView([lat, lng], 1);
+            L.marker([lat, lng]).addTo(map).bindPopup('You are here').openPopup();
+        }, err => {
+            console.error('Geolocation error:', err);
+            alert('Unable to get your location');
+        });
+    });
+
+    // Pathfinding UI
+    let startId = null, endId = null;
+    document.addEventListener('click', e => {
+        if (e.target.classList.contains('set-start')) {
+            startId = e.target.dataset.id;
+            if (startSelect) startSelect.value = startId;
+            updatePath();
+        } else if (e.target.classList.contains('set-end')) {
+            endId = e.target.dataset.id;
+            if (endSelect) endSelect.value = endId;
+            updatePath();
         }
     });
-    loadFloor(floor, '', itemId);
+
+    findPathBtn.addEventListener('click', () => {
+        startId = startSelect.value;
+        endId = endSelect.value;
+        updatePath();
+    });
+
+    function updatePath() {
+        if (startId && endId) {
+            const path = findPath(startId, endId);
+            drawPath(path);
+        }
+    }
+
+    // Initial load
+    loadFloor(currentFloor);
 });

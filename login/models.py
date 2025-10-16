@@ -170,3 +170,34 @@ class Claim(models.Model):
     def __str__(self):
         who = self.claimant_student or self.claimant_teacher
         return f"Claim for {self.item.title} by {getattr(who, 'name', 'Unknown')} [{self.status}]"    
+    
+
+# --- Personal & Event Pins for indoor maps (image CRS) ---
+class EventPin(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    floor = models.PositiveIntegerField(default=1)
+    x = models.FloatField()
+    y = models.FloatField()
+    is_public = models.BooleanField(default=False)
+    creator_type = models.CharField(max_length=20, default="student")
+    creator_id = models.PositiveIntegerField()
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.title} (Floor {self.floor})"
+
+
+class SavedLocation(models.Model):
+    """Legacy: stored user-saved map points."""
+    name = models.CharField(max_length=100)
+    floor = models.PositiveIntegerField(default=1)
+    x = models.FloatField()
+    y = models.FloatField()
+    creator_type = models.CharField(max_length=20, default="student")
+    creator_id = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.name} (F{self.floor})"

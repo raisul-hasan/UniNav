@@ -12,6 +12,17 @@ from .models import Student, Teacher, LostFoundItem, Claim
 from .forms import LostFoundItemForm, ClaimForm
 from django.utils import timezone
 
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, redirect
+from django.utils import timezone
+import json
+from .models import EventPin, SavedLocation
+from .utils import load_floor_graph, multi_floor_route
+
+
+
 def register(request):
     if request.method == "POST":
         user_type = request.POST['user_type']
@@ -169,7 +180,7 @@ def shop(request):
                       .filter(cart_id=cart_id)
                       .select_related('product'))
     elif request.user.is_authenticated:
-        cart = Cart.objects.filter(user=request.user).first()
+        cart = cart.objects.filter(user=request.user).first()
         if cart:
             cart_items = (CartItem.objects
                           .filter(cart=cart)
@@ -891,3 +902,169 @@ def submit_claim(request, item_id):
             messages.error(request, "Please provide a valid answer.")
     return redirect("lost_found")
 
+def campus_map(request):
+    user_type = request.session.get('user_type', 'student')
+    creator_id = request.session.get('user_id')
+    saved = []
+    if creator_id:
+        saved = list(SavedLocation.objects.filter(creator_type=user_type, creator_id=creator_id)
+                     .values('id','name','floor','x','y'))
+    return render(request, 'login/cmapusmap.html', {'saved_locations': saved})
+
+def api_graph(request, floor: int):
+    try:
+        graph = load_floor_graph(floor)
+        return JsonResponse({"ok": True, "graph": graph})
+    except Exception as e:
+        return JsonResponse({"ok": False, "error": str(e)}, status=400)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_route(request):
+    """
+    Multi-floor A* route finder.
+    POST JSON:
+    {
+      "start": {"x":..,"y":..,"floor":..},
+      "goal": {"x":..,"y":..,"floor":..}
+    }
+    """
+    try:
+        body = json.loads(request.body.decode("utf-8"))
+        s, g = body["start"], body["goal"]
+        result = multi_floor_route(s["floor"], s, g["floor"], g)
+        return JsonResponse(result, status=200 if result["ok"] else 400)
+    except Exception as e:
+        return JsonResponse({"ok": False, "error": str(e)}, status=400)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def api_save_my_location(request):
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+        request.session['my_location'] = body
+        request.session.modified = True
+        return JsonResponse({"ok": True})
+    except Exception as e:
+        return JsonResponse({"ok": False, "error": str(e)}, status=400)
+
+# --- Event / Personal Pins ---
+
+# -----------------------------
+# Event Pins Page
+# -----------------------------
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import EventPin
+from datetime import datetime
+
+def events(request):
+    """Render Events & Personal Pins page with full event details."""
+    user_type = request.session.get("user_type", "student")
+    creator_id = request.session.get("user_id")
+
+    if request.method == "POST":
+        title = request.POST.get("title", "").strip()
+        desc = request.POST.get("description", "").strip()
+        floor = int(request.POST.get("floor", 1))
+        x = float(request.POST.get("x"))
+        y = float(request.POST.get("y"))
+        is_public = "is_public" in request.POST
+        start_time = request.POST.get("start_time")
+        end_time = request.POST.get("end_time")
+
+        # Parse datetimes safely
+        st = datetime.fromisoformat(start_time) if start_time else None
+        et = datetime.fromisoformat(end_time) if end_time else None
+
+        EventPin.objects.create(
+            title=title,
+            description=desc,
+            floor=floor,
+            x=x,
+            y=y,
+            start_time=st,
+            end_time=et,
+            is_public=is_public,
+            creator_type=user_type,
+            creator_id=creator_id,
+        )
+        messages.success(request, "Event saved successfully!")
+        return redirect("events")
+
+    # ✅ Show all pins you created (public + private)
+    my_pins = list(
+        EventPin.objects.filter(
+            creator_type=user_type, creator_id=creator_id
+        ).values("id", "title", "description", "floor", "x", "y", "start_time", "end_time", "is_public")
+    )
+
+    # ✅ Show all public events (including your own)
+    public_pins = list(
+        EventPin.objects.filter(is_public=True).values(
+            "id", "title", "description", "floor", "x", "y", "start_time", "end_time", "is_public"
+        )
+    )
+
+    # ✅ Clean up data for frontend
+    for p in my_pins + public_pins:
+        p["description"] = p.get("description") or ""
+        if p.get("start_time"):
+            p["start_time"] = str(p["start_time"])
+        if p.get("end_time"):
+            p["end_time"] = str(p["end_time"])
+
+    return render(
+        request,
+        "login/events.html",
+        {"my_pins": my_pins, "public_pins": public_pins},
+    )
+
+
+@require_http_methods(["POST"])
+def delete_pin(request, pin_id):
+    """Delete a pin belonging to the current user."""
+    user_type = request.session.get("user_type", "student")
+    creator_id = request.session.get("user_id")
+    try:
+        pin = EventPin.objects.get(
+            id=pin_id, creator_type=user_type, creator_id=creator_id
+        )
+        pin.delete()
+        messages.success(request, "Pin deleted successfully.")
+    except EventPin.DoesNotExist:
+        messages.error(request, "Pin not found or unauthorized.")
+    return redirect("events")
+
+
+# -----------------------------
+# APIs (to stop import errors)
+# -----------------------------
+@csrf_exempt
+def api_save_location(request):
+    """Legacy API – allows JS to save a location name for a user."""
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+        SavedLocation.objects.create(
+            name=data.get("name"),
+            floor=int(data.get("floor")),
+            x=float(data.get("x")),
+            y=float(data.get("y")),
+            creator_type=request.session.get("user_type", "student"),
+            creator_id=request.session.get("user_id"),
+        )
+        return JsonResponse({"ok": True})
+    except Exception as e:
+        return JsonResponse({"ok": False, "error": str(e)})
+
+
+def api_my_saved_locations(request):
+    """Return all saved locations for the current user (legacy support)."""
+    user_type = request.session.get("user_type", "student")
+    creator_id = request.session.get("user_id")
+    data = list(
+        SavedLocation.objects.filter(
+            creator_type=user_type, creator_id=creator_id
+        ).values("id", "name", "floor", "x", "y")
+    )
+    return JsonResponse({"ok": True, "locations": data})

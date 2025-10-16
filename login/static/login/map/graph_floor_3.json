@@ -1,0 +1,84 @@
+{
+  "nodes": {
+    "C1": { "x": 600, "y": 760, "name": "West Corridor" },
+    "C2": { "x": 900, "y": 420, "name": "NW Junction" },
+    "C3": { "x": 1500, "y": 360, "name": "North Junction" },
+    "C4": { "x": 2100, "y": 420, "name": "NE Junction" },
+    "C5": { "x": 2600, "y": 770, "name": "East Corridor" },
+    "C6": { "x": 2100, "y": 1120, "name": "SE Junction" },
+    "C7": { "x": 1500, "y": 1160, "name": "South Junction" },
+    "C8": { "x": 900, "y": 1120, "name": "SW Junction" },
+    "C9": { "x": 1500, "y": 770, "name": "Central Lobby" },
+
+    "STAIR_W": { "x": 1050, "y": 650, "name": "Stair (West)" },
+    "STAIR_NE": { "x": 1700, "y": 540, "name": "Stair (NE)" },
+    "LIFT_N": { "x": 1750, "y": 710, "name": "Lift (North)" },
+    "LIFT_S": { "x": 1550, "y": 920, "name": "Lift (South)" },
+
+    "CLASS_301": { "x": 520, "y": 1080, "name": "Classroom #301" },
+    "CLASS_302": { "x": 600, "y": 1000, "name": "Classroom #302" },
+    "FEXIT_W": { "x": 750, "y": 1180, "name": "Fire Exit (West)" },
+
+    "CLASS_303": { "x": 950, "y": 1260, "name": "Classroom #303" },
+    "CLASS_304": { "x": 1100, "y": 1260, "name": "Classroom #304" },
+    "CLASS_305": { "x": 1300, "y": 1260, "name": "Classroom #305" },
+    "CLASS_306": { "x": 1500, "y": 1260, "name": "Classroom #306" },
+    "CLASS_307": { "x": 1700, "y": 1260, "name": "Classroom #307" },
+    "CLASS_308": { "x": 1900, "y": 1260, "name": "Classroom #308" },
+    "CLASS_309": { "x": 2300, "y": 1260, "name": "Classroom #309" },
+    "CLASS_311": { "x": 2450, "y": 1150, "name": "Classroom #311" },
+
+    "MBA_EMBA_315_316": { "x": 2250, "y": 1000, "name": "MBA & EMBA Office (IBR) #315-316" },
+    "DEPT_ECON_318_319": { "x": 2550, "y": 900, "name": "Dept. of Economics Faculty Office #318 & 319" },
+    "CLASS_322": { "x": 2750, "y": 820, "name": "Classroom #322" },
+    "CLASS_323": { "x": 2750, "y": 480, "name": "Classroom #323" },
+    "CLASS_324": { "x": 2500, "y": 380, "name": "Classroom #324" },
+    "COMP_327": { "x": 2050, "y": 360, "name": "Computer Lab #327" },
+    "COMP_328": { "x": 1850, "y": 360, "name": "Computer Lab #328" },
+    "CLASS_329": { "x": 1650, "y": 340, "name": "Classroom #329" },
+    "CLASS_330": { "x": 1200, "y": 320, "name": "Classroom #330" },
+
+    "STUDY_331_332": { "x": 450, "y": 300, "name": "Study Room #331-332" },
+    "FAC_OFF_333_335": { "x": 800, "y": 600, "name": "Faculty Office #333 & 335" },
+    "FAC_OFF_338_337": { "x": 1400, "y": 800, "name": "Faculty Office #338-337" },
+    "PANTRY_3F": { "x": 1550, "y": 840, "name": "Pantry (3F)" }
+  },
+  "edges": {
+    "C1": ["C2","C8","C9"],
+    "C2": ["C1","C3","STAIR_W"],
+    "C3": ["C2","C4","C9","LIFT_N"],
+    "C4": ["C3","C5","STAIR_NE"],
+    "C5": ["C4","C6","C9"],
+    "C6": ["C5","C7"],
+    "C7": ["C6","C8","C9","LIFT_S"],
+    "C8": ["C7","C1"],
+
+    "CLASS_301": ["C8"],
+    "CLASS_302": ["C8"],
+    "FEXIT_W": ["C8"],
+
+    "CLASS_303": ["C7"],
+    "CLASS_304": ["C7"],
+    "CLASS_305": ["C7"],
+    "CLASS_306": ["C7"],
+    "CLASS_307": ["C7"],
+    "CLASS_308": ["C7"],
+    "CLASS_309": ["C6"],
+    "CLASS_311": ["C6"],
+
+    "MBA_EMBA_315_316": ["C6","C7"],
+    "DEPT_ECON_318_319": ["C5"],
+    "CLASS_322": ["C5"],
+    "CLASS_323": ["C5"],
+    "CLASS_324": ["C4"],
+    "COMP_327": ["C4"],
+    "COMP_328": ["C3"],
+    "CLASS_329": ["C3"],
+    "CLASS_330": ["C3"],
+
+    "STUDY_331_332": ["C2"],
+    "FAC_OFF_333_335": ["C2","C9"],
+    "FAC_OFF_338_337": ["C9"],
+    "PANTRY_3F": ["C9"]
+  }
+}

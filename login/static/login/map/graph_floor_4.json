@@ -1,0 +1,88 @@
+{
+  "nodes": {
+    "C1": { "x": 600, "y": 760, "name": "West Corridor" },
+    "C2": { "x": 900, "y": 420, "name": "NW Junction" },
+    "C3": { "x": 1500, "y": 360, "name": "North Junction" },
+    "C4": { "x": 2100, "y": 420, "name": "NE Junction" },
+    "C5": { "x": 2600, "y": 770, "name": "East Corridor" },
+    "C6": { "x": 2100, "y": 1120, "name": "SE Junction" },
+    "C7": { "x": 1500, "y": 1160, "name": "South Junction" },
+    "C8": { "x": 900, "y": 1120, "name": "SW Junction" },
+    "C9": { "x": 1500, "y": 770, "name": "Central Lobby" },
+
+    "STAIR_W": { "x": 1050, "y": 650, "name": "Stair (West)" },
+    "STAIR_NE": { "x": 1700, "y": 540, "name": "Stair (NE)" },
+    "LIFT_N": { "x": 1750, "y": 710, "name": "Lift (North)" },
+    "LIFT_S": { "x": 1550, "y": 920, "name": "Lift (South)" },
+
+    "IQAC_431": { "x": 500, "y": 310, "name": "IQAC #431" },
+    "CLASS_432": { "x": 620, "y": 330, "name": "Classroom #432" },
+    "CLASS_428": { "x": 1650, "y": 320, "name": "Classroom #428" },
+    "CLASS_427": { "x": 1850, "y": 320, "name": "Classroom #427" },
+    "COMP_426": { "x": 2050, "y": 340, "name": "Computer Lab #426" },
+    "COMP_429": { "x": 2200, "y": 360, "name": "Computer Lab #429" },
+    "COMP_424": { "x": 2450, "y": 380, "name": "Computer Lab #424" },
+    "CLASS_423": { "x": 2750, "y": 480, "name": "Classroom #423" },
+    "CLASS_422": { "x": 2750, "y": 820, "name": "Classroom #422" },
+
+    "DEAN_SoSE_418_419": { "x": 2500, "y": 820, "name": "Dean of SoSE & Faculty Office #418 & 419" },
+    "DEPT_CSE_412_418": { "x": 2350, "y": 1000, "name": "Dept. of CSE #412 & 418" },
+    "CLASS_411": { "x": 2450, "y": 1150, "name": "Classroom #411" },
+    "CLASS_409": { "x": 2300, "y": 1260, "name": "Classroom #409" },
+    "CLASS_408": { "x": 1900, "y": 1260, "name": "Classroom #408" },
+    "CLASS_407": { "x": 1700, "y": 1260, "name": "Classroom #407" },
+    "CLASS_406": { "x": 1500, "y": 1260, "name": "Classroom #406" },
+    "CLASS_405": { "x": 1300, "y": 1260, "name": "Classroom #405" },
+    "CLASS_404": { "x": 1100, "y": 1260, "name": "Classroom #404" },
+    "CLASS_403": { "x": 900, "y": 1260, "name": "Classroom #403" },
+    "CLASS_402": { "x": 600, "y": 1150, "name": "Classroom #402" },
+    "CLASS_401": { "x": 520, "y": 1100, "name": "Classroom #401" },
+
+    "FAC_OFF_433_435": { "x": 800, "y": 600, "name": "Faculty Office #433-435" },
+    "FEMALE_COMMON_436": { "x": 1450, "y": 930, "name": "Female Common Room #436" },
+    "PANTRY_4F": { "x": 1550, "y": 860, "name": "Pantry (4F)" },
+
+    "FEXIT_W": { "x": 750, "y": 1180, "name": "Fire Exit (West)" },
+    "FEXIT_E": { "x": 2650, "y": 520, "name": "Fire Exit (East)" }
+  },
+  "edges": {
+    "C1": ["C2","C8","C9"],
+    "C2": ["C1","C3","STAIR_W"],
+    "C3": ["C2","C4","C9","LIFT_N"],
+    "C4": ["C3","C5","STAIR_NE"],
+    "C5": ["C4","C6","C9"],
+    "C6": ["C5","C7"],
+    "C7": ["C6","C8","C9","LIFT_S"],
+    "C8": ["C7","C1"],
+
+    "IQAC_431": ["C2"],
+    "CLASS_432": ["C2"],
+    "CLASS_428": ["C3"],
+    "CLASS_427": ["C3"],
+    "COMP_426": ["C4"],
+    "COMP_429": ["C4"],
+    "COMP_424": ["C4"],
+    "CLASS_423": ["C5"],
+    "CLASS_422": ["C5"],
+
+    "DEAN_SoSE_418_419": ["C5"],
+    "DEPT_CSE_412_418": ["C6"],
+    "CLASS_411": ["C6"],
+    "CLASS_409": ["C6"],
+    "CLASS_408": ["C7"],
+    "CLASS_407": ["C7"],
+    "CLASS_406": ["C7"],
+    "CLASS_405": ["C7"],
+    "CLASS_404": ["C8"],
+    "CLASS_403": ["C8"],
+    "CLASS_402": ["C8"],
+    "CLASS_401": ["C8"],
+
+    "FAC_OFF_433_435": ["C2","C9"],
+    "FEMALE_COMMON_436": ["C9"],
+    "PANTRY_4F": ["C9"],
+
+    "FEXIT_W": ["C8"],
+    "FEXIT_E": ["C5"]
+  }
+}

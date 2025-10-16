@@ -4244,3 +4244,528 @@ Watching for file changes with StatReloader
 "GET /lost-found/ HTTP/1.1" 200 17475
 C:\Users\msi\Desktop\UniNav\project\settings.py changed, reloading.
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13175
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 6872
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 12283
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /campus-map/ HTTP/1.1" 200 11049
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"POST /api/my-location/ HTTP/1.1" 200 12
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+"POST /api/save-location/ HTTP/1.1" 200 21
+"GET /campus-map/ HTTP/1.1" 200 11165
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /static/login/image/2nd-floor.png HTTP/1.1" 200 7188525
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+"GET /campus-map/ HTTP/1.1" 200 11165
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+"POST /api/my-location/ HTTP/1.1" 200 12
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+C:\Users\msi\Desktop\UniNav\project\settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /campus-map/ HTTP/1.1" 200 11165
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 151
+C:\Users\msi\Desktop\UniNav\project\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\utils.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\utils.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\utils.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\project\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\project\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13596
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 8602
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /campus-map/ HTTP/1.1" 200 11920
+Bad Request: /api/graph/1/
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"GET /api/graph/1/ HTTP/1.1" 400 54
+Bad Request: /api/graph/1/
+"GET /api/graph/1/ HTTP/1.1" 400 54
+Bad Request: /api/graph/2/
+"GET /static/login/image/2nd-floor.png HTTP/1.1" 304 0
+"GET /api/graph/2/ HTTP/1.1" 400 54
+Bad Request: /api/graph/3/
+"GET /api/graph/3/ HTTP/1.1" 400 54
+"GET /static/login/image/3rd-floor.png HTTP/1.1" 200 6268878
+Bad Request: /api/graph/2/
+"GET /api/graph/2/ HTTP/1.1" 400 54
+Bad Request: /api/graph/1/
+"GET /api/graph/1/ HTTP/1.1" 400 54
+"POST /api/my-location/ HTTP/1.1" 200 12
+"POST /api/my-location/ HTTP/1.1" 200 12
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+C:\Users\msi\Desktop\UniNav\login\utils.py changed, reloading.
+C:\Users\msi\Desktop\UniNav\login\utils.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13596
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 3918
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /campus-map/ HTTP/1.1" 200 11479
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+"GET /campus-map/ HTTP/1.1" 200 11479
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 5248
+"GET /campus-map/ HTTP/1.1" 200 11479
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 5760
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /campus-map/ HTTP/1.1" 200 11416
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 4877
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+"GET /events/ HTTP/1.1" 200 13699
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+C:\Users\msi\Desktop\UniNav\project\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13596
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /campus-map/ HTTP/1.1" 200 11416
+"GET /events/ HTTP/1.1" 200 12754
+"POST /events/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 13623
+C:\Users\msi\Desktop\UniNav\login\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13596
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /events/ HTTP/1.1" 200 13074
+"GET /static/login/image/2nd-floor.png HTTP/1.1" 304 0
+"POST /events/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 14038
+"GET /events/ HTTP/1.1" 200 13999
+"GET /static/login/image/3rd-floor.png HTTP/1.1" 304 0
+"POST /events/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 14971
+Internal Server Error: /events/
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\msi\Desktop\UniNav\login\views.py", line 986, in events
+    return render(
+        request,
+        "login/events.html",
+        {"my_pins": my_pins, "public_pins": public_pins},
+    )
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 749, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\defaultfilters.py", line 91, in json_script
+    return _json_script(value, element_id)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\utils\html.py", line 102, in json_script
+    json_str = json.dumps(value, cls=encoder or DjangoJSONEncoder).translate(
+               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\serializers\json.py", line 114, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type QuerySet is not JSON serializable
+"GET /events/ HTTP/1.1" 500 181448
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /events/ HTTP/1.1" 200 15321
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /events/ HTTP/1.1" 200 15884
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13596
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /events/ HTTP/1.1" 200 15884
+"GET /events/ HTTP/1.1" 200 15884
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /events/ HTTP/1.1" 200 13324
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+"POST /events/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 13915
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /events/ HTTP/1.1" 200 16403
+C:\Users\msi\Desktop\UniNav\login\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13596
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27400
+"GET /shop/ HTTP/1.1" 200 19425
+"GET /media/products/arduino.jpeg HTTP/1.1" 304 0
+"GET /media/products/thermal_sensor.jpeg HTTP/1.1" 304 0
+"GET /media/products/display.jpeg HTTP/1.1" 304 0
+"GET /media/products/ultra.jpeg HTTP/1.1" 304 0
+"GET /media/products/lifi-data-transfer-25.jpg HTTP/1.1" 304 0
+"GET /media/products/VALORANT___8_18_2025_2_34_41_AM_NmgNFuI.png HTTP/1.1" 304 0
+"GET /events/ HTTP/1.1" 200 17233
+Internal Server Error: /events/
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\msi\Desktop\UniNav\login\views.py", line 976, in events
+    st = datetime.fromisoformat(start_time) if start_time else None
+         ^^^^^^^^
+NameError: name 'datetime' is not defined. Did you forget to import 'datetime'?
+"POST /events/ HTTP/1.1" 500 71050
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /events/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 18411
+"GET /static/login/image/4th-floor.png HTTP/1.1" 304 0
+"POST /events/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 19051
+"POST /events/delete/1/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 18414
+"POST /events/delete/2/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 17815
+"POST /events/delete/4/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 17216
+"POST /events/delete/5/ HTTP/1.1" 302 0
+"GET /events/ HTTP/1.1" 200 16536
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /events/ HTTP/1.1" 200 16485
+"GET /lost-found/ HTTP/1.1" 200 17074
+"GET /campus-map/ HTTP/1.1" 200 11416
+Bad Request: /api/route/
+"POST /api/route/ HTTP/1.1" 400 54
+"GET /static/login/image/5th-floor.png HTTP/1.1" 304 0
+"GET /chat/ HTTP/1.1" 200 22895
+"GET /chat/?id=2&type=user HTTP/1.1" 200 29130
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+Not Found: /ws/chat/user/2/
+"GET /ws/chat/user/2/ HTTP/1.1" 404 12268
+"GET /chat/?id=3&type=user HTTP/1.1" 200 24693
+Not Found: /ws/chat/user/3/
+"GET /ws/chat/user/3/ HTTP/1.1" 404 12268
+"GET /chat/?id=2&type=group HTTP/1.1" 200 24695
+Not Found: /ws/chat/group/2/
+"GET /ws/chat/group/2/ HTTP/1.1" 404 12271
+"GET /chat/?id=10&type=user HTTP/1.1" 200 24695
+Not Found: /ws/chat/user/10/
+"GET /ws/chat/user/10/ HTTP/1.1" 404 12271
+"GET /chat/?id=3&type=user HTTP/1.1" 200 24693
+Not Found: /ws/chat/user/3/
+"GET /ws/chat/user/3/ HTTP/1.1" 404 12268
+"GET /chat/?id=3&type=user HTTP/1.1" 200 24693
+Not Found: /ws/chat/user/3/
+"GET /ws/chat/user/3/ HTTP/1.1" 404 12268
+"GET /chat/?id=2&type=user HTTP/1.1" 200 29130
+Not Found: /ws/chat/user/2/
+"GET /ws/chat/user/2/ HTTP/1.1" 404 12268
+"GET /dashboard/ HTTP/1.1" 200 26904
+"GET /chat/ HTTP/1.1" 200 22895
+"GET /create-group/ HTTP/1.1" 200 9194
+Internal Server Error: /chat/
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\msi\Desktop\UniNav\login\views.py", line 630, in chat
+    return render(request, "login/chat.html", {
+        "users": users,
+    ...<5 lines>...
+        "user_type": user_type,
+    })
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\template\defaulttags.py", line 1537, in do_with
+    raise TemplateSyntaxError(
+        "%r received an invalid token: %r" % (bits[0], remaining_bits[0])
+    )
+django.template.exceptions.TemplateSyntaxError: 'with' received an invalid token: '=='
+"GET /chat/ HTTP/1.1" 500 298283
+"GET /chat/ HTTP/1.1" 200 18167
+"GET /chat/?id=2&type=user HTTP/1.1" 200 22841
+"GET /chat/?id=3&type=user HTTP/1.1" 200 19764
+"GET /chat/?csrfmiddlewaretoken=lqy79CFRPkpXpYXQoI89SXkfkNigRlMrKZdmfePpxJbm7go2ikYkjsR2gebv1v5Z&recipient_id=3&file=&voice=&latitude=&longitude=&content=Bhallagena+bhai%0D%0A HTTP/1.1" 200 18167
+"GET /chat/?id=3&type=user HTTP/1.1" 200 19764
+"GET /chat/?id=10&type=user HTTP/1.1" 200 19765
+"GET /chat/?id=2&type=group HTTP/1.1" 200 19758
+"GET /chat/?id=3&type=group HTTP/1.1" 200 19764
+"GET /create-group/ HTTP/1.1" 200 11675
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"GET /create-group/ HTTP/1.1" 200 12085
+"POST /create-group/ HTTP/1.1" 302 0
+"GET /chat/ HTTP/1.1" 200 18523
+"GET /chat/?id=4&type=group HTTP/1.1" 200 20119
+"GET /chat/?csrfmiddlewaretoken=LBIw911S70NThgDPiHfwnMNASB7Of9mZaanLfDbqPpziZy41cj5HOhknO203pjFx&group_id=4&file=&voice=&latitude=&longitude=&content=Chudi+shobaire HTTP/1.1" 200 18523
+"GET /chat/?csrfmiddlewaretoken=LBIw911S70NThgDPiHfwnMNASB7Of9mZaanLfDbqPpziZy41cj5HOhknO203pjFx&group_id=4&file=&voice=&latitude=&longitude=&content=Chudi+shobaire HTTP/1.1" 200 18523
+"GET /chat/?id=4&type=group HTTP/1.1" 200 20119
+"GET /chat/?csrfmiddlewaretoken=GZs4F0dnshHFuRzlRkId9tCQmB0fb8To5y7jLCnVaGt4c90xLWyoAY9Di2TulicW&group_id=4&file=&voice=&latitude=&longitude=&content=chudi%0D%0A HTTP/1.1" 200 18523
+"GET /lost-found/ HTTP/1.1" 200 17574
+"GET /lost-found/ HTTP/1.1" 200 17074
+Importing AvifImagePlugin
+Importing BlpImagePlugin
+Importing BmpImagePlugin
+Importing BufrStubImagePlugin
+Importing CurImagePlugin
+Importing DcxImagePlugin
+Importing DdsImagePlugin
+Importing EpsImagePlugin
+Importing FitsImagePlugin
+Importing FliImagePlugin
+Importing FpxImagePlugin
+Image: failed to import FpxImagePlugin: No module named 'olefile'
+Importing FtexImagePlugin
+Importing GbrImagePlugin
+Importing GifImagePlugin
+Importing GribStubImagePlugin
+Importing Hdf5StubImagePlugin
+Importing IcnsImagePlugin
+Importing IcoImagePlugin
+Importing ImImagePlugin
+Importing ImtImagePlugin
+Importing IptcImagePlugin
+Importing JpegImagePlugin
+Importing Jpeg2KImagePlugin
+Importing McIdasImagePlugin
+Importing MicImagePlugin
+Image: failed to import MicImagePlugin: No module named 'olefile'
+Importing MpegImagePlugin
+Importing MpoImagePlugin
+Importing MspImagePlugin
+Importing PalmImagePlugin
+Importing PcdImagePlugin
+Importing PcxImagePlugin
+Importing PdfImagePlugin
+Importing PixarImagePlugin
+Importing PngImagePlugin
+Importing PpmImagePlugin
+Importing PsdImagePlugin
+Importing QoiImagePlugin
+Importing SgiImagePlugin
+Importing SpiderImagePlugin
+Importing SunImagePlugin
+Importing TgaImagePlugin
+Importing TiffImagePlugin
+Importing WebPImagePlugin
+Importing WmfImagePlugin
+Importing XbmImagePlugin
+Importing XpmImagePlugin
+Importing XVThumbImagePlugin
+"POST /lost-found/report/ HTTP/1.1" 302 0
+"GET /lost-found/ HTTP/1.1" 200 19926
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /media/lostfound/images.jpg HTTP/1.1" 200 5436
+"POST /lost-found/2/claim/ HTTP/1.1" 302 0
+"GET /lost-found/ HTTP/1.1" 200 19960
+"GET /media/lostfound/images.jpg HTTP/1.1" 304 0

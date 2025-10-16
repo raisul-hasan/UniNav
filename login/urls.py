@@ -34,4 +34,19 @@ urlpatterns = [
     path("lost-found/report/", views.report_item, name="report_item"),
     path("lost-found/<int:item_id>/claim/", views.submit_claim, name="submit_claim"),
 
+    path('campus-map/', views.campus_map, name='campus_map'),
+
+    # APIs
+    path('api/graph/<int:floor>/', views.api_graph, name='api_graph'),
+    path('api/route/', views.api_route, name='api_route'),
+    path('api/save-location/', views.api_save_location, name='api_save_location'),
+
+    path("", lambda request: redirect("login"), name="home"),
+    path("events/", views.events, name="events"),
+    path("events/delete/<int:pin_id>/", views.delete_pin, name="delete_pin"),
+
+    # Legacy APIs for compatibility
+    path("api/my-saved-locations/", views.api_my_saved_locations, name="api_my_saved_locations"),
+
+
 ]

@@ -27,7 +27,11 @@ urlpatterns = [
     path("add-reaction/", views.add_reaction, name="add_reaction"),
     path("campus-map/", views.campus_map, name="campus_map"),
 
-     path("decrement-cart/<int:cart_item_id>/", views.decrement_cart, name="decrement_cart"),
-     path("increment-cart/<int:product_id>/", views.increment_cart, name="increment_cart"),
+    path("decrement-cart/<int:cart_item_id>/", views.decrement_cart, name="decrement_cart"),
+    path("increment-cart/<int:product_id>/", views.increment_cart, name="increment_cart"),
+
+    path("lost-found/", views.lost_found, name="lost_found"),
+    path("lost-found/report/", views.report_item, name="report_item"),
+    path("lost-found/<int:item_id>/claim/", views.submit_claim, name="submit_claim"),
 
 ]

@@ -4055,3 +4055,192 @@ Watching for file changes with StatReloader
 "GET /static/login/image/4th-floor.png HTTP/1.1" 200 6121747
 "GET /static/login/image/3rd-floor.png HTTP/1.1" 200 6268878
 "GET /static/login/image/2nd-floor.png HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 11917
+"GET /static/login/css/style.css HTTP/1.1" 200 9853
+"GET /static/login/js/campusmap.js HTTP/1.1" 200 1329
+"GET /static/login/js/counter.js HTTP/1.1" 200 3237
+"GET /static/login/js/isotope.min.js HTTP/1.1" 200 58471
+"GET /static/login/js/custom.js HTTP/1.1" 200 5530
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 200 93473
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 9278
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 25984
+"GET /campus-map/ HTTP/1.1" 200 11937
+"GET /static/login/image/1st-floor.png HTTP/1.1" 200 6440450
+"GET /static/login/image/5th-floor.png HTTP/1.1" 200 5714256
+"GET /static/login/image/4th-floor.png HTTP/1.1" 200 6121747
+"GET /dashboard/ HTTP/1.1" 200 25582
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+C:\Users\msi\Desktop\UniNav\login\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\admin.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\admin.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\msi\Desktop\UniNav\login\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /login/ HTTP/1.1" 200 13509
+"GET /static/login/css/style.css HTTP/1.1" 304 0
+"GET /static/login/js/custom.js HTTP/1.1" 304 0
+"GET /static/login/js/counter.js HTTP/1.1" 304 0
+"GET /static/login/js/owl-carousel.js HTTP/1.1" 304 0
+"GET /static/login/js/isotope.min.js HTTP/1.1" 304 0
+"GET /static/login/js/campusmap.js HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 27313
+Internal Server Error: /lost-found/
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: login_lostfounditem
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\msi\Desktop\UniNav\login\views.py", line 825, in lost_found
+    for it in found_with_coords
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: login_lostfounditem
+"GET /lost-found/ HTTP/1.1" 500 140086
+"GET /shop/ HTTP/1.1" 200 19338
+"GET /media/products/thermal_sensor.jpeg HTTP/1.1" 200 4758
+"GET /media/products/arduino.jpeg HTTP/1.1" 200 10816
+"GET /media/products/display.jpeg HTTP/1.1" 200 5493
+"GET /media/products/ultra.jpeg HTTP/1.1" 200 7533
+"GET /media/products/lifi-data-transfer-25.jpg HTTP/1.1" 200 59023
+"GET /media/products/VALORANT___8_18_2025_2_34_41_AM_NmgNFuI.png HTTP/1.1" 200 3184311
+"GET /cart/ HTTP/1.1" 200 23691
+"GET /dashboard/ HTTP/1.1" 200 26817
+"GET /chat/ HTTP/1.1" 200 22808
+"GET /campus-map/ HTTP/1.1" 200 13172
+"GET /static/login/image/1st-floor.png HTTP/1.1" 304 0
+Internal Server Error: /lost-found/
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: login_lostfounditem
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\msi\Desktop\UniNav\login\views.py", line 825, in lost_found
+    for it in found_with_coords
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 1949, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\msi\AppData\Roaming\Python\Python313\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: no such table: login_lostfounditem
+"GET /lost-found/ HTTP/1.1" 500 140087
+Watching for file changes with StatReloader
+"GET /lost-found/ HTTP/1.1" 200 14618
+"POST /lost-found/report/ HTTP/1.1" 302 0
+"GET /lost-found/ HTTP/1.1" 200 17475
+C:\Users\msi\Desktop\UniNav\project\settings.py changed, reloading.
+Watching for file changes with StatReloader

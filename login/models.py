@@ -119,3 +119,54 @@ class Reaction(models.Model):
     def __str__(self):
         user = self.user or self.teacher
         return f"{user.name} reacted {self.emoji} to message {self.message.id}"
+    
+class LostFoundItem(models.Model):
+    STATUS_CHOICES = [
+        ("LOST", "Lost"),
+        ("FOUND", "Found"),
+        ("CLAIMED", "Claimed"),
+    ]
+    title = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    photo = models.ImageField(upload_to="lostfound/", null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="LOST")
+
+    # Where the item was found (if known). We store WGS84 coordinates for Leaflet.
+    found_lat = models.FloatField(null=True, blank=True)
+    found_lng = models.FloatField(null=True, blank=True)
+    found_at = models.DateTimeField(null=True, blank=True)
+
+    # Who reported
+    reporter_student = models.ForeignKey(Student, null=True, blank=True, on_delete=models.SET_NULL)
+    reporter_teacher = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.SET_NULL, related_name="reported_items")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Optional simple question prompt that claimants must answer
+    claim_question = models.CharField(
+        max_length=200,
+        default="Describe a unique detail (e.g., color/marking) to verify ownership:"
+    )
+    correct_answer = models.CharField(max_length=200, blank=True, help_text="Optional exact answer; leave blank if staff will review manually.")
+
+    def __str__(self):
+        return f"{self.title} [{self.status}]"
+
+
+class Claim(models.Model):
+    STATUS_CHOICES = [
+        ("PENDING", "Pending"),
+        ("APPROVED", "Approved"),
+        ("REJECTED", "Rejected"),
+    ]
+    item = models.ForeignKey(LostFoundItem, on_delete=models.CASCADE, related_name="claims")
+    claimant_student = models.ForeignKey(Student, null=True, blank=True, on_delete=models.SET_NULL)
+    claimant_teacher = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.SET_NULL, related_name="claims_made")
+    answer_text = models.TextField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDING")
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        who = self.claimant_student or self.claimant_teacher
+        return f"Claim for {self.item.title} by {getattr(who, 'name', 'Unknown')} [{self.status}]"    

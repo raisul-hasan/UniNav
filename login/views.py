@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
 from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Group, Reaction
@@ -8,6 +8,9 @@ from decimal import Decimal
 import uuid
 from django.utils import timezone
 from django.http import JsonResponse
+from .models import Student, Teacher, LostFoundItem, Claim
+from .forms import LostFoundItemForm, ClaimForm
+from django.utils import timezone
 
 def register(request):
     if request.method == "POST":
@@ -778,4 +781,113 @@ def campus_map(request):
     if not request.session.get('user_id'):
         return redirect("login")
     return render(request, "login/cmapusmap.html")
+
+def _current_user(request):
+    """Return (user_obj, user_type) based on your session scheme."""
+    user_id = request.session.get("user_id")
+    user_type = request.session.get("user_type")  # "student" or "teacher"
+    if not user_id:
+        return None, None
+    try:
+        if user_type == "student":
+            return Student.objects.get(id=user_id), "student"
+        elif user_type == "teacher":
+            t = Teacher.objects.get(id=user_id)
+            if not t.is_approved:
+                return None, None
+            return t, "teacher"
+    except (Student.DoesNotExist, Teacher.DoesNotExist):
+        return None, None
+    return None, None
+
+def lost_found(request):
+    """Main page: List LOST and FOUND items; map shows FOUND (with coords)."""
+    # Lists
+    lost_items = LostFoundItem.objects.filter(status="LOST").order_by("-created_at")
+    found_items = LostFoundItem.objects.filter(status="FOUND").order_by("-found_at", "-created_at")
+
+    # For the map: only items with coordinates
+    found_with_coords = found_items.exclude(found_lat__isnull=True).exclude(found_lng__isnull=True)
+
+    # Empty forms (modal usage)
+    report_form = LostFoundItemForm()
+    claim_form = ClaimForm()
+
+    # We’ll pass coordinates for Leaflet
+    markers = [
+        {
+            "id": it.id,
+            "title": it.title,
+            "lat": it.found_lat,
+            "lng": it.found_lng,
+            "snippet": (it.description[:120] + "…") if it.description and len(it.description) > 120 else (it.description or ""),
+        }
+        for it in found_with_coords
+    ]
+
+    return render(request, "login/lost_found.html", {
+        "lost_items": lost_items,
+        "found_items": found_items,
+        "report_form": report_form,
+        "claim_form": claim_form,
+        "markers": markers,
+    })
+
+def report_item(request):
+    """Create a new Lost/Found entry."""
+    user, user_type = _current_user(request)
+    if not user:
+        messages.error(request, "Please log in to report an item.")
+        return redirect("login")
+
+    if request.method == "POST":
+        form = LostFoundItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            if user_type == "student":
+                item.reporter_student = user
+            else:
+                item.reporter_teacher = user
+            # If status is FOUND and found_at not set, default to now
+            if item.status == "FOUND" and not item.found_at:
+                item.found_at = timezone.now()
+            item.save()
+            messages.success(request, "Item submitted!")
+        else:
+            messages.error(request, "Please fix the errors in the form.")
+    return redirect("lost_found")
+
+def submit_claim(request, item_id):
+    """Submit a claim against an item with an answer to the question."""
+    user, user_type = _current_user(request)
+    if not user:
+        messages.error(request, "Please log in to claim an item.")
+        return redirect("login")
+
+    item = get_object_or_404(LostFoundItem, pk=item_id)
+
+    if request.method == "POST":
+        form = ClaimForm(request.POST)
+        if form.is_valid():
+            claim = form.save(commit=False)
+            claim.item = item
+            if user_type == "student":
+                claim.claimant_student = user
+            else:
+                claim.claimant_teacher = user
+
+            # Optional auto-approve if an exact correct_answer was provided
+            if item.correct_answer and item.correct_answer.strip():
+                if item.correct_answer.strip().lower() == claim.answer_text.strip().lower():
+                    claim.status = "APPROVED"
+                    claim.reviewed_at = timezone.now()
+                    item.status = "CLAIMED"
+                    item.save(update_fields=["status"])
+                    messages.success(request, "Claim approved automatically. Item marked as CLAIMED.")
+            claim.save()
+            if claim.status == "PENDING":
+                messages.success(request, "Claim submitted! The team will review it shortly.")
+        else:
+            messages.error(request, "Please provide a valid answer.")
+    return redirect("lost_found")
 

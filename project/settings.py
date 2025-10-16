@@ -6,7 +6,7 @@ load_dotenv()
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Security settings
+# Security  
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-secret-key-here-change-this')
 DEBUG = True  # Ensure DEBUG is True for development
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']

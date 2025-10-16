@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Reaction, Group
+from .models import Claim, LostFoundItem, Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Reaction, Group
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
@@ -60,3 +60,15 @@ class ReactionAdmin(admin.ModelAdmin):
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at')
     filter_horizontal = ('members',)
+
+@admin.register(LostFoundItem)
+class LostFoundItemAdmin(admin.ModelAdmin):
+    list_display = ("title", "status", "found_at", "created_at")
+    list_filter = ("status", "created_at")
+    search_fields = ("title", "description")
+
+@admin.register(Claim)
+class ClaimAdmin(admin.ModelAdmin):
+    list_display = ("item", "status", "created_at", "reviewed_at")
+    list_filter = ("status",)
+    search_fields = ("item__title", "answer_text")    

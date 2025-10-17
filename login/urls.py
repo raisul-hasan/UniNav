@@ -50,7 +50,10 @@ urlpatterns = [
      path("api/chatbot/", views.gemini_chat_api, name="gemini_chat_api"),
     path("chatbot/", views.chatbot_page, name="chatbot_page"),
 
+    # Add to urlpatterns in urls.py
     
+  
 
-
+    path('lostfound/approve/', views.approve_lostfound_list, name='approve_lostfound_list'),
+    path('lostfound/approve/<int:report_id>/<str:action>/', views.approve_lostfound_action, name='approve_lostfound_action'),
 ]

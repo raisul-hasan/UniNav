@@ -1,323 +1,314 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}UniNav{% endblock %}</title>
 
-    <!-- Bootstrap -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}UniNav{% endblock %}</title>
 
-    <!-- Optional: Font Awesome for icons (safe to remove if not desired) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 
-    <!-- Your global CSS -->
-    <link rel="stylesheet" href="{% static 'login/css/style.css' %}" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-    <style>
-      :root {
-        --brand: #7a6ad8;
-        --brand-2: #5d4db9;
-        --bg-soft: #f8f9fb;
-        --text: #1f2430;
-        /* control page side padding for full-width sections */
-        --page-xpad: 2.5rem; /* adjust to taste: 1rem-5rem */
-      }
-      html,
-      body {
-        height: 100%;
-      }
-      body {
-        background: linear-gradient(180deg, #ffffff 0%, #f7f7ff 100%);
-        color: var(--text);
-      }
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="{% static 'login/css/style.css' %}" />
 
-      /* ===== NAVBAR (glassy) ===== */
-      .navbar-modern {
-        backdrop-filter: saturate(140%) blur(10px);
-        -webkit-backdrop-filter: saturate(140%) blur(10px);
-        background: rgba(255, 255, 255, 0.85) !important;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      }
-      .navbar-brand {
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        color: var(--brand) !important;
-      }
-      .navbar .nav-link {
-        position: relative;
-        font-weight: 500;
-      }
-      .navbar .nav-link:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -6px;
-        margin: auto;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--brand), var(--brand-2));
-        transition: width 0.25s ease;
-        border-radius: 2px;
-      }
-      .navbar .nav-link:hover:after,
-      .navbar .nav-link.active:after {
-        width: 60%;
-      }
-      .navbar-toggler {
-        border: 0;
-        outline: none !important;
-      }
+  <!-- Floating Chatbot Button -->
+  <a href="{% url 'chatbot_page' %}" class="chatbot-btn" title="Open Chatbot" aria-label="Open Chatbot">
+    <i class="fas fa-robot"></i>
+  </a>
 
-      /* Push content below fixed nav */
-      body {
-        padding-top: 72px;
-      }
+  <style>
+    :root {
+      --brand: #7a6ad8;
+      --brand-2: #5d4db9;
+      --bg-soft: #f8f9fb;
+      --text: #1f2430;
+      --sidebar-w: 260px;
+    }
 
-      /* ===== ALERTS (messages) ===== */
-      .alert-container {
-        position: relative;
-        z-index: 1000;
-      }
-      .alert {
-        border: 0;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-      }
+    html, body { height: 100%; }
+    body {
+      background: linear-gradient(180deg, #ffffff 0%, #f7f7ff 100%);
+      color: var(--text);
+      padding-top: 72px; /* push below fixed nav */
+    }
 
-      /* ===== CONTENT WRAPPER ===== */
-      .content-shell {
-        padding-top: 8px;
-        padding-bottom: 32px;
-      }
+    /* ===== NAVBAR ===== */
+    .navbar-modern {
+      backdrop-filter: saturate(140%) blur(10px);
+      -webkit-backdrop-filter: saturate(140%) blur(10px);
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .navbar-brand { font-weight: 700; color: var(--brand) !important; }
+    .nav-link { font-weight: 500; }
 
-      /* ===== FOOTER ===== */
-      footer.footer-modern {
-        background: linear-gradient(
-          135deg,
-          var(--brand) 0%,
-          var(--brand-2) 100%
-        );
-        color: #fff;
-      }
-      .footer-modern a {
-        color: #fff;
-        opacity: 0.85;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-      }
-      .footer-modern a:hover {
-        opacity: 1;
-        transform: translateY(-2px);
-        text-decoration: none;
-      }
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      position: fixed;
+      top: 72px; /* under navbar */
+      left: 0;
+      width: var(--sidebar-w);
+      height: calc(100% - 72px);
+      background: #fff;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.04);
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      z-index: 1039;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sidebar.open { transform: translateX(0); }
 
-      /* Full-width containers with consistent side padding */
-      .page-fluid {
-        padding-left: var(--page-xpad);
-        padding-right: var(--page-xpad);
-      }
+    .sidebar .list-group-item {
+      border: 0;
+      border-radius: 0 !important;
+      padding: .85rem 1.05rem;
+      font-weight: 500;
+    }
+    .sidebar .list-group-item i { width: 20px; margin-right: .5rem; color: var(--brand); }
+    .sidebar .list-group-item.active,
+    .sidebar .list-group-item:hover {
+      background: linear-gradient(90deg, rgba(122,106,216,.08), rgba(93,77,185,.08));
+    }
 
-      /* Dark mode friendly */
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: #0f1116;
-          color: #e6e6ef;
-        }
-        .navbar-modern {
-          background: rgba(20, 22, 28, 0.7) !important;
-          border-bottom-color: rgba(255, 255, 255, 0.06);
-        }
-        .alert {
-          background: #1c2030;
-          color: #e6e6ef;
-        }
-        .footer-modern {
-          background: linear-gradient(135deg, #5f54c6 0%, #4a3fb0 100%);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-modern">
-      <div class="container-fluid page-fluid">
-        <a class="navbar-brand" href="{% url 'dashboard' %}">
-          <i class="fas fa-location-arrow mr-1"></i> UniNav
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#mainNav"
-          aria-controls="mainNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    /* content shift (optional) */
+    .with-sidebar .content-shell { margin-left: 0; transition: margin .25s ease; }
+    @media (min-width: 992px) {
+      .with-sidebar.sidebar-open .content-shell { margin-left: var(--sidebar-w); }
+    }
 
-        <div class="collapse navbar-collapse" id="mainNav">
-          <ul class="navbar-nav ml-auto align-items-lg-center">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'lost_found' %}">
-                <i class="fas fa-search-location mr-1"></i>Lost &amp; Found
-              </a>
-            </li>
+    /* ===== CONTENT / FOOTER ===== */
+    .content-shell { padding-top: 8px; padding-bottom: 32px; }
+    footer.footer-modern {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      color: #fff;
+    }
+    .footer-modern a { color: #fff; opacity: .85; }
+    .footer-modern a:hover { opacity: 1; text-decoration: none; }
 
-            <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+    /* Floating Chatbot */
+    .chatbot-btn {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      z-index: 1050;
+      background: linear-gradient(135deg, #7a6ad8, #5d4db9);
+      color: #fff;
+      border-radius: 50%;
+      width: 80px; height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.3);
+      transition: all .25s ease;
+    }
+    .chatbot-btn:hover { transform: scale(1.1); color: #fff; }
 
+    @media (max-width: 576px) {
+      .chatbot-btn { width: 65px; height: 65px; font-size: 28px; bottom: 20px; right: 20px; }
+    }
 
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'shop' %}"
-                ><i class="fas fa-store mr-1"></i>Shop</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'cart' %}"
-                ><i class="fas fa-shopping-cart mr-1"></i>Cart</a
-              >
-            </li>
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body { background: #0f1116; color: #e6e6ef; }
+      .navbar-modern { background: rgba(20,22,28,.7) !important; border-bottom-color: rgba(255,255,255,.06); }
+      .sidebar { background: #151924; border-right-color: rgba(255,255,255,.06); }
+      .sidebar .list-group-item { color: #e6e6ef; }
+      .sidebar .list-group-item i { color: #9ea3ff; }
+      .footer-modern { background: linear-gradient(135deg, #5f54c6 0%, #4a3fb0 100%); }
+    }
+  </style>
+</head>
 
-            {% if request.session.user_id %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'dashboard' %}"
-                ><i class="fas fa-home mr-1"></i>Dashboard</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'chat' %}"
-                ><i class="fas fa-comments mr-1"></i>Messages</a
-              >
-            </li>
-            <li class="nav-item">
-              <!-- fixed mav-link -> nav-link -->
-              <a class="nav-link" href="{% url 'campus_map' %}"
-                ><i class="fas fa-map-marked-alt mr-1"></i>Maps</a
-              >
-            </li>
+<body class="with-sidebar" id="bodyRoot">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-modern">
+    <div class="container-fluid">
+      <!-- Hamburger to toggle sidebar -->
+      <button id="sidebarToggle" class="btn btn-link p-0 mr-2" type="button" aria-label="Toggle sidebar"
+              aria-controls="appSidebar" aria-expanded="false">
+        <i class="fas fa-bars fa-lg"></i>
+      </button>
 
+      <a class="navbar-brand" href="{% url 'dashboard' %}">
+        <i class="fas fa-location-arrow mr-1"></i> UniNav
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNav"
+              aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- TOP NAV: Dashboard, Maps, Chat -->
+      <div class="collapse navbar-collapse" id="topNav">
+        <ul class="navbar-nav ml-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">
+              <i class="fas fa-home mr-1"></i>Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'campus_map' %}">
+              <i class="fas fa-map-marked-alt mr-1"></i>Maps
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'chat' %}">
+              <i class="fas fa-comments mr-1"></i>Chat
+            </a>
+          </li>
+
+          {% if request.session.user_id %}
             <li class="nav-item mt-2 mt-lg-0">
-              <a
-                class="btn btn-sm btn-primary ml-lg-3"
-                href="{% url 'logout' %}"
-              >
+              <a class="btn btn-sm btn-primary ml-lg-3" href="{% url 'logout' %}">
                 <i class="fas fa-sign-out-alt mr-1"></i> Logout
               </a>
             </li>
-            {% else %}
+          {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}"
-                ><i class="fas fa-sign-in-alt mr-1"></i>Login</a
-              >
+              <a class="nav-link" href="{% url 'login' %}">
+                <i class="fas fa-sign-in-alt mr-1"></i>Login
+              </a>
             </li>
             <li class="nav-item mt-2 mt-lg-0">
-              <a
-                class="btn btn-sm btn-primary ml-lg-2"
-                href="{% url 'register' %}"
-              >
+              <a class="btn btn-sm btn-primary ml-lg-2" href="{% url 'register' %}">
                 <i class="fas fa-user-plus mr-1"></i> Register
               </a>
             </li>
-            {% endif %}
-          </ul>
-        </div>
+          {% endif %}
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- CONTENT -->
-    <main class="content-shell">
-      <div class="container-fluid page-fluid">
-        {% if messages %}
-        <div class="alert-container mb-3">
-          {% for message in messages %}
-          <div
-            class="alert alert-{{ message.tags }} alert-dismissible fade show"
-            role="alert"
-          >
+  <!-- LEFT SIDEBAR -->
+  <aside id="appSidebar" class="sidebar">
+    <div class="list-group list-group-flush">
+      <a href="{% url 'dashboard' %}" class="list-group-item">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+      <a href="{% url 'lost_found' %}" class="list-group-item">
+        <i class="fas fa-search-location"></i> Lost &amp; Found
+      </a>
+      <a href="{% url 'events' %}" class="list-group-item">
+        <i class="fas fa-calendar-alt"></i> Events
+      </a>
+      <a href="{% url 'shop' %}" class="list-group-item">
+        <i class="fas fa-store"></i> Shop
+      </a>
+      <a href="{% url 'cart' %}" class="list-group-item">
+        <i class="fas fa-shopping-cart"></i> Cart
+      </a>
+      <a href="{% url 'campus_map' %}" class="list-group-item">
+        <i class="fas fa-map"></i> Maps
+      </a>
+      <a href="{% url 'chat' %}" class="list-group-item">
+        <i class="fas fa-comments"></i> Chat
+      </a>
+
+      {% if not request.session.user_id %}
+        <a href="{% url 'login' %}" class="list-group-item">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+        <a href="{% url 'register' %}" class="list-group-item">
+          <i class="fas fa-user-plus"></i> Register
+        </a>
+      {% endif %}
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content-shell">
+    <div class="container-fluid">
+      {% if messages %}
+      <div class="mb-3">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
             {{ message }}
-            <button
-              type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          {% endfor %}
-        </div>
-        {% endif %} {% block content %}{% endblock %}
+        {% endfor %}
       </div>
-    </main>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
 
-    <!-- FOOTER -->
-    <footer class="footer-modern text-center py-4 mt-4">
-      <div class="container-fluid page-fluid">
-        <div class="mb-2">
-          <a href="#" class="mx-2" aria-label="Lightning"
-            ><i class="fas fa-bolt"></i
-          ></a>
-          <a href="#" class="mx-2" aria-label="Facebook"
-            ><i class="fab fa-facebook-f"></i
-          ></a>
-          <a href="#" class="mx-2" aria-label="Twitter"
-            ><i class="fab fa-twitter"></i
-          ></a>
-          <a href="#" class="mx-2" aria-label="Instagram"
-            ><i class="fab fa-instagram"></i
-          ></a>
-        </div>
-        <small>&copy; 2025 UniNav. All rights reserved.</small>
+  <!-- FOOTER -->
+  <footer class="footer-modern text-center py-4 mt-4">
+    <div class="container">
+      <div class="mb-2">
+        <a href="#" class="mx-2" aria-label="Lightning"><i class="fas fa-bolt"></i></a>
+        <a href="#" class="mx-2" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="mx-2" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="mx-2" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
       </div>
-    </footer>
+      <small>&copy; 2025 UniNav. All rights reserved.</small>
+    </div>
+  </footer>
 
-    <!-- JS (jQuery -> Popper -> Bootstrap) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- JS (jQuery -> Popper -> Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Your global JS -->
-    {# vendor + site JS that actually exist #}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Your site/vendor JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="{% static 'login/js/custom.js' %}"></script>
-    <script src="{% static 'login/js/counter.js' %}"></script>
-    <script src="{% static 'login/js/owl-carousel.js' %}"></script>
-    <script src="{% static 'login/js/isotope.min.js' %}"></script>
-    <script src="{% static 'login/js/campusmap.js' %}"></script>
+  <script src="{% static 'login/js/custom.js' %}"></script>
+  <script src="{% static 'login/js/counter.js' %}"></script>
+  <script src="{% static 'login/js/owl-carousel.js' %}"></script>
+  <script src="{% static 'login/js/isotope.min.js' %}"></script>
+  <script src="{% static 'login/js/campusmap.js' %}"></script>
 
-    <script>
-      // Highlight active nav item based on current URL path
-      (function () {
-        var links = document.querySelectorAll(".navbar .nav-link");
-        var path = window.location.pathname;
-        links.forEach(function (a) {
-          if (a.getAttribute("href") === path) {
-            a.classList.add("active");
-          }
+  <script>
+    // Sidebar toggle
+    (function () {
+      var body = document.getElementById('bodyRoot');
+      var sidebar = document.getElementById('appSidebar');
+      var btn = document.getElementById('sidebarToggle');
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        body.classList.toggle('sidebar-open');
+        btn.setAttribute('aria-expanded', sidebar.classList.contains('open') ? 'true' : 'false');
+      }
+      btn.addEventListener('click', toggleSidebar);
+      // Close sidebar when clicking outside on small screens
+      document.addEventListener('click', function (e) {
+        if (sidebar.classList.contains('open')) {
+          var clickInside = sidebar.contains(e.target) || btn.contains(e.target);
+          if (!clickInside) { toggleSidebar(); }
+        }
+      });
+    })();
+
+    // Highlight active link (top + sidebar)
+    (function () {
+      var path = window.location.pathname;
+      document.querySelectorAll(".navbar .nav-link, .sidebar .list-group-item").forEach(function (a) {
+        if (a.getAttribute("href") === path) a.classList.add("active");
+      });
+    })();
+
+    // Auto-dismiss alerts
+    (function () {
+      setTimeout(function () {
+        document.querySelectorAll(".alert.show").forEach(function (el) {
+          if (window.jQuery) { jQuery(el).alert("close"); }
+          else { el.parentNode && el.parentNode.removeChild(el); }
         });
-      })();
-
-      // Auto-dismiss messages after a few seconds (still closable)
-      (function () {
-        var alerts = document.querySelectorAll(".alert");
-        setTimeout(function () {
-          alerts.forEach(function (el) {
-            if (el.classList.contains("show")) {
-              $(el).alert("close");
-            }
-          });
-        }, 4000);
-      })();
-    </script>
-  </body>
+      }, 4000);
+    })();
+  </script>
+</body>
 </html>

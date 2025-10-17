@@ -289,6 +289,79 @@
       </div>
     </div>
   </section>
+ 
+<!-- Teacher Tools Card -->
+<div class="col-md-6 mt-4 mt-md-0">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-3">
+        <i class="fas fa-tools mr-2"></i>Teacher Tools
+      </h5>
+      <li>
+
+      <a class="btn btn-outline-dark btn-block my-2" href="{% url 'approve_lostfound_list' %}">
+        Approve Lost &amp; Found
+        </a>
+</li>
+
+   <div class="card mt-4">
+    <div class="card-body">
+    <h5 class="card-title mb-3">My Lost &amp; Found Reports</h5>
+
+    {% if my_lostfound_reports %}
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Created</th>
+              {% if user_type == 'teacher' %}<th>Actions</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in my_lostfound_reports %}
+              <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.title }}</td> {# ⛏️ change if your field is named differently #}
+                <td>
+                  <span class="badge 
+                    {% if r.status == 'Pending' %}badge-warning
+                    {% elif r.status == 'Approved' %}badge-success
+                    {% else %}badge-secondary{% endif %}">
+                    {{ r.status }}
+                  </span>
+                </td>
+                <td>{{ r.created_at|date:"Y-m-d H:i" }}</td> {# ⛏️ change if needed #}
+
+                {% if user_type == 'teacher' %}
+                <td>
+                  {% if r.status == 'Pending' %}
+                    <a class="btn btn-sm btn-success"
+                       href="{% url 'approve_lostfound_action' r.id 'approve' %}">Approve</a>
+                    <a class="btn btn-sm btn-outline-danger"
+                       href="{% url 'approve_lostfound_action' r.id 'reject' %}">Reject</a>
+                  {% else %}
+                    <em>N/A</em>
+                  {% endif %}
+                </td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="alert alert-info mb-0">You have no Lost &amp; Found reports yet.</div>
+    {% endif %}
+  </div>
+</div>
+
+      <small class="text-muted d-block mt-2">Only visible to teachers.</small>
+    </div>
+  </div>
+</div>
   {% endif %}
 
   <!-- ===== CTA STRIP ===== -->

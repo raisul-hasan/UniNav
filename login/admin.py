@@ -1,10 +1,23 @@
 from django.contrib import admin
-from .models import Claim, LostFoundItem, Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Reaction, Group,LostFoundItem, Claim
 from django.contrib import admin, messages
 from django.utils import timezone
 from django.utils.html import format_html
 from django.db.models import Q
 
+from django.contrib import admin
+from .models import (
+    Claim,
+    LostFoundItem,
+    Student,
+    Teacher,
+    Product,
+    CartItem,
+    Order,
+    ReturnRequest,
+    Message,
+    Reaction,
+    Group,
+)
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
@@ -232,65 +245,3 @@ class LostFoundItemAdmin(admin.ModelAdmin):
     quick_view_on_map.short_description = "Map"
 
 
-# --- CLAIM ACTIONS -----------------------------------------------------
-
-@admin.action(description="APPROVE selected claims")
-def approve_claims(modeladmin, request, queryset):
-    approved = 0
-    skipped = 0
-    for claim in queryset.select_related("item"):
-        item = claim.item
-        if item.status == "CLAIMED":
-            skipped += 1
-            continue
-        claim.status = "APPROVED"
-        claim.reviewed_at = timezone.now()
-        claim.save(update_fields=["status", "reviewed_at"])
-        # Reject others
-        Claim.objects.filter(item=item, status="PENDING").exclude(pk=claim.pk).update(
-            status="REJECTED", reviewed_at=timezone.now()
-        )
-        item.status = "CLAIMED"
-        item.save(update_fields=["status"])
-        approved += 1
-
-    if approved:
-        modeladmin.message_user(request, f"Approved {approved} claim(s).", messages.SUCCESS)
-    if skipped:
-        modeladmin.message_user(request, f"Skipped {skipped} (already claimed).", messages.WARNING)
-
-
-@admin.action(description="REJECT selected claims")
-def reject_claims(modeladmin, request, queryset):
-    updated = queryset.filter(~Q(status="REJECTED")).update(status="REJECTED", reviewed_at=timezone.now())
-    modeladmin.message_user(request, f"Rejected {updated} claim(s).", messages.SUCCESS)
-
-
-# --- CLAIM ADMIN -------------------------------------------------------
-
-@admin.register(Claim)
-class ClaimAdmin(admin.ModelAdmin):
-    list_display = ("item", "claimant_display", "status", "created_at", "reviewed_at", "answer_excerpt")
-    list_filter = ("status", "created_at", "reviewed_at")
-    search_fields = (
-        "item__title",
-        "answer_text",
-        "claimant_student__name",
-        "claimant_teacher__name",
-    )
-    date_hierarchy = "created_at"
-    ordering = ("-created_at",)
-    actions = [approve_claims, reject_claims]
-    readonly_fields = ("created_at", "reviewed_at")
-
-    fields = ("item", "claimant_student", "claimant_teacher", "answer_text", "status", "created_at", "reviewed_at")
-
-    def claimant_display(self, obj):
-        who = obj.claimant_student or obj.claimant_teacher
-        return getattr(who, "name", "Unknown")
-    claimant_display.short_description = "Claimant"
-
-    def answer_excerpt(self, obj):
-        text = (obj.answer_text or "").strip()
-        return (text[:60] + "…") if len(text) > 60 else text
-    answer_excerpt.short_description = "Answer"

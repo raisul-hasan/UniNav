@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
-from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Group, Reaction
+from .models import Student, Teacher, Product, CartItem, Order, ReturnRequest, Message, Group, Reaction, LostFoundItem
 from .utils import generate_otp, send_otp_email
 import random
 from decimal import Decimal
@@ -1165,3 +1165,54 @@ def gemini_chat_api(request):
         # Log as needed
         return JsonResponse({"error": str(e)}, status=500)
     
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils import timezone
+# existing imports...
+ # ← add LostFound here
+
+def _require_approved_teacher(request):
+    user_id = request.session.get('user_id')
+    user_type = request.session.get('user_type')
+    if not user_id or user_type != "teacher":
+        messages.error(request, "Only approved teachers can perform this action.")
+        return None, redirect("login")
+    teacher = get_object_or_404(Teacher, id=user_id)
+    if not getattr(teacher, "is_approved", False):
+        messages.error(request, "Your account is pending admin approval.")
+        return None, redirect("login")
+    return teacher, None
+
+def approve_lostfound_list(request):
+    teacher, block = _require_approved_teacher(request)
+    if block:
+        return block
+    reports = LostFoundItem.objects.filter(status='Pending').order_by('-id')
+    return render(request, "login/approve_lostfound_list.html", {"reports": reports})
+
+def approve_lostfound_action(request, report_id, action):
+    teacher, block = _require_approved_teacher(request)
+    if block:
+        return block
+
+    report = get_object_or_404(LostFoundItem, id=report_id)
+
+    if report.status != 'Pending':
+        messages.info(request, "This report is already processed.")
+        return redirect("approve_lostfound_list")
+
+    if action == "approve":
+        report.status = "Approved"
+        msg = "Report approved."
+    elif action == "reject":
+        report.status = "Rejected"
+        msg = "Report rejected."
+    else:
+        messages.error(request, "Invalid action.")
+        return redirect("approve_lostfound_list")
+
+    report.reviewed_at = timezone.now()
+    report.reviewed_by = teacher
+    report.save()
+    messages.success(request, msg)
+    return redirect("approve_lostfound_list")

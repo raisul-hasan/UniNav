@@ -1,0 +1,192 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Events & Personal Pins{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row g-3">
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm sticky-top" style="top:80px;">
+        <div class="card-body">
+          <h5 class="mb-3">📍 Add Event or Pin</h5>
+          <form method="post">
+            {% csrf_token %}
+            <input type="text" name="title" class="form-control mb-2" placeholder="Event or Pin Title" required>
+            <textarea name="description" class="form-control mb-2" placeholder="Description (optional)" rows="2"></textarea>
+
+            <div class="row mb-2">
+              <div class="col">
+                <label>Start Time</label>
+                <input type="datetime-local" name="start_time" class="form-control">
+              </div>
+              <div class="col">
+                <label>End Time</label>
+                <input type="datetime-local" name="end_time" class="form-control">
+              </div>
+            </div>
+
+            <input type="hidden" name="floor" id="pinFloor">
+            <input type="hidden" name="x" id="pinX">
+            <input type="hidden" name="y" id="pinY">
+
+            <div class="form-check mb-3">
+              <input type="checkbox" class="form-check-input" name="is_public" id="is_public">
+              <label for="is_public" class="form-check-label">Make this event public</label>
+            </div>
+
+            <button class="btn btn-primary w-100 mb-2">Save</button>
+            <p class="text-muted small">Click on the map to set location.</p>
+          </form>
+
+          <hr>
+          <h6>My Pins</h6>
+          <ul class="list-group small mb-3">
+            {% for p in my_pins %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                F{{ p.floor }} — {{ p.title }}
+                <form method="post" action="{% url 'delete_pin' p.id %}">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+              </li>
+            {% empty %}
+              <li class="list-group-item small text-muted">No pins yet.</li>
+            {% endfor %}
+          </ul>
+
+          <h6>Public Events</h6>
+          <ul class="list-group small">
+            {% for p in public_pins %}
+              <li class="list-group-item">F{{ p.floor }} — {{ p.title }}</li>
+            {% empty %}
+              <li class="list-group-item small text-muted">No public events yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <div id="map" style="height:640px; width:100%; border-radius:.5rem;"></div>
+        </div>
+        <div class="card-footer text-muted small">
+          Click on the map to create a new pin. Switch floors using buttons below.
+        </div>
+      </div>
+
+      <div class="btn-group mt-2">
+        <button class="btn btn-outline-primary floor-btn" data-floor="1">F1</button>
+        <button class="btn btn-outline-primary floor-btn" data-floor="2">F2</button>
+        <button class="btn btn-outline-primary floor-btn" data-floor="3">F3</button>
+        <button class="btn btn-outline-primary floor-btn" data-floor="4">F4</button>
+        <button class="btn btn-outline-primary floor-btn" data-floor="5">F5</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- ✅ Safe JSON injection -->
+{% if my_pins %}{{ my_pins|json_script:"myPins" }}{% else %}<script id="myPins" type="application/json">[]</script>{% endif %}
+{% if public_pins %}{{ public_pins|json_script:"publicPins" }}{% else %}<script id="publicPins" type="application/json">[]</script>{% endif %}
+
+<script>
+  const myPins = JSON.parse(document.getElementById('myPins').textContent);
+  const publicPins = JSON.parse(document.getElementById('publicPins').textContent);
+
+  const floors = {
+    1: "{% static 'login/image/1st-floor.png' %}",
+    2: "{% static 'login/image/2nd-floor.png' %}",
+    3: "{% static 'login/image/3rd-floor.png' %}",
+    4: "{% static 'login/image/4th-floor.png' %}",
+    5: "{% static 'login/image/5th-floor.png' %}"
+  };
+
+  let currentFloor = 1;
+  const bounds = [[0, 0], [1952, 2048]];
+  const map = L.map('map', {
+    crs: L.CRS.Simple,
+    minZoom: -1,
+    maxZoom: 2,
+    maxBounds: bounds,
+    maxBoundsViscosity: 1.0
+  });
+
+  let imgLayer = null;
+  let tempMarker = null;
+  const pins = [];
+
+  function colorIcon(color) {
+    return L.divIcon({
+      html: `<div style='font-size:22px;'>${color === 'blue' ? '🔵' : '🔴'}</div>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 24]
+    });
+  }
+
+  function formatDateTime(dt) {
+    if (!dt) return "N/A";
+    try {
+      const d = new Date(dt);
+      return d.toLocaleString();
+    } catch {
+      return dt;
+    }
+  }
+
+  function loadFloor(floor) {
+    currentFloor = floor;
+    if (imgLayer) map.removeLayer(imgLayer);
+    imgLayer = L.imageOverlay(floors[floor], bounds).addTo(map);
+    map.fitBounds(bounds);
+    document.querySelectorAll('.floor-btn').forEach(b=>{
+      b.classList.toggle('btn-primary', parseInt(b.dataset.floor)===floor);
+      b.classList.toggle('btn-outline-primary', parseInt(b.dataset.floor)!==floor);
+    });
+
+    pins.forEach(m => map.removeLayer(m));
+    pins.length = 0;
+
+    [...myPins, ...publicPins].filter(p => p.floor === floor).forEach(p => {
+      const isMyPin = myPins.some(m => m.id === p.id);
+      const desc = p.description && p.description.trim() ? p.description : "No description provided";
+      const start = formatDateTime(p.start_time);
+      const end = formatDateTime(p.end_time);
+      const marker = L.marker([p.y, p.x], { icon: colorIcon(isMyPin ? 'blue' : 'red') }).addTo(map);
+      marker.bindPopup(`
+        <div style="min-width:200px;">
+          <strong>${p.title}</strong><br>
+          <small><b>Floor:</b> ${p.floor} | <b>X:</b> ${p.x.toFixed(1)} | <b>Y:</b> ${p.y.toFixed(1)}</small><br>
+          <hr class="my-1">
+          <p>${desc}</p>
+          <small><b>Start:</b> ${start}<br><b>End:</b> ${end}</small>
+        </div>
+      `);
+      pins.push(marker);
+    });
+  }
+
+  map.on('click', e => {
+    const { lat, lng } = e.latlng;
+    document.getElementById('pinFloor').value = currentFloor;
+    document.getElementById('pinX').value = lng.toFixed(2);
+    document.getElementById('pinY').value = lat.toFixed(2);
+
+    if (tempMarker) map.removeLayer(tempMarker);
+    tempMarker = L.marker([lat, lng], { icon: colorIcon('blue') }).addTo(map)
+      .bindPopup(`🆕 New Pin<br><i>Floor ${currentFloor}</i>`).openPopup();
+  });
+
+  document.querySelectorAll('.floor-btn').forEach(b=>{
+    b.addEventListener('click', ()=>loadFloor(parseInt(b.dataset.floor)));
+  });
+
+  loadFloor(1);
+</script>
+{% endblock %}

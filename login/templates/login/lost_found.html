@@ -1,0 +1,253 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Lost & Found{% endblock %}
+
+{% block content %}
+<section class="py-4" style="border-radius: 20px;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="h4 mb-0">Lost & Found</h1>
+        <small class="text-muted">Report, browse, and claim items.</small>
+      </div>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#reportModal">+ Report Item</button>
+    </div>
+
+    <div class="row">
+      <!-- Left: Lists -->
+      <div class="col-lg-7">
+        <div class="card mb-3">
+          <div class="card-header bg-dark text-white">Currently LOST</div>
+          <div class="card-body p-2">
+            {% if lost_items %}
+              <div class="list-group list-group-flush">
+                {% for it in lost_items %}
+                <div class="list-group-item">
+                  <div class="d-flex">
+                    {% if it.photo %}
+                    <img src="{{ it.photo.url }}" alt="{{ it.title }}" class="mr-3" style="width:64px;height:64px;object-fit:cover;border-radius:8px;">
+                    {% endif %}
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-1">{{ it.title }}</h6>
+                        <span class="badge badge-secondary">LOST</span>
+                      </div>
+                      {% if it.description %}<p class="mb-1 text-muted" style="font-size: 0.9rem;">{{ it.description|truncatechars:160 }}</p>{% endif %}
+                      <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#claimModal-{{ it.id }}">
+                        Claim This Item
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Claim Modal (LOST) -->
+                <div class="modal fade" id="claimModal-{{ it.id }}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <form method="post" action="{% url 'submit_claim' it.id %}" class="modal-content">
+                      {% csrf_token %}
+                      <div class="modal-header">
+                        <h5 class="modal-title">Claim “{{ it.title }}”</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label>{{ it.claim_question }}</label>
+                          {{ claim_form.answer_text }}
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Submit Claim</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">No lost items reported yet.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-success text-white">Currently FOUND</div>
+          <div class="card-body p-2">
+            {% if found_items %}
+              <div class="list-group list-group-flush">
+                {% for it in found_items %}
+                <div class="list-group-item">
+                  <div class="d-flex">
+                    {% if it.photo %}
+                    <img src="{{ it.photo.url }}" alt="{{ it.title }}" class="mr-3" style="width:64px;height:64px;object-fit:cover;border-radius:8px;">
+                    {% endif %}
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-1">{{ it.title }}</h6>
+                        <span class="badge badge-success">FOUND</span>
+                      </div>
+                      {% if it.description %}<p class="mb-1 text-muted" style="font-size: 0.9rem;">{{ it.description|truncatechars:160 }}</p>{% endif %}
+                      {% if it.found_at %}<small class="text-muted">Found: {{ it.found_at|date:"M d, Y H:i" }}</small>{% endif %}
+                      <div class="mt-2">
+                        <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#claimModal-{{ it.id }}">Claim</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Claim Modal (FOUND) -->
+                <div class="modal fade" id="claimModal-{{ it.id }}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <form method="post" action="{% url 'submit_claim' it.id %}" class="modal-content">
+                      {% csrf_token %}
+                      <div class="modal-header">
+                        <h5 class="modal-title">Claim “{{ it.title }}”</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label>{{ it.claim_question }}</label>
+                          {{ claim_form.answer_text }}
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Submit Claim</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">No found items yet.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Map -->
+      <div class="col-lg-5 mt-3 mt-lg-0">
+        <div class="card">
+          <div class="card-header">Found Item Locations</div>
+          <div class="card-body p-0">
+            <div id="lf-map" style="height: 420px; width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form method="post" enctype="multipart/form-data" action="{% url 'report_item' %}" class="modal-content">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title">Report Lost/Found Item</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Title</label>
+            {{ report_form.title }}
+          </div>
+          <div class="form-group col-md-6">
+            <label>Status</label>
+            {{ report_form.status }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          {{ report_form.description }}
+        </div>
+
+        <div class="form-group">
+          <label>Photo</label>
+          {{ report_form.photo }}
+        </div>
+
+        <div class="border rounded p-2 mb-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="mb-0">Found Location (optional)</label>
+            <small class="text-muted">Click on the small map to set position</small>
+          </div>
+          <div id="pick-map" style="height: 240px;"></div>
+          <div class="form-row mt-2">
+            <div class="form-group col-md-4">
+              <label>Found At</label>
+              {{ report_form.found_at }}
+            </div>
+            <div class="form-group col-md-4">
+              <label>Lat</label>
+              {{ report_form.found_lat }}
+            </div>
+            <div class="form-group col-md-4">
+              <label>Lng</label>
+              {{ report_form.found_lng }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Claim Question</label>
+          {{ report_form.claim_question }}
+        </div>
+        <div class="form-group">
+          <label>Correct Answer (optional for auto-approve)</label>
+          {{ report_form.correct_answer }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Leaflet (map) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // Map data from server for markers
+  const LF_MARKERS = JSON.parse('{{ markers|safe|escapejs }}');
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // View map (found item locations)
+    const map = L.map('lf-map').setView([23.751, 90.392], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 20}).addTo(map);
+
+    LF_MARKERS.forEach(m => {
+      if (m.lat && m.lng) {
+        const marker = L.marker([m.lat, m.lng]).addTo(map);
+        marker.bindPopup(`<strong>${m.title}</strong><br>${m.snippet || ''}`);
+      }
+    });
+
+    // Picker map inside Report modal
+    const pickMap = L.map('pick-map').setView([23.751, 90.392], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 20}).addTo(pickMap);
+    let pickMarker = null;
+
+    function setPickMarker(latlng) {
+      if (pickMarker) pickMarker.setLatLng(latlng);
+      else pickMarker = L.marker(latlng, {draggable:true}).addTo(pickMap).on('dragend', (e) => {
+        const ll = e.target.getLatLng();
+        document.getElementById(idLat).value = ll.lat.toFixed(6);
+        document.getElementById(idLng).value = ll.lng.toFixed(6);
+      });
+      document.getElementById(idLat).value = latlng.lat.toFixed(6);
+      document.getElementById(idLng).value = latlng.lng.toFixed(6);
+    }
+
+    // We need the generated IDs for Django form fields
+    const idLat = "{{ report_form.found_lat.id_for_label }}";
+    const idLng = "{{ report_form.found_lng.id_for_label }}";
+
+    pickMap.on('click', (e) => setPickMarker(e.latlng));
+  });
+</script>
+{% endblock %}

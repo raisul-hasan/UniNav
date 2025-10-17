@@ -1,0 +1,303 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}UniNav Messaging{% endblock %}
+
+{% block content %}
+<style>
+  :root {
+    --un-accent: #7a6ad8;
+    --un-accent-600: #6a5fd1;
+    --un-bg: #f7f7fb;
+  }
+  .messenger{height:calc(100vh - 180px);display:grid;grid-template-columns:280px 1fr;gap:0;background:var(--un-bg);border-radius:16px;overflow:hidden;border:1px solid #eee}
+  .ms-sidebar{background:#fff;border-right:1px solid #eee;display:flex;flex-direction:column}
+  .ms-brand{padding:16px 16px 8px;border-bottom:1px solid #f1f1f5}
+  .ms-brand h4{margin:0;color:var(--un-accent);font-weight:700}
+  .ms-search{padding:12px 16px;border-bottom:1px dashed #eee}
+  .ms-search input{border-radius:999px;border:1px solid #e5e5ef;padding:10px 14px;width:100%;outline:0}
+  .list-title{font-size:.75rem;color:#777;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;margin-top:6px}
+  .ms-list{overflow:auto;padding:6px}
+  .ms-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer;text-decoration:none;color:inherit}
+  .ms-item.active,.ms-item:hover{background:#f3f2ff}
+  .avatar{width:36px;height:36px;border-radius:999px;overflow:hidden;flex:0 0 36px;border:2px solid #fff;box-shadow:0 0 0 1px #e9e9f4}
+  .avatar img{width:100%;height:100%;object-fit:cover}
+  .ms-meta{line-height:1.1}
+  .ms-meta .name{font-weight:600;font-size:.95rem}
+  .ms-chat{display:grid;grid-template-rows:auto 1fr auto}
+  .ms-head{background:#fff;border-bottom:1px solid #eee;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+  .ms-head h5{margin:0;display:flex;align-items:center;gap:8px}
+  .ms-head .pill{font-size:.75rem;padding:4px 8px;border-radius:999px;background:#f3f2ff;color:var(--un-accent)}
+  .ms-msgs{padding:16px;overflow:auto;background:var(--un-bg)}
+  .bubble{max-width:min(74%,620px);padding:10px 12px;border-radius:14px;margin-bottom:12px;position:relative}
+  .from-me{background:var(--un-accent);color:#fff;margin-left:auto;border-top-right-radius:4px}
+  .from-them{background:#fff;border:1px solid #eee;color:#333;border-top-left-radius:4px}
+  .bubble small{display:block;opacity:.8;margin-top:6px;font-size:.72rem}
+  .react-row{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+  .react-chip{background:#fff;border:1px solid #eee;border-radius:999px;padding:2px 8px;font-size:.8rem}
+  .react-btns button{border:1px dashed #d9d9ef;background:#fff;border-radius:999px;padding:2px 8px;font-size:.8rem;cursor:pointer}
+  .ms-input{background:#fff;border-top:1px solid #eee;padding:10px}
+  .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .toolbar .btn-lite{border:1px solid #e5e5ef;background:#fff;border-radius:10px;padding:6px 10px;font-size:.9rem;cursor:pointer}
+  .composer{display:flex;gap:8px;align-items:flex-end}
+  .composer textarea{height:56px;resize:none;line-height:1.3;border:1px solid #e5e5ef;border-radius:12px;padding:10px 12px;width:100%}
+  .composer .actions{display:flex;flex-direction:column;gap:8px}
+  .btn-send{background:var(--un-accent);color:#fff;border:none;border-radius:10px;padding:10px 14px}
+  .hint{font-size:.8rem;color:#777;margin-left:2px}
+  @media (max-width:992px){.messenger{grid-template-columns:1fr;height:calc(100vh - 160px)}.ms-sidebar{display:none}}
+</style>
+
+<div class="messenger shadow-sm">
+  <!-- Sidebar -->
+  <aside class="ms-sidebar">
+    <div class="ms-brand"><h4>UniNav Chat</h4></div>
+    <div class="ms-search"><input id="listSearch" type="search" placeholder="Search users & groups…"></div>
+
+    <div class="list-title">Users</div>
+    <div class="ms-list" id="userList">
+      {% for user in users %}
+      <a href="?id={{ user.id }}&type=user"
+         class="ms-item {% if selected_type == 'user' and selected.id == user.id %}active{% endif %}">
+        <span class="avatar">
+          <img alt="{{ user.name }}" src="https://api.dicebear.com/7.x/initials/svg?seed={{ user.name|urlencode }}">
+        </span>
+        <div class="ms-meta">
+          <div class="name">{{ user.name }}</div>
+          <small class="text-muted">{{ user.email }}</small>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="list-title">Groups</div>
+    <div class="ms-list" id="groupList">
+      {% for group in groups %}
+      <a href="?id={{ group.id }}&type=group"
+         class="ms-item {% if selected_type == 'group' and selected.id == group.id %}active{% endif %}">
+        <span class="avatar">
+          <img alt="{{ group.name }}" src="https://api.dicebear.com/7.x/shapes/svg?seed={{ group.name|urlencode }}">
+        </span>
+        <div class="ms-meta">
+          <div class="name">{{ group.name }}</div>
+          <small class="text-muted">{{ group.members.count }} members</small>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="p-3">
+      <a href="{% url 'create_group' %}" class="btn btn-outline-primary btn-block" style="border-color:var(--un-accent);color:var(--un-accent);">+ Create Group</a>
+    </div>
+  </aside>
+
+  <!-- Chat Area -->
+  <section class="ms-chat">
+    {% if selected %}
+      <header class="ms-head">
+        <h5>
+          {% if selected_type == 'group' %}
+            <span class="pill">Group</span> {{ selected.name }}
+          {% else %}
+            <span class="pill">Chat</span> {{ selected.name }}
+          {% endif %}
+        </h5>
+        <div class="d-none d-md-flex align-items-center gap-2">
+          <button id="scrollBottom" class="btn btn-sm btn-outline-secondary">Scroll to latest</button>
+          <button id="toggleTheme" class="btn btn-sm btn-outline-secondary">Theme</button>
+        </div>
+      </header>
+
+      <div id="chat-messages" class="ms-msgs">
+        {% for message in messages %}
+          <div id="message-{{ message.id }}"
+               class="bubble
+                 {% if message.sender and message.sender.id == user_id %}
+                   from-me
+                 {% elif message.teacher_sender and message.teacher_sender.id == user_id %}
+                   from-me
+                 {% else %}
+                   from-them
+                 {% endif %}
+               ">
+            <strong>
+              {% if message.sender %}{{ message.sender.name }}{% else %}{{ message.teacher_sender.name }}{% endif %}
+            </strong>
+            <p class="mb-1">{{ message.content }}</p>
+
+            {% if message.file %}
+              <a href="{{ message.file.url }}" class="btn btn-sm btn-light border" download>Download</a>
+            {% endif %}
+
+            {% if message.voice %}
+              <audio controls src="{{ message.voice.url }}" class="mt-2 w-100"></audio>
+            {% endif %}
+
+            {% if message.latitude and message.longitude %}
+              <div id="map-{{ message.id }}" style="height:160px;margin-top:8px;border-radius:12px;overflow:hidden;"></div>
+            {% endif %}
+
+            <div class="react-row">
+              {% for reaction in message.reactions.all %}
+                <span class="react-chip" title="by {{ reaction.user.name|default:reaction.teacher.name }}">{{ reaction.emoji }}</span>
+              {% endfor %}
+              <span class="react-btns">
+                <button class="reaction-btn" data-message-id="{{ message.id }}" data-emoji="👍">👍</button>
+                <button class="reaction-btn" data-message-id="{{ message.id }}" data-emoji="❤️">❤️</button>
+                <button class="reaction-btn" data-message-id="{{ message.id }}" data-emoji="😊">😊</button>
+              </span>
+            </div>
+
+            <small>
+              {{ message.timestamp|date:"M d, Y, h:i A" }} ·
+              <a href="#"
+                 class="copyLink
+                   {% if message.sender and message.sender.id == user_id %}
+                     text-light
+                   {% elif message.teacher_sender and message.teacher_sender.id == user_id %}
+                     text-light
+                   {% else %}
+                     text-muted
+                   {% endif %}
+                 "
+                 data-mid="{{ message.id }}">Copy link</a>
+            </small>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="ms-input">
+        <form id="chat-form" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if selected_type == 'group' %}
+            <input type="hidden" name="group_id" value="{{ selected.id }}">
+          {% else %}
+            <input type="hidden" name="recipient_id" value="{{ selected.id }}">
+          {% endif %}
+
+          <div class="toolbar">
+            <button type="button" class="btn-lite" onclick="shareLocation()">📍 Share location</button>
+            <label class="btn-lite mb-0">
+              📎 File<input type="file" name="file" id="file-input" class="d-none">
+            </label>
+            <label class="btn-lite mb-0">
+              🎤 Voice<input type="file" name="voice" id="voice-input" accept="audio/*" class="d-none">
+            </label>
+            <span class="hint" id="attachHint">No attachment</span>
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+          </div>
+
+          <div class="composer">
+            <textarea name="content" id="contentBox" class="form-control" rows="2" placeholder="Type your message…"></textarea>
+            <div class="actions">
+              <button type="submit" class="btn-send">Send ➤</button>
+              <small class="text-muted text-center" id="charCount">0/1000</small>
+            </div>
+          </div>
+        </form>
+      </div>
+    {% else %}
+      <div class="d-flex align-items-center justify-content-center p-5">
+        <div class="text-center">
+          <h4 class="mb-1">Select a conversation</h4>
+          <p class="text-muted mb-0">Choose a user or group from the left panel to start messaging.</p>
+        </div>
+      </div>
+    {% endif %}
+  </section>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  const chatBox = document.getElementById('chat-messages');
+  function scrollToBottom(){ if(chatBox){ chatBox.scrollTop = chatBox.scrollHeight; } }
+  scrollToBottom();
+  document.getElementById('scrollBottom')?.addEventListener('click', scrollToBottom);
+
+  const listSearch = document.getElementById('listSearch');
+  listSearch?.addEventListener('input', () => {
+    const q = listSearch.value.toLowerCase();
+    for (const listId of ['userList','groupList']) {
+      const box = document.getElementById(listId); if(!box) continue;
+      box.querySelectorAll('.ms-item').forEach(a => {
+        const t = a.innerText.toLowerCase(); a.style.display = t.includes(q) ? '' : 'none';
+      });
+    }
+  });
+
+  const attachHint = document.getElementById('attachHint');
+  const fileIn = document.getElementById('file-input');
+  const voiceIn = document.getElementById('voice-input');
+  function updateAttachHint(){
+    const parts = [];
+    if (fileIn?.files?.length)  parts.push(`${fileIn.files[0].name}`);
+    if (voiceIn?.files?.length) parts.push(`${voiceIn.files[0].name}`);
+    attachHint.textContent = parts.length ? parts.join(' · ') : 'No attachment';
+  }
+  fileIn?.addEventListener('change', updateAttachHint);
+  voiceIn?.addEventListener('change', updateAttachHint);
+
+  const contentBox = document.getElementById('contentBox');
+  const charCount = document.getElementById('charCount');
+  contentBox?.addEventListener('input', () => {
+    const v = contentBox.value || '';
+    charCount.textContent = `${v.length}/1000`;
+  });
+
+  document.querySelectorAll('.copyLink').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const mid = a.dataset.mid;
+      const url = `${location.origin}${location.pathname}?${new URLSearchParams({...Object.fromEntries(new URLSearchParams(location.search)), anchor: mid}).toString()}#message-${mid}`;
+      navigator.clipboard.writeText(url);
+      a.textContent = 'Copied ✓';
+      setTimeout(() => a.textContent = 'Copy link', 1200);
+    });
+  });
+
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const chip = document.createElement('span');
+      chip.className = 'react-chip';
+      chip.textContent = btn.dataset.emoji;
+      btn.closest('.react-row').insertBefore(chip, btn.closest('.react-row').querySelector('.react-btns'));
+    });
+  });
+
+  document.getElementById('toggleTheme')?.addEventListener('click', () => {
+    document.body.classList.toggle('bg-dark');
+    document.querySelectorAll('.ms-head, .ms-sidebar, .ms-input, .from-them').forEach(el => el.classList.toggle('bg-dark'));
+  });
+
+  {% for message in messages %}
+    {% if message.latitude and message.longitude %}
+      (function() {
+        const map = L.map('map-{{ message.id }}').setView([{{ message.latitude }}, {{ message.longitude }}], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+        L.marker([{{ message.latitude }}, {{ message.longitude }}]).addTo(map);
+      })();
+    {% endif %}
+  {% endfor %}
+
+  window.shareLocation = function() {
+    if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
+    navigator.geolocation.getCurrentPosition((pos) => {
+      document.getElementById('latitude').value  = pos.coords.latitude;
+      document.getElementById('longitude').value = pos.coords.longitude;
+      alert('Location attached ✓');
+    }, () => alert('Could not get location'));
+  };
+
+  const chatForm = document.getElementById('chat-form');
+  chatForm?.addEventListener('submit', () => {
+    chatForm.querySelector('.btn-send').disabled = true;
+  });
+
+  const anchor = new URLSearchParams(location.search).get('anchor');
+  if (anchor) {
+    const el = document.getElementById(`message-${anchor}`);
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "login/base.html" %}
+{% load static %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7 col-md-9">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h2 class="mb-1">Add a New Product</h2>
+      <p class="text-muted mb-0">Fill out the details below and submit.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+          {% csrf_token %}
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" name="name" id="name" class="form-control" required>
+            <div class="invalid-feedback">Please enter a product name.</div>
+          </div>
+
+          <!-- Price -->
+          <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <div class="input-group">
+              <span class="input-group-text">৳</span>
+              <input type="number" step="0.01" min="0" name="price" id="price" class="form-control" required>
+            </div>
+            <div class="form-text">Use Bangladeshi taka. Example: 299.99</div>
+            <div class="invalid-feedback">Please enter a valid price.</div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description (optional)</label>
+            <textarea name="description" id="description" class="form-control" rows="4" placeholder="Brief details about the product..."></textarea>
+          </div>
+
+          <!-- Image -->
+          <div class="mb-3">
+            <label for="image" class="form-label">Product Image (optional)</label>
+            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+            <div class="form-text">JPG, PNG, or WEBP recommended.</div>
+          </div>
+
+          <!-- Stock (optional) -->
+          <div class="mb-3">
+            <label for="stock" class="form-label">Stock (optional)</label>
+            <input type="number" name="stock" id="stock" class="form-control" min="0" placeholder="e.g., 10">
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save Product</button>
+            <a href="{% url 'shop' %}" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Helpful hint -->
+    <p class="text-muted small text-center mt-3">
+      After adding products, they’ll appear in your shop grid and use the same card layout and buttons as the existing shop page.
+    </p>
+  </div>
+</div>
+
+<!-- Client-side validation (Bootstrap) -->
+<script>
+(function () {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>
+{% endblock %}

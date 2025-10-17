@@ -1,0 +1,192 @@
+{% extends 'login/base.html' %} {% load static %} {% block title %}Create
+Group{% endblock %} {% block content %}
+<style>
+  :root {
+    --un-accent: #7a6ad8;
+  }
+
+  /* Ensure full height so footer sticks to bottom */
+  body,
+  html {
+    height: 100%;
+  }
+  main.page-wrap {
+    min-height: calc(
+      100vh - 200px
+    ); /* adjust if your navbar/footer height differs */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centers card vertically if screen tall */
+    padding: 40px 0;
+  }
+
+  .card-clean {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  }
+  .card-clean .hd {
+    padding: 16px 18px;
+    border-bottom: 1px solid #f1f1f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-clean h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  .badge-soft {
+    background: #f3f2ff;
+    color: var(--un-accent);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
+  .card-clean .bd {
+    padding: 18px;
+  }
+  .form-control,
+  .choices__inner {
+    border-radius: 12px !important;
+    border-color: #e5e5ef !important;
+  }
+  .btn-accent {
+    background: var(--un-accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+  }
+</style>
+
+<main class="page-wrap">
+  <div class="card-clean">
+    <div class="hd">
+      <h2>Create Group</h2>
+      <span class="badge-soft"><span id="memberCount">0</span> selected</span>
+    </div>
+    <div class="bd">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="font-weight-semibold">Group Name</label>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="e.g. CSE-220 Project Team"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="font-weight-semibold d-flex align-items-center gap-2">
+            Members
+            <small class="text-muted ml-1"
+              >(hold Ctrl/Cmd for multi-select)</small
+            >
+          </label>
+
+          <select id="membersSelect" name="members" multiple required>
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+          </select>
+          <small class="form-text text-muted"
+            >Tip: type to filter by name.</small
+          >
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn-accent">Create Group</button>
+          <a href="{% url 'chat' %}" class="btn btn-outline-secondary ml-2"
+            >Cancel</a
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- Choices.js (enhanced multi-select) -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+    const sel = document.getElementById('membersSelect');
+    const memberCount = document.getElementById('memberCount');
+
+    const choices = new Choices('#membersSelect', {
+      removeItemButton: true,
+      searchPlaceholderValue: 'Search members…',
+      shouldSort: false,
+      placeholder: true,
+    });
+
+    function updateCount(){
+      const count = choices.getValue(true).length;
+      memberCount.textContent = count;
+    }
+    sel.addEventListener('change', updateCount);
+    document.addEventListener('DOMContentLoaded', updateCount);
+
+    if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  const chatBox = document.getElementById('chat-messages');
+  function scrollToBottom(){ if(chatBox){ chatBox.scrollTop = chatBox.scrollHeight; } }
+
+  // make sure we’re at the latest on load & on bfcache restore
+  window.addEventListener('load', () => { setTimeout(scrollToBottom, 0); });
+  window.addEventListener('pageshow', () => { setTimeout(scrollToBottom, 0); });
+
+  // ---- AJAX-submit the message so the page doesn’t reload
+  const chatForm = document.getElementById('chat-form');
+  if (chatForm) {
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault(); // stop full page reload
+      const sendBtn = chatForm.querySelector('.btn-send');
+      sendBtn.disabled = true;
+
+      try {
+        const formData = new FormData(chatForm);
+        // mark as ajax so your view can optionally branch without breaking anything
+        formData.append('ajax', '1');
+
+        const res = await fetch(window.location.href, {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+
+        // We don’t rely on the response body; your websocket / long-polling (if any)
+        // will bring the new message in. We keep the user at the bottom.
+        if (!res.ok) {
+          console.error('Send failed', res.status);
+          alert('Could not send. Please try again.');
+        } else {
+          // Clear input + attachments for a snappy feel
+          chatForm.querySelector('#contentBox')?.value = '';
+          chatForm.querySelector('#file-input')?.value = '';
+          chatForm.querySelector('#voice-input')?.value = '';
+          document.getElementById('attachHint').textContent = 'No attachment';
+          // stay pinned to latest
+          scrollToBottom();
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Network error. Please try again.');
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
+  }
+</script>
+{% endblock %}

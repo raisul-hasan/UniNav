@@ -1,0 +1,81 @@
+{
+  "nodes": {
+    "C1": { "x": 600, "y": 750, "name": "West Corridor" },
+    "C2": { "x": 900, "y": 400, "name": "NW Junction" },
+    "C3": { "x": 1500, "y": 350, "name": "North Junction" },
+    "C4": { "x": 2100, "y": 400, "name": "NE Junction" },
+    "C5": { "x": 2600, "y": 750, "name": "East Corridor" },
+    "C6": { "x": 2100, "y": 1100, "name": "SE Junction" },
+    "C7": { "x": 1500, "y": 1150, "name": "South Junction" },
+    "C8": { "x": 900, "y": 1100, "name": "SW Junction" },
+    "C9": { "x": 1500, "y": 750, "name": "Central Lobby" },
+    "LIFT_N": { "x": 1750, "y": 700, "name": "Lift (North block)" },
+    "LIFT_S": { "x": 1550, "y": 900, "name": "Lift (South block)" },
+    "ESC_E": { "x": 2000, "y": 930, "name": "Escalator (East)" },
+    "ESC_W": { "x": 1350, "y": 950, "name": "Escalator (West)" },
+    "STAIR_NE": { "x": 1700, "y": 520, "name": "Stair (NE)" },
+    "STAIR_W": { "x": 1050, "y": 650, "name": "Stair (West)" },
+
+    "VC_128_129": { "x": 350, "y": 430, "name": "Office of the VC #128-129" },
+    "TREAS_127": { "x": 1950, "y": 300, "name": "Treasurer & Director Coord Office #127" },
+    "SEMINAR_126": { "x": 2200, "y": 300, "name": "Seminar Room-1 #126" },
+    "MEET_124": { "x": 2300, "y": 450, "name": "Meeting Room #124" },
+    "ROOM_123": { "x": 2550, "y": 430, "name": "Room #123" },
+    "ROOM_122": { "x": 2750, "y": 480, "name": "Room #122" },
+    "DCCSA_121": { "x": 2500, "y": 900, "name": "DCCSA #121" },
+    "PRO_116": { "x": 2000, "y": 1050, "name": "PRO (116)" },
+    "OPS_LOG_112": { "x": 2200, "y": 1150, "name": "Operations Logistics & Procurement Office #112" },
+    "ROOM_111": { "x": 2450, "y": 1180, "name": "Room #111" },
+
+    "REG_108_110": { "x": 1400, "y": 1250, "name": "Office of the Registrar #108-110" },
+    "CONT_EXAM_103_105": { "x": 1000, "y": 1250, "name": "Office of Controller of Examinations #103-105" },
+    "PROVC_IAR_101_102": { "x": 650, "y": 1050, "name": "Office of the Pro-VC & Executive Director IAR #101-102" },
+
+    "PANTRY_125": { "x": 1650, "y": 600, "name": "Pantry #125" },
+    "WASH_M": { "x": 1775, "y": 620, "name": "Male Washroom (North)" },
+    "WASH_F": { "x": 1825, "y": 620, "name": "Female Washroom (North)" },
+
+    "FEXIT_W": { "x": 750, "y": 1180, "name": "Fire Exit Door (West)" },
+    "FEXIT_E": { "x": 2650, "y": 520, "name": "Fire Exit Door (East)" }
+  },
+  "edges": {
+    "C1": ["C2","C8","C9"],
+    "C2": ["C1","C3"],
+    "C3": ["C2","C4","C9"],
+    "C4": ["C3","C5","STAIR_NE"],
+    "C5": ["C4","C6","C9"],
+    "C6": ["C5","C7","ESC_E"],
+    "C7": ["C6","C8","C9","LIFT_S","ESC_W","REG_108_110"],
+    "C8": ["C7","C1","CONT_EXAM_103_105"],
+    "C9": ["C1","C3","C5","C7","LIFT_N","PANTRY_125"],
+
+    "LIFT_N": ["C9"],
+    "LIFT_S": ["C7"],
+    "ESC_E": ["C6"],
+    "ESC_W": ["C7"],
+    "STAIR_NE": ["C4"],
+    "STAIR_W": ["C1"],
+
+    "VC_128_129": ["C2"],
+    "TREAS_127": ["C3"],
+    "SEMINAR_126": ["C4"],
+    "MEET_124": ["C4"],
+    "ROOM_123": ["C5"],
+    "ROOM_122": ["C5"],
+    "DCCSA_121": ["C6"],
+    "PRO_116": ["C6"],
+    "OPS_LOG_112": ["C7"],
+    "ROOM_111": ["C6"],
+
+    "REG_108_110": ["C7"],
+    "CONT_EXAM_103_105": ["C8"],
+    "PROVC_IAR_101_102": ["C8"],
+
+    "PANTRY_125": ["C9"],
+    "WASH_M": ["C9"],
+    "WASH_F": ["C9"],
+
+    "FEXIT_W": ["C8"],
+    "FEXIT_E": ["C5"]
+  }
+}

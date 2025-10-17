@@ -1,0 +1,475 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}UniNav Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Page width limiter so full-width doesn't feel stretched -->
+<div class="page-max">
+
+  <!-- ===== HERO ===== -->
+  <section class="py-5 mb-4 position-relative hero-wrap text-white overflow-hidden">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <h1 class="display-5 font-weight-bold mb-3">Welcome to UniNav</h1>
+        <p class="lead mb-4">Your smart campus companion — maps, chat, and a project shop in one place.</p>
+        <div class="d-flex flex-wrap">
+          <!-- FIX: high-contrast primary button with subtle border -->
+          <a href="{% url 'campus_map' %}" class="btn btn-contrast mr-3 mb-2">
+            Open Campus Maps
+          </a>
+          <!-- FIX: ghost-light with visible border -->
+          <a href="{% url 'shop' %}" class="btn btn-ghost-light mb-2">
+            Browse Shop
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 mt-4 mt-lg-0 text-lg-right text-center">
+        <img class="img-fluid rounded-lg shadow hero-img"
+             src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=60"
+             alt="UniNav Hero">
+      </div>
+    </div>
+    <!-- animated decorative blobs -->
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <!-- soft edge at bottom so section transitions nicely -->
+    <div class="hero-fade"></div>
+  </section>
+
+  <!-- Divider -->
+  <hr class="soft-sep">
+
+  <!-- ===== HIGHLIGHTS CAROUSEL ===== -->
+  <section class="mb-5 section-pad">
+    <div class="feature-carousel owl-carousel owl-theme">
+      <div class="item">
+        <div class="card border-0 shadow-sm hover-raise">
+          <img class="card-img-top card-img-tall"
+               src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=60"
+               alt="Interactive Maps">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Interactive Campus Maps</h5>
+            <p class="text-muted mb-3">Find rooms fast with zoom & reset controls.</p>
+            <a href="{% url 'campus_map' %}" class="btn btn-primary btn-sm">Open Maps</a>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="card border-0 shadow-sm hover-raise">
+          <img class="card-img-top card-img-tall"
+               src="https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=1200&q=60"
+               alt="Real-time Chat">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Real-time Chat</h5>
+            <p class="text-muted mb-3">Groups, files, voice, reactions, and location.</p>
+            <a href="{% url 'chat' %}" class="btn btn-primary btn-sm">Open Chat</a>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="card border-0 shadow-sm hover-raise">
+          <img class="card-img-top card-img-tall"
+               src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=60"
+               alt="Student Shop">
+          <div class="card-body">
+            <h5 class="card-title mb-2">Student Shop</h5>
+            <p class="text-muted mb-3">Grab project essentials. Easy checkout.</p>
+            <a href="{% url 'shop' %}" class="btn btn-primary btn-sm">Go to Shop</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUICK FEATURE CARDS ===== -->
+  <section class="mb-4 section-pad">
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm hover-raise">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1499914485622-a88fac536970?auto=format&fit=crop&w=800&q=60"
+               alt="Maps">
+          <div class="card-body">
+            <h5 class="card-title">Campus Maps</h5>
+            <p class="card-text text-muted">Floor-wise maps with simple controls.</p>
+            <a href="{% url 'campus_map' %}" class="btn btn-soft-primary btn-sm">Open Maps</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm hover-raise">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1560393464-5c69a73c5770?auto=format&fit=crop&w=800&q=60"
+               alt="Shop">
+          <div class="card-body">
+            <h5 class="card-title">Shop</h5>
+            <p class="card-text text-muted">Buy project essentials and lab materials.</p>
+            <a href="{% url 'shop' %}" class="btn btn-soft-primary btn-sm">Go to Shop</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm hover-raise">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1618354691370-13c91e7d4b1d?auto=format&fit=crop&w=800&q=60"
+               alt="Cart">
+          <div class="card-body">
+            <h5 class="card-title">Your Cart</h5>
+            <p class="card-text text-muted">Review items and proceed to payment.</p>
+            <a href="{% url 'cart' %}" class="btn btn-soft-primary btn-sm">View Cart</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm hover-raise">
+          <img class="card-img-top"
+               src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=60"
+               alt="Chat">
+          <div class="card-body">
+            <h5 class="card-title">Chat</h5>
+            <p class="card-text text-muted">Message peers & groups. Share files & location.</p>
+            <a href="{% url 'chat' %}" class="btn btn-soft-primary btn-sm">Open Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== USER INFO + ABOUT ===== -->
+  <section class="mb-5 section-pad">
+    <div class="row">
+      <!-- User Info -->
+      <div class="col-lg-5 mb-4">
+        <div class="card shadow-sm h-100 hover-raise">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?auto=format&fit=crop&w=120&q=60"
+                   alt="Avatar" class="rounded-circle mr-3"
+                   style="width:52px;height:52px;object-fit:cover;">
+              <div>
+                <h5 class="card-title text-primary mb-0">Welcome, {{ user.name|default:"User" }}</h5>
+                <small class="text-muted">Have a productive day!</small>
+              </div>
+            </div>
+            <p class="card-text mb-2"><strong>Type:</strong> {{ user_type|capfirst }}</p>
+            <p class="card-text mb-2"><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+            {% if user_type == 'student' %}
+              <p class="card-text mb-2"><strong>Student ID:</strong> {{ user.student_id|default:"—" }}</p>
+            {% else %}
+              <p class="card-text mb-2"><strong>Teacher ID:</strong> {{ user.teacher_id|default:"—" }}</p>
+              <p class="card-text mb-2"><strong>Department:</strong> {{ user.department|default:"—" }}</p>
+            {% endif %}
+            <p class="card-text"><strong>Phone:</strong> {{ user.phone_number|default:"—" }}</p>
+
+            <div class="mt-3 d-flex align-items-center flex-wrap">
+              <a href="{% url 'chat' %}" class="btn btn-outline-primary btn-sm mr-2">Start a Chat</a>
+              <a href="{% url 'shop' %}" class="btn btn-primary btn-sm mr-2">Browse Shop</a>
+              <button class="btn btn-soft mr-2 btn-sm" id="confettiBtn">
+                <i class="fas fa-magic mr-1"></i> Celebrate
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About / Isotope -->
+      <div class="col-lg-7 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title mb-3">What is UniNav?</h5>
+            <p class="text-muted mb-3">
+              UniNav unifies navigation, communication, and shopping for students and teachers.
+              Explore buildings with interactive maps, chat in real-time, and buy project materials from the shop.
+            </p>
+
+            <!-- Filters -->
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Filter">
+              <button class="btn btn-outline-secondary active" data-filter="*">All</button>
+              <button class="btn btn-outline-secondary" data-filter=".maps">Maps</button>
+              <button class="btn btn-outline-secondary" data-filter=".chat">Chat</button>
+              <button class="btn btn-outline-secondary" data-filter=".shop">Shop</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="row no-gutters feature-grid">
+              <div class="col-6 p-2 element-item maps">
+                <div class="border rounded p-2 h-100 soft-tile">
+                  <img src="https://images.unsplash.com/photo-1519452575417-564c1401ecc0?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Maps grid">
+                  <small class="text-muted d-block">Maps: floor plans & navigation</small>
+                </div>
+              </div>
+              <div class="col-6 p-2 element-item chat">
+                <div class="border rounded p-2 h-100 soft-tile">
+                  <img src="https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Chat grid">
+                  <small class="text-muted d-block">Chat: groups, files, voice</small>
+                </div>
+              </div>
+              <div class="col-6 p-2 element-item shop">
+                <div class="border rounded p-2 h-100 soft-tile">
+                  <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Shop grid">
+                  <small class="text-muted d-block">Shop: materials & checkout</small>
+                </div>
+              </div>
+              <div class="col-6 p-2 element-item chat">
+                <div class="border rounded p-2 h-100 soft-tile">
+                  <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=60"
+                       class="img-fluid rounded mb-2" alt="Reactions grid">
+                  <small class="text-muted d-block">Reactions & collaboration</small>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COUNTERS ===== -->
+  <section class="mb-5 section-pad">
+    <div class="p-4 p-md-5 bg-light rounded">
+      <div class="row text-center">
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <div class="h2 mb-1 counter" data-target="1200">0</div>
+          <small class="text-muted">Active Users</small>
+        </div>
+        <div class="col-6 col-md-3 mb-4 mb-md-0">
+          <div class="h2 mb-1 counter" data-target="340">0</div>
+          <small class="text-muted">Products</small>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="h2 mb-1 counter" data-target="9800">0</div>
+          <small class="text-muted">Messages</small>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="h2 mb-1 counter" data-target="24">0</div>
+          <small class="text-muted">Buildings</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEACHER TOOLS ===== -->
+  {% if user_type == 'teacher' %}
+  <section class="mb-5 section-pad">
+    <h5 class="mb-3">Teacher Tools</h5>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 hover-raise">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=60"
+               class="card-img-top" alt="Add Product">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="mb-1">Add Product</h6>
+              <p class="text-muted mb-0">Create new items for the shop.</p>
+            </div>
+            <a href="{% url 'add_product' %}" class="btn btn-soft-primary btn-sm">Open</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 hover-raise">
+          <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1000&q=60"
+               class="card-img-top" alt="Approve Orders">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="mb-1">Approve Orders</h6>
+              <p class="text-muted mb-0">Review and approve pending orders.</p>
+            </div>
+            <a href="{% url 'approve_orders' %}" class="btn btn-soft-primary btn-sm">Open</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===== CTA STRIP ===== -->
+  <section class="mb-4 section-pad">
+    <div class="p-4 p-md-5 rounded text-center cta-cover">
+      <div class="py-4 backdrop">
+        <h4 class="mb-2 text-white">Ready to explore?</h4>
+        <p class="mb-4 text-white-50">Jump into maps, start a chat, or pick up materials from the shop.</p>
+        <a href="{% url 'campus_map' %}" class="btn btn-primary mr-2 mb-2">Maps</a>
+        <a href="{% url 'chat' %}" class="btn btn-outline-light mr-2 mb-2">Chat</a>
+        <a href="{% url 'shop' %}" class="btn btn-outline-light mb-2">Shop</a>
+      </div>
+    </div>
+  </section>
+
+</div> <!-- /.page-max -->
+
+<!-- ===== Scoped Styles ===== -->
+<style>
+  /* 1) Constrain the full-width base to a comfortable reading width */
+  .page-max { max-width: 1280px; margin: 0 auto; }
+  @media (min-width: 1600px) { .page-max { max-width: 1400px; } }
+
+  /* 2) Section vertical rhythm */
+  .section-pad { padding-top: .25rem; }
+
+  /* 3) High-contrast buttons for pale areas */
+  .btn-contrast{
+    background: #ffffff; color: #1f2430; border: 1px solid rgba(0,0,0,.08);
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  }
+  .btn-contrast:hover{ filter: brightness(0.97); border-color: rgba(0,0,0,.14); }
+
+  .btn-ghost-light{
+    color: #ffffff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.35);
+    backdrop-filter: saturate(120%) blur(2px);
+  }
+  .btn-ghost-light:hover{ background: rgba(255,255,255,.16); }
+
+  .btn-soft-primary{
+    background:#eef2ff; color:#3b82f6; border:1px solid #dbeafe;
+  }
+  .btn-soft-primary:hover{ background:#e0e7ff; }
+
+  .btn-soft{ background:#eef2ff; color:#3b82f6; border:1px solid #dbeafe; }
+  .btn-soft:hover{ background:#e0e7ff; }
+
+  /* 4) Hero polish */
+  .hero-wrap{
+    background: radial-gradient(1200px 600px at -10% -20%, rgba(255,255,255,.25), transparent 60%),
+                linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%);
+    border-radius: 24px;
+    position: relative;
+  }
+  .hero-fade{
+    content:""; position:absolute; left:0; right:0; bottom:-1px; height:20px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.06), transparent);
+    opacity:.25;
+  }
+  .hero-img{ border-radius: 16px; }
+  .blob{
+    position:absolute; border-radius:50%; filter: blur(40px); opacity:.35; pointer-events:none;
+    animation: float 12s ease-in-out infinite;
+  }
+  .blob.b1{ width:220px;height:220px; right:-60px; bottom:-60px; background:#a78bfa; animation-delay: .5s;}
+  .blob.b2{ width:260px;height:260px; left:-80px; top:-80px; background:#60a5fa;}
+  @keyframes float { 0%,100%{ transform: translateY(0) scale(1);} 50%{ transform: translateY(-12px) scale(1.03);} }
+
+  /* 5) Cards & images */
+  .card { border: none; border-radius: 12px; }
+  .card-title { color: #7a6ad8; }
+  .hover-raise{ transition: transform .15s ease, box-shadow .2s ease; }
+  .hover-raise:hover{ transform: translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,.12) !important; }
+
+  /* control heights so carousel doesn't feel jumpy or too tall on big screens */
+  .card-img-tall { height: 320px; object-fit: cover; }
+  @media (min-width: 1200px) { .card-img-tall { height: 360px; } }
+
+  /* Tiles */
+  .soft-tile{ background:#fff; transition: box-shadow .25s ease, transform .15s ease; }
+  .soft-tile:hover{ box-shadow:0 8px 28px rgba(0,0,0,.08); transform: translateY(-2px); }
+
+  /* CTA cover */
+  .cta-cover{
+    background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1400&q=60');
+    background-size:cover; background-position:center;
+  }
+  .cta-cover .backdrop{ backdrop-filter:brightness(0.9) saturate(110%); }
+
+  /* Soft divider */
+  .soft-sep{
+    border:0; height:1px; background: linear-gradient(90deg, transparent, rgba(0,0,0,.08), transparent);
+    margin: 1.25rem 0 1.75rem;
+  }
+
+  /* Owl dots spacing */
+  .owl-dots{ margin-top:.5rem; }
+</style>
+
+<!-- ===== JS (uses base.html libraries) ===== -->
+<script>
+  // Owl Carousel init
+  (function () {
+    if (window.jQuery && typeof jQuery.fn.owlCarousel === 'function') {
+      jQuery('.feature-carousel').owlCarousel({
+        items: 1,
+        margin: 16,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3500,
+        autoplayHoverPause: true,
+        dots: true,
+        nav: false
+      });
+    }
+  })();
+
+  // Isotope filter
+  (function () {
+    var grid = document.querySelector('.feature-grid');
+    if (grid && typeof Isotope === 'function') {
+      var iso = new Isotope(grid, { itemSelector: '.element-item', layoutMode: 'fitRows' });
+      document.querySelectorAll('[data-filter]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          iso.arrange({ filter: this.getAttribute('data-filter') });
+        });
+      });
+    }
+  })();
+
+  // Counters (fallback)
+  (function () {
+    var counters = document.querySelectorAll('.counter');
+    if (!counters.length) return;
+    function run(el) {
+      var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+      var current = 0;
+      var step = Math.max(1, Math.floor(target / 80));
+      function tick() {
+        current += step; if (current >= target) current = target;
+        el.textContent = current.toLocaleString();
+        if (current < target) requestAnimationFrame(tick);
+      } tick();
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } });
+      }, { threshold: 0.3 });
+      counters.forEach(function (c) { io.observe(c); });
+    } else { counters.forEach(run); }
+  })();
+
+  // Tiny celebration (no external lib)
+  (function(){
+    var btn = document.getElementById('confettiBtn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var burst = document.createElement('div');
+      burst.style.position='fixed'; burst.style.left='0'; burst.style.top='0';
+      burst.style.width='100vw'; burst.style.height='100vh'; burst.style.pointerEvents='none';
+      document.body.appendChild(burst);
+      for(var i=0;i<90;i++){
+        var p = document.createElement('i');
+        p.style.position='absolute'; p.style.width='6px'; p.style.height='10px';
+        p.style.left=(Math.random()*100)+'vw'; p.style.top='-10px';
+        p.style.background='hsl('+Math.floor(Math.random()*360)+',90%,60%)';
+        p.style.transform='rotate('+Math.floor(Math.random()*360)+'deg)';
+        p.style.opacity='0.9'; burst.appendChild(p);
+        (function(el){
+          var x = (Math.random()*2-1)*40; var t = 1200 + Math.random()*800;
+          el.animate([{ transform: el.style.transform+' translate(0,0)', opacity: 1 },
+                      { transform: el.style.transform+' translate('+x+'px, 100vh)', opacity: 0.8 }],
+                     { duration: t, easing:'cubic-bezier(.2,.8,.2,1)' });
+          setTimeout(function(){ el.remove(); }, t+100);
+        })(p);
+      }
+      setTimeout(function(){ burst.remove(); }, 2200);
+    });
+  })();
+</script>
+
+{% endblock %}

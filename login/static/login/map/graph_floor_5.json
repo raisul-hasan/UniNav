@@ -1,0 +1,92 @@
+{
+  "nodes": {
+    "C1": { "x": 600, "y": 760, "name": "West Corridor" },
+    "C2": { "x": 900, "y": 420, "name": "NW Junction" },
+    "C3": { "x": 1500, "y": 360, "name": "North Junction" },
+    "C4": { "x": 2100, "y": 420, "name": "NE Junction" },
+    "C5": { "x": 2600, "y": 770, "name": "East Corridor" },
+    "C6": { "x": 2100, "y": 1120, "name": "SE Junction" },
+    "C7": { "x": 1500, "y": 1160, "name": "South Junction" },
+    "C8": { "x": 900, "y": 1120, "name": "SW Junction" },
+    "C9": { "x": 1500, "y": 770, "name": "Central Lobby" },
+
+    "STAIR_W": { "x": 1050, "y": 650, "name": "Stair (West)" },
+    "STAIR_NE": { "x": 1700, "y": 540, "name": "Stair (NE)" },
+    "LIFT_N": { "x": 1750, "y": 710, "name": "Lift (North)" },
+    "LIFT_S": { "x": 1550, "y": 920, "name": "Lift (South)" },
+
+    "MCH_LAB_501": { "x": 520, "y": 1090, "name": "Machine Lab #501" },
+    "COMM_LAB_502": { "x": 600, "y": 1000, "name": "Communication Lab #502" },
+    "FEXIT_W": { "x": 750, "y": 1180, "name": "Fire Exit (West)" },
+
+    "CIRCUIT_503": { "x": 950, "y": 1260, "name": "Circuit Lab 3 #503" },
+    "CIRCUIT_504": { "x": 1100, "y": 1260, "name": "Circuit Lab 2 #504" },
+    "CIRCUIT_505": { "x": 1300, "y": 1260, "name": "Circuit Lab 1 #505" },
+    "DIGITAL_508": { "x": 1900, "y": 1260, "name": "Digital Lab 1 #508" },
+    "PROJECT_507": { "x": 1700, "y": 1260, "name": "Project Lab #507" },
+    "MAINT_506B": { "x": 1550, "y": 1260, "name": "Shaheed Irfan Maintenance Lab #506B" },
+    "PHYS_CHEM_509": { "x": 2350, "y": 1260, "name": "Physics & Chemistry Lab 1 #509" },
+    "PHYS_CHEM_510": { "x": 2550, "y": 1260, "name": "Physics & Chemistry Lab 2 #510" },
+
+    "EEE_512_518": { "x": 2350, "y": 1000, "name": "Dept. of EEE #512 & 518" },
+    "DIGITAL_511": { "x": 2450, "y": 1150, "name": "Digital Lab 1 #511" },
+
+    "CITS_519_519B": { "x": 2550, "y": 900, "name": "CITS #519-519B" },
+    "COMP_522": { "x": 2750, "y": 820, "name": "Computer Lab #522" },
+    "COMP_523": { "x": 2750, "y": 480, "name": "Computer Lab #523" },
+    "COMP_524": { "x": 2500, "y": 380, "name": "Computer Lab #524" },
+    "COMP_528": { "x": 1650, "y": 320, "name": "Computer Lab #528" },
+    "COMP_529": { "x": 1850, "y": 320, "name": "Computer Lab #529" },
+    "COMP_530": { "x": 2000, "y": 320, "name": "Computer Lab #530" },
+
+    "SERVER_526_527": { "x": 2150, "y": 360, "name": "Server Room #526 & 527" },
+    "CITB_525": { "x": 2050, "y": 900, "name": "CITB #525" },
+    "FAC_OFF_533_535": { "x": 950, "y": 600, "name": "Faculty Office #533 & 535" },
+    "FAC_OFF_538_537": { "x": 1400, "y": 800, "name": "Faculty Office #538-537" },
+    "PANTRY_5F": { "x": 1550, "y": 860, "name": "Pantry (5F)" },
+
+    "FEXIT_E": { "x": 2650, "y": 520, "name": "Fire Exit (East)" }
+  },
+  "edges": {
+    "C1": ["C2","C8","C9"],
+    "C2": ["C1","C3","STAIR_W"],
+    "C3": ["C2","C4","C9","LIFT_N"],
+    "C4": ["C3","C5","STAIR_NE"],
+    "C5": ["C4","C6","C9"],
+    "C6": ["C5","C7"],
+    "C7": ["C6","C8","C9","LIFT_S"],
+    "C8": ["C7","C1"],
+
+    "MCH_LAB_501": ["C8"],
+    "COMM_LAB_502": ["C8"],
+    "FEXIT_W": ["C8"],
+
+    "CIRCUIT_503": ["C7"],
+    "CIRCUIT_504": ["C7"],
+    "CIRCUIT_505": ["C7"],
+    "MAINT_506B": ["C7"],
+    "PROJECT_507": ["C7"],
+    "DIGITAL_508": ["C7"],
+    "PHYS_CHEM_509": ["C6"],
+    "PHYS_CHEM_510": ["C6"],
+
+    "EEE_512_518": ["C6"],
+    "DIGITAL_511": ["C6"],
+
+    "CITS_519_519B": ["C5"],
+    "COMP_522": ["C5"],
+    "COMP_523": ["C5"],
+    "COMP_524": ["C4"],
+    "COMP_528": ["C3"],
+    "COMP_529": ["C3"],
+    "COMP_530": ["C3"],
+
+    "SERVER_526_527": ["C4"],
+    "CITB_525": ["C6","C9"],
+    "FAC_OFF_533_535": ["C2","C9"],
+    "FAC_OFF_538_537": ["C9"],
+    "PANTRY_5F": ["C9"],
+
+    "FEXIT_E": ["C5"]
+  }
+}

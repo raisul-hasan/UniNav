@@ -1,0 +1,113 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Chatbot{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container" style="max-width: 920px;">
+    <div class="card shadow-sm border-0">
+      <div class="card-header" style="background:#7a6ad8;color:#fff;">
+        <strong>UniNav Chatbot</strong>
+      </div>
+      <div id="chat-box" class="card-body" style="height: 520px; overflow-y: auto; background:#f9f8ff;">
+        <!-- Messages will be appended here -->
+      </div>
+      <div class="card-footer bg-white">
+        <form id="chat-form" class="d-flex gap-2">
+          <input id="chat-input" type="text" class="form-control" placeholder="Type your question..." autocomplete="off" required />
+          <button class="btn btn-primary" type="submit">Send</button>
+          <button class="btn btn-outline-secondary" type="button" id="clear-history">Clear</button>
+        </form>
+        <small class="text-muted d-block mt-2">Powered by UniNav • educational use</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const chatBox   = document.getElementById('chat-box');
+  const chatForm  = document.getElementById('chat-form');
+  const chatInput = document.getElementById('chat-input');
+  const clearBtn  = document.getElementById('clear-history');
+
+  // 👉 Point this to your Node server
+  const API_URL = "http://localhost:5000/api/chat";
+
+  // simple per-tab session id so Node can keep short history
+  const sessionId = (() => {
+    const k = "chat_session_id";
+    let v = sessionStorage.getItem(k);
+    if (!v) {
+      v = Math.random().toString(36).slice(2);
+      sessionStorage.setItem(k, v);
+    }
+    return v;
+  })();
+
+  function bubble(text, who) {
+    const wrap = document.createElement('div');
+    wrap.className = 'd-flex mb-3 ' + (who === 'you' ? 'justify-content-end' : 'justify-content-start');
+
+    const b = document.createElement('div');
+    b.className = 'p-3 rounded-3';
+    b.style.maxWidth = '75%';
+    b.style.whiteSpace = 'pre-wrap';
+    if (who === 'you') {
+      b.style.background = '#7a6ad8';
+      b.style.color = '#fff';
+    } else {
+      b.style.background = '#fff';
+      b.style.border = '1px solid #eee';
+    }
+    b.textContent = text;
+
+    wrap.appendChild(b);
+    chatBox.appendChild(wrap);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  async function sendMessage(message) {
+    bubble(message, 'you');
+    const typing = document.createElement('div');
+    typing.className = 'text-muted small fst-italic';
+    typing.textContent = 'Thinking…';
+    chatBox.appendChild(typing);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // 👇 send sessionId so the Node server can keep context
+        body: JSON.stringify({ message, sessionId }),
+      });
+
+      const data = await res.json();
+      typing.remove();
+
+      if (!res.ok) {
+        bubble("Error: " + (data.error || 'Request failed'), 'bot');
+        return;
+      }
+      bubble(data.reply || '(no response)', 'bot');
+    } catch (err) {
+      typing.remove();
+      bubble("Network error: " + err.message, 'bot');
+    }
+  }
+
+  chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if (!text) return;
+    chatInput.value = '';
+    sendMessage(text);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    chatBox.innerHTML = '';
+  });
+
+  bubble("Hi! Ask me anything about your studies, projects, or campus.", 'bot');
+</script>
+{% endblock %}

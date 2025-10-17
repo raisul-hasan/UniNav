@@ -1,0 +1,302 @@
+{% extends 'login/base.html' %}
+{% load cart_py %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<!-- Themed Hero with SERVER cart dropdown -->
+<section class="py-4" style="background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%); border-radius: 20px; font-family: 'Poppins', sans-serif;">
+  <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-md-between text-white">
+    <div class="mb-3 mb-md-0">
+      <h1 class="h3 mb-1">Your Cart</h1>
+      <p class="mb-0" style="opacity:.9;">Review items and proceed to payment.</p>
+    </div>
+
+    <!-- Cart dropdown (SERVER data via cart_items / total_price) -->
+    <div class="dropdown">
+      <button id="cartDropdownBtn" class="btn btn-gradient text-white px-3 py-2 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-shopping-cart mr-2"></i>
+        Cart
+        <span id="cartBadge" class="badge badge-light ml-2" style="color:#5d4db9;">
+          {% if cart_items %}{{ cart_items|length }}{% else %}0{% endif %}
+        </span>
+      </button>
+
+      <div class="dropdown-menu dropdown-menu-right p-0" aria-labelledby="cartDropdownBtn" style="min-width: 360px; border-radius: 14px; overflow:hidden;">
+        <div class="px-3 py-2" style="background:#f8f9fa;">
+          <strong>Your Items</strong>
+        </div>
+
+        <div id="miniCartList" style="max-height: 360px; overflow-y:auto;">
+          {% if cart_items %}
+            {% for item in cart_items %}
+              <div class="mini-item" data-cart-item-id="{{ item.id }}" style="display:flex; align-items:center; padding:.65rem .9rem; border-bottom:1px solid #eee;">
+                <img
+                  class="mini-thumb"
+                  style="width:44px; height:44px; border-radius:10px; object-fit:cover; margin-right:.75rem;"
+                  src="{% if item.product.image %}{{ item.product.image.url }}{% else %}https://picsum.photos/100/100{% endif %}"
+                  alt="{{ item.product.name }}"
+                >
+                <div class="mini-meta" style="flex:1; min-width:0;">
+                  <p class="mini-title mb-1" style="font-size:.95rem; color:#2a2a2a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    {{ item.product.name }}
+                    <span class="qty-pill" data-mini-qty style="font-size:.75rem; padding:.1rem .45rem; border-radius:999px; background:#efe9ff; color:#5d4db9; margin-left:.4rem;">{{ item.quantity }}x</span>
+                  </p>
+                  <div class="mini-price" style="font-size:.85rem; color:#7a7a7a;">
+                    ৳<span data-mini-price>{{ item.product.price|floatformat:2 }}</span>
+                  </div>
+                </div>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-outline-danger" title="Remove" style="white-space:nowrap;">Remove</a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="p-3 text-muted small">Your cart is empty.</div>
+          {% endif %}
+        </div>
+
+        {% if total_price %}
+          <div class="d-flex justify-content-between align-items-center px-3 py-2" style="background:#f8f9fa;">
+            <small class="text-muted mb-0">Subtotal:</small>
+            <strong>৳<span id="miniCartSubtotal">{{ total_price|floatformat:2 }}</span></strong>
+          </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-between align-items-center px-3 py-3" style="background:#ffffff;">
+          <a href="{% url 'cart' %}" class="btn btn-sm btn-outline-secondary">View Cart</a>
+          <a href="{% url 'payment' %}" class="btn btn-sm btn-gradient text-white">Checkout</a>
+        </div>
+      </div>
+    </div>
+    <!-- /Cart dropdown -->
+  </div>
+</section>
+
+<div class="container py-5" style="font-family: 'Poppins', sans-serif;">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card border-0 shadow-sm" style="border-radius: 14px;">
+        <div class="card-body p-0">
+          <div class="d-flex align-items-center justify-content-between px-3 py-3" style="border-bottom:1px solid #eee;">
+            <h2 class="h5 mb-0" style="color:#2a2a2a;">Server Cart</h2>
+            <div class="text-muted small">From your Django session</div>
+          </div>
+
+          {% if cart_items %}
+            <div class="table-responsive">
+              <table class="table mb-0 table-striped" id="cartTable">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th style="min-width:200px;">Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart_items %}
+                    <tr
+                      data-row
+                      data-cart-item-id="{{ item.id }}"
+                      data-product-id="{{ item.product.id }}"
+                      data-price="{{ item.product.price }}"
+                      data-qty="{{ item.quantity }}"
+                    >
+                      <td>{{ item.product.name }}</td>
+                      <td>৳<span data-price-text>{{ item.product.price|floatformat:2 }}</span></td>
+
+                      <!-- Quantity with AJAX +/- controls -->
+                      <td>
+                        <div class="input-group input-group-sm" style="max-width: 220px;">
+                          <!-- Minus (AJAX) -->
+                          <a
+                            class="btn btn-outline-secondary"
+                            href="{% url 'decrement_cart' item.id %}"
+                            aria-label="Decrease quantity"
+                            data-decrement
+                          >−</a>
+
+                          <input
+                            type="text"
+                            class="form-control text-center"
+                            value="{{ item.quantity }}"
+                            data-qty-input
+                            aria-label="Quantity"
+                            readonly
+                          >
+
+                          <!-- Plus (AJAX) -->
+                          <a
+                            class="btn btn-outline-secondary"
+                            href="{% url 'increment_cart' item.product.id %}"
+                            aria-label="Increase quantity"
+                            data-increment
+                          >+</a>
+                        </div>
+                        <small class="text-muted d-block mt-1">Changes are saved.</small>
+                      </td>
+
+                      <td>
+                        ৳<span data-row-total>
+                          {{ item.product.price|multiply:item.quantity|floatformat:2 }}
+                        </span>
+                      </td>
+                      <td>
+                        <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td>৳<span id="grandTotal">{{ total_price|floatformat:2 }}</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content-end px-3 py-3" style="border-top:1px solid #eee;">
+              <a href="{% url 'payment' %}" class="btn btn-gradient text-white">Proceed to Payment</a>
+            </div>
+          {% else %}
+            <div class="p-4 text-center text-muted">
+              Your cart is empty.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="text-center mt-3">
+        <a href="{% url 'shop' %}">Continue Shopping</a> |
+        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Theme helpers -->
+<style>
+  .btn-gradient {
+    background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%);
+    border: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #5d4db9 0%, #7a6ad8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(122, 106, 216, 0.4);
+  }
+</style>
+
+<!-- AJAX for +/- so UI updates instantly and stays on the cart page -->
+<script>
+  (function () {
+    function fmt(n) { return (Math.round(n * 100) / 100).toFixed(2); }
+
+    function updateMiniCartItemQty(cartItemId, qty) {
+      var mini = document.querySelector('#miniCartList .mini-item[data-cart-item-id="' + cartItemId + '"]');
+      if (!mini) return;
+      var badge = mini.querySelector('[data-mini-qty]');
+      if (badge) badge.textContent = qty + 'x';
+    }
+
+    function removeMiniCartItem(cartItemId) {
+      var mini = document.querySelector('#miniCartList .mini-item[data-cart-item-id="' + cartItemId + '"]');
+      if (mini) mini.remove();
+      if (!document.querySelector('#miniCartList .mini-item')) {
+        var empty = document.createElement('div');
+        empty.className = 'p-3 text-muted small';
+        empty.textContent = 'Your cart is empty.';
+        document.getElementById('miniCartList').appendChild(empty);
+      }
+    }
+
+    function applyTotalsFromResponse(row, data) {
+      if (typeof data.quantity !== 'undefined') {
+        row.setAttribute('data-qty', data.quantity);
+        var input = row.querySelector('[data-qty-input]');
+        if (input) input.value = data.quantity;
+      }
+      if (data.row_total) {
+        var rowTotalNode = row.querySelector('[data-row-total]');
+        if (rowTotalNode) rowTotalNode.textContent = data.row_total;
+      }
+      var grandEl = document.getElementById('grandTotal');
+      if (grandEl && data.grand_total) grandEl.textContent = data.grand_total;
+      var miniSub = document.getElementById('miniCartSubtotal');
+      if (miniSub && data.grand_total) miniSub.textContent = data.grand_total;
+      var cartBadge = document.getElementById('cartBadge');
+      if (cartBadge && typeof data.cart_count !== 'undefined') cartBadge.textContent = data.cart_count;
+    }
+
+    function handleMinus(e) {
+      var link = e.target.closest('[data-decrement]');
+      if (!link) return;
+      e.preventDefault();
+
+      var row = link.closest('tr[data-row]');
+      if (!row) { window.location = link.href; return; }
+
+      fetch(link.href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data.ok) { window.location = link.href; return; }
+
+          var itemId = row.getAttribute('data-cart-item-id');
+          if (data.deleted) {
+            row.parentNode.removeChild(row);
+            removeMiniCartItem(itemId);
+          } else {
+            applyTotalsFromResponse(row, data);
+            updateMiniCartItemQty(itemId, data.quantity);
+          }
+        })
+        .catch(function () { window.location = link.href; });
+    }
+
+    function handlePlus(e) {
+      var link = e.target.closest('[data-increment]');
+      if (!link) return;
+      e.preventDefault();
+
+      var row = link.closest('tr[data-row]');
+      if (!row) { window.location = link.href; return; }
+
+      fetch(link.href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data.ok) { window.location = link.href; return; }
+
+          // If a new CartItem was created, the current row already corresponds to this product,
+          // so we just update its qty/row total. (IDs will keep matching after a refresh.)
+          applyTotalsFromResponse(row, data);
+          // If the server returned a new item_id (when created), we can update DOM attributes
+          if (data.item_id) {
+            row.setAttribute('data-cart-item-id', data.item_id);
+            updateMiniCartItemQty(data.item_id, data.quantity);
+          }
+        })
+        .catch(function () { window.location = link.href; });
+    }
+
+    document.addEventListener('click', handleMinus);
+    document.addEventListener('click', handlePlus);
+
+    // Minimal dropdown fallback if Bootstrap JS isn't present
+    (function initDropdownFallback() {
+      var btn = document.getElementById('cartDropdownBtn');
+      if (!btn) return;
+      var menu = btn.nextElementSibling;
+      if (!menu) return;
+      btn.addEventListener('click', function () { menu.classList.toggle('show'); });
+      document.addEventListener('click', function (ev) {
+        if (menu.classList.contains('show') && !menu.contains(ev.target) && ev.target !== btn) {
+          menu.classList.remove('show');
+        }
+      });
+    })();
+  })();
+</script>
+{% endblock %}

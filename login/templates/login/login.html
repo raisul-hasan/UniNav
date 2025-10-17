@@ -1,0 +1,162 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<!-- Hide header and footer -->
+<style>
+  nav.navbar,
+  footer {
+    display: none !important;
+  }
+</style>
+
+<!-- Centered Login Layout -->
+<section class="vh-100 d-flex align-items-center justify-content-center"
+         style="background: linear-gradient(135deg, #f3e7ff 0%, #e3f0ff 100%);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-7 text-center">
+
+        <!-- Login Card -->
+        <div class="card shadow-lg border-0 auth-card text-white"
+             style="background: linear-gradient(135deg, #7a6ad8 0%, #5d4db9 100%);
+                    border-radius: 20px;">
+          <div class="card-body p-4 p-md-5">
+
+            <!-- Heading -->
+            <div class="text-center mb-4">
+              <h1 class="h4 mb-1 text-white fw-bold">Welcome Back</h1>
+              <p class="text-light mb-0">Sign in to your UniNav account</p>
+            </div>
+
+            <!-- Login Form -->
+            <form method="post" novalidate>
+              {% csrf_token %}
+
+              <!-- Email -->
+              <div class="form-group mb-3 position-relative">
+                <label for="email" class="form-label text-light small">Email</label>
+                <div class="position-relative">
+                  <i class="fa fa-envelope input-icon"></i>
+                  <input type="email" name="email" id="email"
+                         class="form-control input-field"
+                         placeholder="you@university.edu" required>
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div class="form-group mb-3 position-relative">
+                <label for="password" class="form-label text-light small">Password</label>
+                <div class="position-relative">
+                  <i class="fa fa-lock input-icon"></i>
+                  <input type="password" name="password" id="password"
+                         class="form-control input-field"
+                         placeholder="••••••••" required>
+                </div>
+              </div>
+
+              <!-- User Type -->
+              <div class="form-group mb-4 position-relative">
+                <label for="user_type" class="form-label text-light small">User Type</label>
+                <div class="position-relative">
+                  <i class="fa fa-user input-icon"></i>
+                  <select name="user_type" id="user_type"
+                          class="form-select input-field select-field" required>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit"
+                      class="btn w-100 py-2"
+                      style="background:#fff; color:#7a6ad8; font-weight:600; border-radius:10px;">
+                <i class="fa fa-sign-in-alt me-1"></i> Login
+              </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="d-flex align-items-center my-4">
+              <hr class="flex-grow-1 border-light">
+              <span class="px-2 text-light small">or</span>
+              <hr class="flex-grow-1 border-light">
+            </div>
+
+            <!-- Register Link -->
+            <p class="text-center mb-0 text-light">
+              New to UniNav?
+              <a href="{% url 'register' %}" class="text-white fw-semibold text-decoration-underline">
+                Create an account
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <p class="text-center text-muted small mt-3 mb-0">
+          Secure login • Fast access • Campus integrated
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Page Styles -->
+<style>
+  .auth-card {
+    border-radius: 20px;
+  }
+
+  .input-field {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    padding-left: 40px;
+    border-radius: 8px;
+  }
+
+  .input-field::placeholder {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .input-field:focus {
+    background: rgba(255,255,255,0.3);
+    box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.1);
+    color: #fff;
+  }
+
+  .input-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.9);
+    pointer-events: none;
+  }
+
+  select.input-field {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 16 16'><path d='M4 6l4 4 4-4'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+    color: #fff;
+  }
+
+  /* Dropdown option visibility */
+  select.input-field option {
+    background-color: #fff;
+    color: #333;
+  }
+
+  button.btn:hover {
+    background: #f4f4f4;
+    color: #5d4db9;
+  }
+</style>
+
+{% endblock %}

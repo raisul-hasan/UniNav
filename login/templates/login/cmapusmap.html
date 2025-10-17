@@ -1,0 +1,73 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block title %}Campus Navigator{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row g-3">
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm sticky-top" style="top: 80px;">
+        <div class="card-body">
+          <h5 class="mb-3">🧭 Route Finder</h5>
+
+          <label class="form-label">From</label>
+          <input id="fromInput" class="form-control mb-2" list="savedDestinations" placeholder="Click map or choose">
+          
+          <label class="form-label">To</label>
+          <input id="toInput" class="form-control mb-2" list="savedDestinations" placeholder="Click map or choose">
+
+          <datalist id="savedDestinations">
+            {% for s in saved_locations %}
+              <option value="{{ s.name }}" data-floor="{{ s.floor }}" data-x="{{ s.x }}" data-y="{{ s.y }}"></option>
+            {% endfor %}
+          </datalist>
+
+          <div class="d-grid gap-2 mt-3">
+            <button id="btnRoute" class="btn btn-success">🚀 Find Route</button>
+            <button id="btnClear" class="btn btn-outline-dark">Clear</button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="mb-2">
+            <label class="form-label">Floors</label>
+            <div id="floorButtons" class="btn-group flex-wrap d-flex">
+              {% for i in "12345" %}
+                <button class="btn btn-outline-primary floor-btn" data-floor="{{ forloop.counter }}">F{{ forloop.counter }}</button>
+              {% endfor %}
+            </div>
+          </div>
+
+          <h6 class="mt-4">Directions</h6>
+          <ol id="steps" class="small text-muted mb-0" style="max-height: 300px; overflow:auto;"></ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <div id="map" style="height: 640px; width: 100%; border-radius: .5rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  window.floorMeta = {
+    1: { src: "{% static 'login/image/1st-floor.png' %}", w: 2048, h: 1952 },
+    2: { src: "{% static 'login/image/2nd-floor.png' %}", w: 2048, h: 1968 },
+    3: { src: "{% static 'login/image/3rd-floor.png' %}", w: 2048, h: 1959 },
+    4: { src: "{% static 'login/image/4th-floor.png' %}", w: 2048, h: 1973 },
+    5: { src: "{% static 'login/image/5th-floor.png' %}", w: 2048, h: 1916 },
+  };
+</script>
+
+<script src="{% static 'login/js/campusmap.js' %}" defer></script>
+{% endblock %}
